@@ -2,7 +2,7 @@ CREATE DATABASE soundhub;
 
 USE soundhub;
 
-CREATE USER 'soundhub'@'localhost' IDENTIFIED BY 'soundhubpassword';
+CREATE USER IF NOT EXISTS 'soundhub'@'localhost' IDENTIFIED BY 'soundhubpassword';
 GRANT ALL ON *.* TO 'soundhub'@'localhost';
 
 CREATE TABLE title (
@@ -58,21 +58,29 @@ CREATE TABLE cover (
 	PRIMARY KEY (id)
 );
 
-ALTER TABLE title ADD CONSTRAINT title_fk0 FOREIGN KEY (album_id) REFERENCES album(id);
+CREATE TABLE token (
+	token varchar(255) NOT NULL,
+	user_email varchar(255) NOT NULL,
+	PRIMARY KEY (token)
+);
 
-ALTER TABLE title ADD CONSTRAINT title_fk1 FOREIGN KEY (cover_id) REFERENCES cover(id);
+ALTER TABLE title ADD CONSTRAINT title_fk0 FOREIGN KEY (album_id) REFERENCES album(id) ON DELETE CASCADE;
 
-ALTER TABLE album ADD CONSTRAINT album_fk0 FOREIGN KEY (user_email) REFERENCES user(email);
+ALTER TABLE title ADD CONSTRAINT title_fk1 FOREIGN KEY (cover_id) REFERENCES cover(id) ON DELETE CASCADE;
 
-ALTER TABLE album ADD CONSTRAINT album_fk1 FOREIGN KEY (cover_id) REFERENCES cover(id);
+ALTER TABLE album ADD CONSTRAINT album_fk0 FOREIGN KEY (user_email) REFERENCES user(email) ON DELETE CASCADE;
 
-ALTER TABLE user ADD CONSTRAINT user_fk0 FOREIGN KEY (gender_name) REFERENCES gender(name);
+ALTER TABLE album ADD CONSTRAINT album_fk1 FOREIGN KEY (cover_id) REFERENCES cover(id) ON DELETE CASCADE;
 
-ALTER TABLE playlist ADD CONSTRAINT playlist_fk0 FOREIGN KEY (user_email) REFERENCES user(email);
+ALTER TABLE user ADD CONSTRAINT user_fk0 FOREIGN KEY (gender_name) REFERENCES gender(name) ON DELETE CASCADE;
 
-ALTER TABLE playlist_title ADD CONSTRAINT playlist_title_fk0 FOREIGN KEY (title_id) REFERENCES title(id);
+ALTER TABLE playlist ADD CONSTRAINT playlist_fk0 FOREIGN KEY (user_email) REFERENCES user(email) ON DELETE CASCADE;
 
-ALTER TABLE playlist_title ADD CONSTRAINT playlist_title_fk1 FOREIGN KEY (playlist_id) REFERENCES playlist(id);
+ALTER TABLE playlist_title ADD CONSTRAINT playlist_title_fk0 FOREIGN KEY (title_id) REFERENCES title(id) ON DELETE CASCADE;
+
+ALTER TABLE playlist_title ADD CONSTRAINT playlist_title_fk1 FOREIGN KEY (playlist_id) REFERENCES playlist(id) ON DELETE CASCADE;
+
+ALTER TABLE token ADD CONSTRAINT token_fk0 FOREIGN KEY (user_email) REFERENCES user(email) ON DELETE CASCADE;
 
 INSERT INTO gender(name) VALUES
     ('Man'),
