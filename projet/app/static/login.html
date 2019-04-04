@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="style.css"/>
+        <link rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
         <div class="login-form">
@@ -22,25 +22,28 @@
                     <button id="login_submit" type="button" class="btn btn-primary btn-block">Log in</button>
                 </div>
             </form>
-            <p class="text-center"><a href="register.html">Create an Account</a></p>
+            <p class="text-center"><a href="register.html">Create an account</a></p>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script type="module">
-            import {SDK} from "./js/sdk/sdk.js"
-
-            document.getElementById("login_submit").addEventListener('click', (e) => {
-                var email = document.getElementById("email").value;
-                var password = document.getElementById("password").value;
-                SDK.login(email, password).then(() => {
-                    console.log("CONNECTED");
-                }).catch((e) => {
-                    console.log(e);
+        <script src="js/lib/traceur.js"></script>
+        <script src="js/lib/es6-module-loader.js"></script>
+        <script>
+            System.import("js/sdk/sdk").then((m) => {
+                SDK = m.SDK;
+                document.getElementById("login_submit").addEventListener('click', (e) => {
+                    var email = document.getElementById("email").value;
+                    var password = document.getElementById("password").value;
+                    SDK.login(email, password).then(() => {
+                        console.log("CONNECTED");
+                    }).catch((e) => {
+                        alert(e);
+                    });
+                    e.preventDefault();
                 });
-                e.preventDefault();
-            })
+            });
         </script>
     </body>
     <footer>

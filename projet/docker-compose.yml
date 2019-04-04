@@ -31,6 +31,6 @@ services:
     links:
      - db
     ports:
-     - '8888:8888'
+     - '80:80'
     expose:
-     - '8888'
+     - '80'

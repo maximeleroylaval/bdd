@@ -1,6 +1,6 @@
-import {Token} from "./token.js";
+import {Token} from "./token";
 
-const base = 'http://localhost:56878/';
+const base = 'http://localhost:5000/';
 const mode = 'cors';
 const cache = 'no-cache';
 
@@ -14,14 +14,18 @@ export class Request {
         return headers;
     }
 
+    static BuildURL(route) {
+        return base + route;
+    }
+
     static setToken(token) {
         Token.set(token)
     }
 
-    static Get(url) {
+    static Get(route) {
         const header = Request.addTokenToHeader(new Headers());
 
-        return fetch(base + url, {
+        return fetch(Request.BuildURL(route), {
             method: "GET",
             mode: mode,
             cache: cache,
@@ -32,7 +36,7 @@ export class Request {
     static Post(route, data) {
         const header = Request.addTokenToHeader(new Headers());
 
-        return fetch(base + route, {
+        return fetch(Request.BuildURL(route), {
             method: "POST",
             mode: mode,
             cache: cache,
@@ -44,7 +48,7 @@ export class Request {
     static Put(route, data) {
         const header = Request.addTokenToHeader(new Headers());
 
-        return fetch(base + route, {
+        return fetch(Request.BuildURL(route), {
             method: "PUT",
             mode: mode,
             cache: cache,
@@ -56,7 +60,7 @@ export class Request {
     static Delete(url) {
         const header = Request.addTokenToHeader(new Headers());
 
-        return fetch(base + url, {
+        return fetch(Request.BuildURL(route), {
             method: "DELETE",
             mode: mode,
             cache: cache,

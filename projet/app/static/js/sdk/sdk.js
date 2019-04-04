@@ -1,5 +1,5 @@
-import { Request } from './tools/request.js'
-import { User } from './model/user.js';
+import { Request } from './tools/request'
+import { User } from './model/user';
 
 export class SDK {
 
@@ -13,19 +13,19 @@ export class SDK {
             }).then(response => {
                 if (response.message !== '')
                     throw response.message;
-                Request.setToken(response.data.token)
+                Request.setToken(response.data.token);
             });
     }
 
     static register(email, password, name, birthdate, gender_name) {
         const user = User.newInstance(email, password, name, birthdate, gender_name);
-        return Request.Post("login", user.serialize())
+        return Request.Post("register", user.serialize())
             .catch(err => {
                     throw err;
             }).then(response => {
                 if (response.message !== '')
                     throw response.message;
-                return new User(response.data)
+                return new User(response.data);
             });
     }
 
