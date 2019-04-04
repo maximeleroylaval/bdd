@@ -1,6 +1,6 @@
 import {Token} from "./token";
 
-const base = 'http://localhost:56878/';
+const base = 'http://localhost:5000/';
 const mode = 'cors';
 const cache = 'no-cache';
 

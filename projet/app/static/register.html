@@ -46,12 +46,12 @@
                     var email = document.getElementById("email").value;
                     var password = document.getElementById("password").value;
                     var name = document.getElementById("name").value;
-                    var birthdate = document.getElementById("name").value;
+                    var birthdate = document.getElementById("birthdate").value;
                     var gender_name = document.getElementById("gender_name").value;
                     m.SDK.register(email, password, name, birthdate, gender_name).then(() => {
                         console.log("REGISTERED");
                     }).catch((e) => {
-                        console.log(e);
+                        alert(e)
                     });
                     e.preventDefault();
                 });
