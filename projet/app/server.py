@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/env python3
 
 import sqlalchemy as sa
@@ -271,4 +272,4 @@ if __name__ == '__main__':
     if (Auth.isConnected() == False):
         print("Could not connect to the specified database, please verify your credentials")
     else:
-        app.run(debug=True, port=56878)
+        app.run(debug=True, host='0.0.0.0', port=5000)

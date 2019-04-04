@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+ db:
+    image: mysql:8.0.15
+    restart: always
+    container_name: mysql_container
+    environment:
+      MYSQL_DATABASE: 'soundhub'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'soundhub'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'soundhubpassword'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'soundhubpassword'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - ./app/bd_init:/docker-entrypoint-initdb.d
+ web:
+    build: .
+    container_name: flask_container
+    restart: always
+    depends_on:
+     - db
+    links:
+     - db
+    ports:
+     - '8080:5000'
+    expose:
+     - '5000'
