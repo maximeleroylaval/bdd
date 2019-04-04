@@ -1,6 +1,7 @@
 import sqlalchemy as sa
 import pymysql, json, datetime
 import uuid
+import time
 
 from flask import Flask, request, Response, g
 from flask_sqlalchemy import SQLAlchemy
@@ -260,7 +261,8 @@ def hello():
 
 # Main entry to run the server
 if __name__ == '__main__':
-    if (Auth.isConnected() == False):
-        print("Could not connect to the specified database, please verify your credentials")
+    while (Auth.isConnected() == False):
+        print("Waiting for database ...")
+        time.sleep(5)
     else:
-        app.run(debug=False, host='0.0.0.0', port=5000)
+        app.run(debug=False, host='0.0.0.0', port=8888)
