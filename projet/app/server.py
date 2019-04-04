@@ -254,9 +254,13 @@ def getGenders():
     genders = db.session.query(Gender).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(genders), 200)
 
+@app.route('/')
+def hello():
+    return 'Hello World!\n'
+
 # Main entry to run the server
 if __name__ == '__main__':
     if (Auth.isConnected() == False):
         print("Could not connect to the specified database, please verify your credentials")
     else:
-        app.run(debug=True, port=8080)
+        app.run(debug=False, host='0.0.0.0', port=5000)

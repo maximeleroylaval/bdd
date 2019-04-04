@@ -30,5 +30,7 @@ services:
      - db
     links:
      - db
+    ports:
+     - '8080:5000'
     expose:
-     - '8080'
+     - '5000'
