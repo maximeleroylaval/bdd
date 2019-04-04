@@ -4,14 +4,16 @@ import sqlalchemy as sa
 import pymysql, json, datetime
 import uuid
 
-from flask import Flask, request, Response, g
+from flask import Flask, request, Response, g, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPTokenAuth
-from sqlalchemy.exc import IntegrityError
+from flask_cors import CORS
+from sqlalchemy.exc import IntegrityError, InternalError
 from pymysql.err import MySQLError
 
 # Create the application instance
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@localhost/soundhub'
 pymysql.install_as_MySQLdb()
@@ -38,9 +40,13 @@ class Answer():
 class JSONRequest():
     @staticmethod
     def getErrorCode(error):
-        errval = error[30:34]
-        return int(errval)
-    
+        pos = error.find(')')
+        errval = error[pos+3:pos+7]
+        try:
+            return int(errval)
+        except:
+            return 0
+
     @staticmethod
     def getJSONError():
         return "Missing field(s) in json object"
@@ -181,6 +187,10 @@ class Gender(db.Model):
         return Serializer.serialize(self)
 
 # List of all routes
+@app.route('/')
+def home():
+    return redirect("static/index.html", code=200)
+
 @app.route('/login', methods = ['POST'])
 def loginUser():
     content = JSONRequest.getJSON(request)
@@ -208,7 +218,7 @@ def addUser():
         user = User(content['email'], content['name'], content['password'], content['birthdate'], content['gender_name'])
         db.session.add(user)
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError) as error:
         if (JSONRequest.getErrorCode(error.args[0]) == 1062):
             return JSONRequest.sendError("Duplicate keys for " + content['email'], 409)
         return JSONRequest.sendError(error.args[0], 500)
