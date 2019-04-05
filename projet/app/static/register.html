@@ -50,7 +50,7 @@
                     var birthdate = document.getElementById("birthdate").value;
                     var gender_name = document.getElementById("gender_name").value;
                     m.SDK.register(email, password, name, birthdate, gender_name).then(() => {
-                        window.open("index.html", "_self");
+                        window.open("login.html", "_self");
                     }).catch((e) => {
                         alert(e)
                     });
