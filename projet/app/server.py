@@ -264,11 +264,3 @@ def deleteUser(email):
 def getGenders():
     genders = db.session.query(Gender).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(genders), 200)
-
-# Main entry to run the server
-if __name__ == '__main__':
-    while (Auth.isConnected() == False):
-        print("Waiting for db...")
-        time.sleep(5)
-    else:
-        app.run(debug=False, host='0.0.0.0', port=80)
