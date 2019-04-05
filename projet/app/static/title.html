@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Title</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/style.css"/>
+    </head>
+    <body>
+        <div id="url" class="title_video">
+        </div>
+        <div class="title_description">
+            <p id="name" class="title_name" type="text" style="margin-bottom: 10px" placeholder="Name"></p>
+            <p id="publication" class="title_publication" type="text" style="margin-bottom: 10px" placeholder="Publication"></p>
+        </div>
+
+        <!-- External libs -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
+        <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
+        <script>
+            System.import("js/sdk/sdk").then((m) => {
+                const SDK = m.SDK;
+                const params = SDK.getQueryParameters(window.location.href);
+                const title_id = params.id;
+
+                loadTitle(title_id);
+
+                function formatDateToHuman(date) {
+                    var date = new Date(date);
+                    return date.toDateString();
+                }
+
+                function convertToYoutube(url) {                    
+                    return url.replace("watch?v=", "embed/");
+                }
+
+                function loadTitle(title_id) {
+                    SDK.getTitle(title_id).then((title) => {
+                        var url = document.getElementById("url");
+                        var name = document.getElementById("name");
+                        var publication = document.getElementById("publication");
+                        name.innerHTML = title.name;
+                        publication.innerHTML = formatDateToHuman(title.publication);
+                        var pFrame = document.createElement("iframe");
+                        pFrame.width = 900;
+                        pFrame.height = 506;
+                        pFrame.src = convertToYoutube(title.url);
+                        pFrame.frameBorder = 0;
+                        pFrame.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+                        pFrame.allowFullscreen = "";
+                        url.appendChild(pFrame);
+                    }).catch((e) => {
+                        alert(e);
+                    });
+                }
+            });
+        </script>
+    </body>
+    <footer>
+
+    </footer>
+</html>

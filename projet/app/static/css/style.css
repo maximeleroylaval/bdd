@@ -1,4 +1,42 @@
+body {
+    margin:10px;
+}
+
 .login-form {
     width: 340px;
     margin: 50px auto;
+}
+
+.playlist {
+    margin-bottom: 10px;
+}
+
+.playlist_add {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.playlist_title {
+    font-size: xx-large;
+}
+
+.title_add {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.title_video {
+    text-align: center;
+}
+
+.title_name {
+    font-size: xx-large;
+    margin-left: 20px;
+}
+
+.title_publication {
+    font-size: large;
+    margin-left: 20px;
 }

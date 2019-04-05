@@ -203,6 +203,27 @@ class Playlist(db.Model):
     def serialize(self):
         return Serializer.serialize(self)
 
+class Title(db.Model):
+    __tablename__ = 'title'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    publication = db.Column(db.TIMESTAMP(timezone=False))
+    url = db.Column(db.String(512))
+    user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
+    playlist_id = db.Column(db.Integer, db.ForeignKey('playlist.id'))
+
+    def __init__(self, name, publication, url, user_email, playlist_id):
+        self.name = name
+        self.publication = publication
+        self.url = url
+        self.user_email = user_email
+        self.playlist_id = playlist_id
+
+    @property
+    def serialize(self):
+        return Serializer.serialize(self)
+
 # List of all routes
 @app.route('/')
 def home():
@@ -244,6 +265,7 @@ def addUser():
     return JSONRequest.sendAnswer(user.serialize, 200)
 
 @app.route('/user', methods = ['GET'])
+@auth.login_required
 def getUsers():
     users = db.session.query(User).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(users), 200)
@@ -279,6 +301,7 @@ def deleteUser(email):
     return JSONRequest.sendEmptyAnswer(200)
 
 @app.route('/gender', methods = ['GET'])
+@auth.login_required
 def getGenders():
     genders = db.session.query(Gender).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(genders), 200)
@@ -288,6 +311,12 @@ def getGenders():
 def getPlaylists():
     playlists = db.session.query(Playlist).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)
+
+@app.route('/playlist/<id>', methods = ['GET'])
+@auth.login_required
+def getPlaylist(id):
+    playlist = db.session.query(Playlist).filter_by(id=id).first()
+    return JSONRequest.sendAnswer(playlist.serialize, 200)
 
 @app.route('/playlist', methods = ['POST'])
 @auth.login_required
@@ -304,6 +333,34 @@ def addPlaylist():
 
     db.session.refresh(playlist)
     return JSONRequest.sendAnswer(playlist.serialize, 200)
+
+@app.route('/title', methods = ['GET'])
+@auth.login_required
+def getTitles():
+    titles = db.session.query(Title).all()
+    return JSONRequest.sendAnswer(Serializer.serialize_list(titles), 200)
+
+@app.route('/title/<id>', methods = ['GET'])
+@auth.login_required
+def getTitle(id):
+    title = db.session.query(Title).filter_by(id=id).first()
+    return JSONRequest.sendAnswer(title.serialize, 200)
+
+@app.route('/title', methods = ['POST'])
+@auth.login_required
+def addTitle():
+    content = JSONRequest.getJSON(request)
+    if (JSONRequest.checkFields(content, ['name', 'publication', 'url', 'playlist_id']) == False):
+        return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
+    try:
+        title = Title(content['name'], content['publication'], content['url'], g.user_email, content['playlist_id'])
+        db.session.add(title)
+        db.session.commit()
+    except (IntegrityError, InternalError) as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    db.session.refresh(title)
+    return JSONRequest.sendAnswer(title.serialize, 200)
 
 # Main entry to run the server
 if __name__ == '__main__':
