@@ -1,6 +1,7 @@
 import sqlalchemy as sa
 import pymysql, json, datetime
 import uuid
+import time
 
 from flask import Flask, request, Response, g, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
@@ -146,15 +147,17 @@ class User(db.Model):
     name =  db.Column(db.String(255))
     password =  db.Column(db.String(255))
     birthdate =  db.Column(db.TIMESTAMP(timezone=False))
+    picture = db.Column(db.String(255))
     gender_name = db.Column(db.String(255), db.ForeignKey('gender.name'))
 
-    def __init__(self, email, name, password, birthdate, gender_name):
+    def __init__(self, email, name, password, birthdate, picture, gender_name):
         self.email = email
         self.name = name
         self.password = password
         self.birthdate = birthdate
+        self.picture = picture
         self.gender_name = gender_name
-    
+
     @property
     def serialize(self):
         d = Serializer.serialize(self)
@@ -193,10 +196,12 @@ class Playlist(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
+    picture = db.Column(db.String(255))
     user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
 
-    def __init__(self, name, user_email):
+    def __init__(self, name, picture, user_email):
         self.name = name
+        self.picture = picture
         self.user_email = user_email
 
     @property
@@ -253,7 +258,9 @@ def addUser():
     if (JSONRequest.checkFields(content, ['email', 'name', 'password', 'birthdate', 'gender_name']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
-        user = User(content['email'], content['name'], content['password'], content['birthdate'], content['gender_name'])
+        if ('content' not in content):
+            content['picture'] = ""
+        user = User(content['email'], content['name'], content['password'], content['birthdate'], content['picture'], content['gender_name'])
         db.session.add(user)
         db.session.commit()
     except (IntegrityError, InternalError) as error:
@@ -269,6 +276,20 @@ def addUser():
 def getUsers():
     users = db.session.query(User).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(users), 200)
+
+
+@app.route('/profile', methods = ['GET'])
+@auth.login_required
+def getUserProfile():
+    user = db.session.query(User).filter_by(email=g.user_email).first()
+    return JSONRequest.sendAnswer(user.serialize, 200)
+
+@app.route('/user/<email>', methods = ['GET'])
+@auth.login_required
+def getUser(email):
+    user = db.session.query(User).filter_by(email=email).first()
+    return JSONRequest.sendAnswer(user.serialize, 200)
+
 
 @app.route('/user', methods = ['PUT'])
 @auth.login_required
@@ -334,6 +355,12 @@ def addPlaylist():
     db.session.refresh(playlist)
     return JSONRequest.sendAnswer(playlist.serialize, 200)
 
+@app.route('/playlist/<id>/title', methods = ['GET'])
+@auth.login_required
+def getTitlesByPlaylist(id):
+    titles = db.session.query(Title).filter_by(playlist_id=id).all()
+    return JSONRequest.sendAnswer(Serializer.serialize_list(titles), 200)
+
 @app.route('/title', methods = ['GET'])
 @auth.login_required
 def getTitles():
@@ -365,6 +392,6 @@ def addTitle():
 # Main entry to run the server
 if __name__ == '__main__':
     if (Auth.isConnected() == False):
-        print("Could not connect to the specified database, please verify your credentials")
+        print("Waiting for database...")
     else:
         app.run(debug=False, host='0.0.0.0', port=80)

@@ -9,13 +9,15 @@
         <link rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
-        <p id="playlist_title" class="text-center playlist_title"></p>
-        <div id="titles" class="login-form">
-        </div>
-        <div class="title_add">
-            <input id="name" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Name" required="required">
-            <input id="url" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Url" required="required">
-            <button id="add" type="button" class="btn btn-primary btn-block">Add a new title</button>
+        <div class="body">
+            <p id="playlist_title" class="text-center playlist_title"></p>
+            <div id="titles" class="login-form">
+            </div>
+            <div class="title_add">
+                <input id="name" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Name" required="required">
+                <input id="url" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Url" required="required">
+                <button id="add" type="button" class="btn btn-primary btn-block">Add a new title</button>
+            </div>
         </div>
 
         <!-- External libs -->
@@ -46,7 +48,7 @@
                 }
 
                 function loadPlaylistTitles(playlist_id) {
-                    SDK.getTitles(playlist_id).then((titles) => {
+                    SDK.getTitlesByPlaylist(playlist_id).then((titles) => {
                         var divTitles = document.getElementById("titles");
                         divTitles.innerHTML = "";
                         titles.forEach(title => {

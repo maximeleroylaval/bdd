@@ -176,6 +176,24 @@ export class SDK {
             });
     }
 
+    static getTitlesByPlaylist(playlist_id) {
+        return Request.Get("playlist/" + playlist_id + "/title")
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
+                let titles = [];
+                response.data.forEach(title => {
+                    titles.push(new Title(title));
+                });
+                return titles;
+            });
+    }
+
     static getTitle(title_id) {
         return Request.Get("title/" + title_id)
             .catch(err => {
@@ -187,6 +205,17 @@ export class SDK {
                     throw response.message;
                 }
                 return new Title(response.data);
+            });
+    }
+
+    static getUserProfile() {
+        return Request.Get("profile")
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '')
+                    throw response.message;
+                return new User(response.data);
             });
     }
 

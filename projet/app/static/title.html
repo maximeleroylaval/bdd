@@ -9,11 +9,13 @@
         <link rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
-        <div id="url" class="title_video">
-        </div>
-        <div class="title_description">
-            <p id="name" class="title_name" type="text" style="margin-bottom: 10px" placeholder="Name"></p>
-            <p id="publication" class="title_publication" type="text" style="margin-bottom: 10px" placeholder="Publication"></p>
+        <div class="body">
+            <div id="url" class="title_video">
+            </div>
+            <div class="title_description">
+                <p id="name" class="title_name" type="text" style="margin-bottom: 10px" placeholder="Name"></p>
+                <p id="publication" class="title_publication" type="text" style="margin-bottom: 10px" placeholder="Publication"></p>
+            </div>
         </div>
 
         <!-- External libs -->
@@ -35,7 +37,8 @@
                     return date.toDateString();
                 }
 
-                function convertToYoutube(url) {                    
+                function convertToYoutube(url) {
+                    url = url.replace("youtu.be/", "youtube.com/embed/")
                     return url.replace("watch?v=", "embed/");
                 }
 
