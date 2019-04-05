@@ -106,6 +106,10 @@ class Auth():
             return True
         return False
 
+    @auth.error_handler
+    def auth_error():
+        return JSONRequest.sendError("Unauthorized Access (invalid token)", 401)
+
     # Try to connect to the database
     @staticmethod
     def isConnected():
@@ -179,6 +183,21 @@ class Gender(db.Model):
 
     def __init__(self, name):
         self.name = name
+
+    @property
+    def serialize(self):
+        return Serializer.serialize(self)
+
+class Playlist(db.Model):
+    __tablename__ = 'playlist'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
+
+    def __init__(self, name, user_email):
+        self.name = name
+        self.user_email = user_email
 
     @property
     def serialize(self):
@@ -263,6 +282,27 @@ def deleteUser(email):
 def getGenders():
     genders = db.session.query(Gender).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(genders), 200)
+
+@app.route('/playlist', methods = ['GET'])
+def getPlaylists():
+    playlists = db.session.query(Playlist).all()
+    return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)
+
+@app.route('/playlist', methods = ['POST'])
+@auth.login_required
+def addPlaylist():
+    content = JSONRequest.getJSON(request)
+    if (JSONRequest.checkFields(content, ['name']) == False):
+        return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
+    try:
+        playlist = Playlist(content['name'], g.user_email)
+        db.session.add(playlist)
+        db.session.commit()
+    except (IntegrityError, InternalError) as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    db.session.refresh(playlist)
+    return JSONRequest.sendAnswer(playlist.serialize, 200)
 
 # Main entry to run the server
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
 import { Request } from './tools/request'
 import { User } from './model/user';
+import { Playlist } from './model/playlist';
 
 export class SDK {
 
@@ -26,6 +27,36 @@ export class SDK {
                 if (response.message !== '')
                     throw response.message;
                 return new User(response.data);
+            });
+    }
+
+    static addPlaylist(name) {
+        const playlist = Playlist.newInstance(name);
+        return Request.Post("playlist", playlist.serialize())
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
+                return new Playlist(response.data);
+            });
+    }
+
+    static getPlaylists() {
+        return Request.Get("playlist")
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '')
+                    throw response.message;
+                let playlists = [];
+                response.data.forEach(playlist => {
+                    playlists.push(new Playlist(playlist));
+                });
+                return playlists;
             });
     }
 
