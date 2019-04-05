@@ -63,6 +63,17 @@ export class SDK {
             });
     }
 
+    static getUserProfile() {
+        return Request.Get("profile")
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '')
+                    throw response.message;
+                return new User(response.data);
+            })
+    }
+
     static getUsers() {
         return Request.Get("user")
             .catch(err => {

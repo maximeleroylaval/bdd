@@ -22,6 +22,8 @@ CREATE TABLE playlist (
 	id int NOT NULL AUTO_INCREMENT,
 	name varchar(255) NOT NULL,
 	user_email varchar(255) NOT NULL,
+    /* Default playlist picture */
+    picture varchar(255) NOT NULL DEFAULT 'https://pbs.twimg.com/profile_images/1013450639215431680/qO1FApK4_400x400.jpg',
 	PRIMARY KEY (id)
 );
 
@@ -31,6 +33,8 @@ CREATE TABLE user (
 	password varchar(255) NOT NULL,
 	birthdate TIMESTAMP NOT NULL,
 	gender_name varchar(255) NOT NULL,
+    /* Default profile picture */
+    picture varchar(255) NOT NULL DEFAULT 'https://www.watsonmartin.com/wp-content/uploads/2016/03/default-profile-picture.jpg',
 	PRIMARY KEY (email)
 );
 
@@ -58,8 +62,3 @@ ALTER TABLE playlist ADD CONSTRAINT playlist_fk0 FOREIGN KEY (user_email) REFERE
 ALTER TABLE user ADD CONSTRAINT user_fk0 FOREIGN KEY (gender_name) REFERENCES gender(name) ON DELETE CASCADE;
 
 ALTER TABLE token ADD CONSTRAINT token_fk0 FOREIGN KEY (user_email) REFERENCES user(email) ON DELETE CASCADE;
-
-INSERT INTO gender(name) VALUES
-    ('Man'),
-    ('Woman')
-;

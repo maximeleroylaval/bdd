@@ -148,6 +148,7 @@ class User(db.Model):
     password =  db.Column(db.String(255))
     birthdate =  db.Column(db.TIMESTAMP(timezone=False))
     gender_name = db.Column(db.String(255), db.ForeignKey('gender.name'))
+    picture = db.Column(db.String(255))
 
     def __init__(self, email, name, password, birthdate, gender_name):
         self.email = email
@@ -155,7 +156,7 @@ class User(db.Model):
         self.password = password
         self.birthdate = birthdate
         self.gender_name = gender_name
-    
+
     @property
     def serialize(self):
         d = Serializer.serialize(self)
@@ -195,6 +196,7 @@ class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
+    picture = db.Column(db.String(255))
 
     def __init__(self, name, user_email):
         self.name = name
@@ -248,6 +250,20 @@ def addUser():
 def getUsers():
     users = db.session.query(User).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(users), 200)
+
+
+@app.route('/profile', methods = ['GET'])
+@auth.login_required
+def getUserProfile():
+    user = db.session.query(User).filter_by(email=g.user_email).first()
+    return JSONRequest.sendAnswer(user.serialize, 200)
+
+@app.route('/user/<email>', methods = ['GET'])
+@auth.login_required
+def getUser(email):
+    user = db.session.query(User).filter_by(email=email).first()
+    return JSONRequest.sendAnswer(user.serialize, 200)
+
 
 @app.route('/user', methods = ['PUT'])
 @auth.login_required
