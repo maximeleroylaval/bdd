@@ -284,6 +284,7 @@ def getGenders():
     return JSONRequest.sendAnswer(Serializer.serialize_list(genders), 200)
 
 @app.route('/playlist', methods = ['GET'])
+@auth.login_required
 def getPlaylists():
     playlists = db.session.query(Playlist).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)

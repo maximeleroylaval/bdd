@@ -38,7 +38,7 @@
                     var email = document.getElementById("email").value;
                     var password = document.getElementById("password").value;
                     SDK.login(email, password).then(() => {
-                        window.open(document.referrer, "_self")
+                        window.open("index.html", "_self")
                     }).catch((e) => {
                         alert(e);
                     });
