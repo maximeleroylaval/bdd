@@ -1,4 +1,4 @@
-import {Token} from "./token";
+import {Cookie} from "./cookie";
 
 const base = 'http://localhost/';
 const mode = 'cors';
@@ -8,18 +8,18 @@ export class Request {
 
     static addTokenToHeader(headers){
         headers.append("Content-Type","application/json; charset=utf-8");
-        if (Token.get() !== '') {
-            headers.append('Authorization', 'Bearer ' + Token.get());
+        if (Cookie.get("token") !== '') {
+            headers.append('Authorization', 'Bearer ' + Cookie.get("token"));
         }
         return headers;
     }
 
-    static BuildURL(route) {
-        return base + route;
+    static setToken(token) {
+        Cookie.set("token", token);
     }
 
-    static setToken(token) {
-        Token.set(token)
+    static BuildURL(route) {
+        return base + route;
     }
 
     static Get(route) {
