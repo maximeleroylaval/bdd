@@ -50,8 +50,11 @@ export class SDK {
             .catch(err => {
                 throw err;
             }).then(response => {
-                if (response.message !== '')
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
                     throw response.message;
+                }
                 let playlists = [];
                 response.data.forEach(playlist => {
                     playlists.push(new Playlist(playlist));
