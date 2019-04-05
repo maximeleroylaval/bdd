@@ -1,6 +1,6 @@
 FROM python:3.6-alpine
-COPY . /code
-WORKDIR /code
+ADD . /code
+WORKDIR code
 RUN apk update \
   && apk add --virtual .build-deps gcc python3-dev musl-dev libffi-dev \
   && apk del libressl-dev \

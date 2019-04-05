@@ -1,6 +1,6 @@
 import {Cookie} from "./cookie";
 
-const base = 'http://localhost:5000/';
+const base = 'http://localhost/';
 const mode = 'cors';
 const cache = 'no-cache';
 
