@@ -34,3 +34,4 @@ services:
      - '80:80'
     expose:
      - '80'
+
