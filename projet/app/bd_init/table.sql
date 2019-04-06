@@ -23,7 +23,7 @@ CREATE TABLE playlist (
 	id int NOT NULL AUTO_INCREMENT,
 	name varchar(255) NOT NULL,
 	user_email varchar(255) NOT NULL,
-    picture varchar(255) NOT NULL,
+    picture varchar(255) NOT NULL DEFAULT 'https://pbs.twimg.com/profile_images/1013450639215431680/qO1FApK4_400x400.jpg',
     description varchar(1024),
 	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (id)
@@ -35,7 +35,7 @@ CREATE TABLE user (
 	password varchar(255) NOT NULL,
 	birthdate TIMESTAMP NOT NULL,
 	gender_name varchar(255) NOT NULL,
-    picture varchar(255) NOT NULL,
+    picture varchar(255) NOT NULL DEFAULT 'https://www.watsonmartin.com/wp-content/uploads/2016/03/default-profile-picture.jpg',
 	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (email)
 );
@@ -61,7 +61,7 @@ CREATE TABLE followed (
 CREATE TABLE followed_user (
 	id int NOT NULL auto_increment,
     user_email varchar(255) NOT NULL,
-    follow_id varchar (255) NOT NULL,
+    follow_email varchar (255) NOT NULL,
     primary key(id)
 ); 
 
@@ -79,10 +79,10 @@ ALTER TABLE user ADD CONSTRAINT user_fk0 FOREIGN KEY (gender_name) REFERENCES ge
 
 ALTER TABLE token ADD CONSTRAINT token_fk0 FOREIGN KEY (user_email) REFERENCES user(email) ON DELETE CASCADE;
 
-ALTER TABLE followed ADD constraint followed_fk0 foreign key (user_email) references user(email) ON DELETE cascade;
+ALTER TABLE followed_playlist ADD constraint followed_playlist_fk0 foreign key (user_email) references user(email) ON DELETE cascade;
 
-ALTER TABLE followed ADD constraint followed_fk1 foreign key (playlist_id) references playlist(id) ON DELETE cascade;
+ALTER TABLE followed_playlist ADD constraint followed_playlist_fk1 foreign key (playlist_id) references playlist(id) ON DELETE cascade;
 
 ALTER TABLE followed_user ADD constraint followed_user_fk0 foreign key (user_email) references user(email) ON DELETE cascade;
 
-ALTER TABLE followed_user ADD constraint followed_user_fk1 foreign key (user_email) references user(email) ON DELETE cascade;
+ALTER TABLE followed_user ADD constraint followed_user_fk1 foreign key (follow_email) references user(email) ON DELETE cascade;

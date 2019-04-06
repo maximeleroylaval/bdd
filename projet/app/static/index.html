@@ -11,15 +11,44 @@
     <body>
         <div w3-include-html="navbar.html"></div>
         <div class="body">
+            <!-- a déplacer -->
             <p class="text-center playlist_title">Playlists</p>
-            <div class="playlist_add container">
-                <input id="name" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Name" required="required">
-                <input id="description" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Description" required="required">
-                <input id="picture" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Picture URL">
-                <button id="add" type="button" class="btn btn-primary btn-block">Add a new playlist</button>
-                <hr>
+            <div class="playlist_add container base">
+                    <div class="row justify-content-md-center form-base">
+                        <div class="col-6">
+                            <h5 class="label-profile">Nom</h5>
+                            <input id="name" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Nom" required="required">
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center form-base">
+                        <div class="col-6">
+                            <h5 class="label-profile">Description</h5>
+                            <textarea id="description" type="text" class="form-control" style="margin-bottom: 10px; min-height: 100px;" placeholder="Description" required="required"> </textarea>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center form-base">
+                        <div class="col-6">
+                            <h5 class="label-profile">URL de l'image</h5>
+                            <input id="picture" type="text" class="form-control" style="margin-bottom: 10px" placeholder="URL de l'image">
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center form-base">
+                        <div class="col-3">
+                            <button id="add" type="button" class="btn btn-outline-success" style="width: 250px">Créer une nouvelle playlist</button>
+                        </div>
+                    </div>
+                    <hr>
             </div>
-            <div id="playlists" class="container">
+            <!-- fin -->
+            <div class="container" id="spinner_playlist" style="margin-top: 100px">
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <div id="playlists" class="container" hidden>
                 <!-- Mes playlists -->
                 <ul class="list-group" id="playlists-container">
                 </ul>
@@ -47,6 +76,8 @@
                         SDK.getPlaylists().then((playlists) => {
                             playlists.forEach(playlist => {
                                 m.Profile.playlistGenerator(playlist);
+                                document.getElementById("spinner_playlist").hidden = true;
+                                document.getElementById("playlists").hidden = false;
                             });
                         }).catch((e) => {
                             alert(e);
