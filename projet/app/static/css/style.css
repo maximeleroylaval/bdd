@@ -1,6 +1,94 @@
+.body {
+    margin:10px;
+}
+
 .login-form {
     width: 340px;
     margin: 50px auto;
+}
+
+.playlist {
+    margin-bottom: 10px;
+}
+
+.playlist_add {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.playlist_title {
+    font-size: xx-large;
+}
+
+.title_add {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.title_description {
+    margin-left: 20px;
+}
+
+.title_video {
+    text-align: center;
+}
+
+.title_name {
+    font-size: xx-large;
+}
+
+.title_publication {
+    font-size: large;
+}
+
+.title_commentaries {
+
+}
+
+.title_commentary {
+    font-size: medium;
+}
+
+.title_commentary_add {
+
+}
+
+.user_picture {
+    display: inline;
+    width: 48px;
+    border-radius: 60px;
+}
+
+.user_name {
+    display: inline;
+    font-size: medium;
+    margin-left: 10px;
+}
+
+.user_publication {
+    display: inline;
+    float:right;
+    margin-top:10px;
+    font-size:small
+}
+
+.commentary_title {
+    font-size: large;
+    font-weight: bold;
+}
+
+.commentary_user {
+    display:inline;
+    font-weight:bold;
+    font-size:small;
+}
+
+.commentary_publication {
+    display: inline;
+    float:right;
+    font-size:small;
 }
 
 .base {

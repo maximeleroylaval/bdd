@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
-
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="index.html">SoundHub</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,9 +41,14 @@
                 </form>
             </div>
         </nav>
-        <input id="name" type="text" class="form-control" placeholder="Name" required="required">
-        <button id="add" type="button" class="btn btn-primary btn-block">Add a new playlist</button>
-        <div id="playlists" class="login-form">
+        <div class="body">
+            <p class="text-center playlist_title">Playlists</p>
+            <div id="playlists" class="login-form">
+            </div>
+            <div class="playlist_add">
+                <input id="name" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Name" required="required">
+                <button id="add" type="button" class="btn btn-primary btn-block">Add a new playlist</button>
+            </div>
         </div>
 
         <!-- External libs -->
@@ -64,8 +68,18 @@
                         var divPlaylist = document.getElementById("playlists");
                         divPlaylist.innerHTML = "";
                         playlists.forEach(playlist => {
-                            var pPlaylist = document.createElement('p');
-                            pPlaylist.innerText = playlist.name;
+                            var pPlaylist = document.createElement('div');
+                            var pPlaylistButton = document.createElement('button');
+                            pPlaylistButton.type = "button";
+                            pPlaylistButton.classList.add("btn");
+                            pPlaylistButton.classList.add("btn-light");
+                            pPlaylistButton.classList.add("btn-block");
+                            pPlaylistButton.classList.add("playlist");
+                            pPlaylistButton.innerHTML = playlist.name;
+                            pPlaylistButton.addEventListener('click', (e) => {
+                                window.open("playlist.html?id=" + playlist.id, "_self");
+                            });
+                            pPlaylist.appendChild(pPlaylistButton);
                             divPlaylist.appendChild(pPlaylist);
                         });
                     }).catch((e) => {
