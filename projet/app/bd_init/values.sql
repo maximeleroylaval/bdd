@@ -42,7 +42,7 @@ INSERT INTO commentary(user_email, title_id, description) VALUES
 	('female@female.com', 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et aliquam neque. Maecenas leo felis, tincidunt at est a, congue maximus ex. Aliquam sit amet nunc tortor. Nullam vel egestas nunc. In quis rhoncus urna. Morbi a magna sit amet leo convallis laoreet non et elit. Donec ac justo id lectus feugiat lobortis. Vivamus eu congue libero'),
 	('420@420.com', 1, 'BLAZE IT')
     ;
- INSERT INTO followed(user_email, playlist_id) VALUES
+ INSERT INTO followed_playlist(user_email, playlist_id) VALUES
 	('rap@rap.com', 1),
     ('rap@rap.com', 2),
     ('rap@rap.com', 3),
@@ -57,7 +57,7 @@ INSERT INTO commentary(user_email, title_id, description) VALUES
     ('metal@metal.com', 2)
     ;
     
-INSERT INTO followed_user(user_email, follow) VALUES
+INSERT INTO followed_user(user_email, follow_email) VALUES
 	('rap@rap.com', 'metal@metal.com'),
     ('rap@rap.com', 'female@female.com'),
     ('rap@rap.com', '420@420.com'),

@@ -16,9 +16,9 @@ export class Profile {
                 document.getElementById("email").textContent = profil.email;
                 userEmail = profil.email;
                 if (profil.gender_name === "Man") {
-                    document.getElementById("gender").innerHTML = "<i class=\"fas fa-mars\"></i>"
+                    document.getElementById("gender").innerHTML = "<i class=\"fas fa-mars\" style='\"color: blue\";'></i>"
                 } else {
-                    document.getElementById("gender").innerHTML = "<i class=\"fas fa-venus\"></i>"
+                    document.getElementById("gender").innerHTML = "<i class=\"fas fa-venus\" style='\"color: rose\";'></i>"
                 }
 
                 document.getElementById("spinner_profil_detail").hidden = true;
@@ -36,9 +36,9 @@ export class Profile {
                 document.getElementById("email").textContent = profil.email;
                 userEmail = profil.email;
                 if (profil.gender_name === "Man") {
-                    document.getElementById("gender").innerHTML = "<i class=\"fas fa-mars\"></i>"
+                    document.getElementById("gender").innerHTML = "<i class=\"fas fa-mars\" style='\"color: blue\";'></i>"
                 } else {
-                    document.getElementById("gender").innerHTML = "<i class=\"fas fa-venus\"></i>"
+                    document.getElementById("gender").innerHTML = "<i class=\"fas fa-venus\" style='\"color: rose\";'></i>"
                 }
 
                 document.getElementById("spinner_profil_detail").hidden = true;
@@ -130,7 +130,7 @@ export class Profile {
 
         let butt = document.createElement("button");
         butt.setAttribute("type", "button");
-        butt.setAttribute("class", "btn btn-primary");
+        butt.setAttribute("class", "btn btn-outline-info");
         butt.innerText = "Accèder à la playlist";
         butt.addEventListener('click', (e) => {
             window.open("playlist.html?id=" + element.id, "_self");

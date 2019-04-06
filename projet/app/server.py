@@ -14,7 +14,7 @@ from pymysql.err import MySQLError
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@localhost/soundhub'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@db/soundhub'
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 auth = HTTPTokenAuth(scheme='Bearer')
@@ -254,6 +254,37 @@ class Commentary(db.Model):
     def serialize(self):
         return Serializer.serialize(self)
 
+class FollowedPlaylist(db.Model):
+    __tablename__ = 'followed_playlist'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_email = db.Column(db.String(255))
+    playlist_id = db.Column(db.Integer)
+
+    def __init__(self, user_email, playlist_id):
+        self.user_email = user_email
+        self.playlist_id = playlist_id
+
+    @property
+    def serialize(self):
+        return Serializer.serialize(self)
+
+
+class FollowedUser(db.Model):
+    __tablename__ = 'followed_user'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_email = db.Column(db.String(255))
+    follow_email = db.Column(db.String(255))
+
+    def __init__(self, user_email, follow):
+        self.user_email = user_email
+        self.follow_email = follow_email
+
+    @property
+    def serialize(self):
+        return Serializer.serialize(self)
+
 # List of all routes
 @app.route('/')
 def home():
@@ -351,8 +382,15 @@ def deleteUser(email):
 @app.route('/user/<email>/playlists', methods = ['GET'])
 @auth.login_required
 def getUserPlaylists(email):
-    playlists = db.session.query(Playlist).filter_by(user_email=email)
+    playlists = db.session.query(Playlist).filter_by(user_email=email).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)
+
+@app.route('/user/<email>/followed_playlists', methods = ['GET'])
+@auth.login_required
+def getFollowedPlaylists(id):
+    playlists = db.session.query(FollowPlaylist).filter_by(user_email=email).all()
+    return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)
+
 
 @app.route('/gender', methods = ['GET'])
 @auth.login_required
@@ -451,7 +489,8 @@ def addCommentary(id):
 
 # Main entry to run the server
 if __name__ == '__main__':
-    if (Auth.isConnected() == False):
+    while (Auth.isConnected() == False):
         print("Waiting for database...")
+        time.sleep(5)
     else:
         app.run(debug=False, host='0.0.0.0', port=80)
