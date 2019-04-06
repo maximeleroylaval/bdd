@@ -296,6 +296,13 @@ def deleteUser(email):
 
     return JSONRequest.sendEmptyAnswer(200)
 
+
+@app.route('/user/<email>/playlists', methods = ['GET'])
+@auth.login_required
+def getUserPlaylists(email):
+    playlists = db.session.query(Playlist).filter_by(user_email=email)
+    return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)
+
 @app.route('/gender', methods = ['GET'])
 def getGenders():
     genders = db.session.query(Gender).all()
