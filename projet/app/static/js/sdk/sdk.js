@@ -145,8 +145,8 @@ export class SDK {
     }
 
     static addTitle(name, publication, url, playlist_id) {
-        const title = Title.newInstance(name, publication, url, playlist_id);
-        return Request.Post("title", title.serialize())
+        const title = Title.newInstance(name, publication, url);
+        return Request.Post("playlist/" + playlist_id + "/title", title.serialize())
             .catch(err => {
                 throw err;
             }).then(response => {

@@ -306,12 +306,16 @@ def getUsers():
 @auth.login_required
 def getUser(email):
     user = db.session.query(User).filter_by(email=email).first()
+    if (user is None):
+        return JSONRequest.sendError("User with email " + email + " does not exist", 404)
     return JSONRequest.sendAnswer(user.serialize, 200)
 
 @app.route('/profile', methods = ['GET'])
 @auth.login_required
 def getUserProfile():
     user = db.session.query(User).filter_by(email=g.user_email).first()
+    if (user is None):
+        return JSONRequest.sendError("User with email " + g.user_email + " does not exist", 404)
     return JSONRequest.sendAnswer(user.serialize, 200)
 
 @app.route('/profile', methods = ['PUT'])
@@ -322,6 +326,8 @@ def updateUserProfile():
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
         user = db.session.query(User).filter_by(email=g.user_email).first()
+        if (user is None):
+            return JSONRequest.sendError("User with email " + g.user_email + " does not exist", 404)
         user.name = content['name']
         user.password = content['password']
         user.birthdate = content['birthdate']
@@ -340,6 +346,8 @@ def deleteUser(email):
 
     try:
         user = db.session.query(User).filter_by(email=email).first()
+        if (user is None):
+            return JSONRequest.sendError("User with email " + email + " does not exist", 404)
         db.session.delete(user)
         db.session.commit()
     except IntegrityError as error:
@@ -370,6 +378,8 @@ def getPlaylists():
 @auth.login_required
 def getPlaylist(id):
     playlist = db.session.query(Playlist).filter_by(id=id).first()
+    if (playlist is None):
+        return JSONRequest.sendError("Playlist with id " + id + " does not exist", 404)
     return JSONRequest.sendAnswer(playlist.serialize, 200)
 
 @app.route('/playlist', methods = ['POST'])
@@ -396,6 +406,27 @@ def getTitlesByPlaylist(id):
     titles = db.session.query(Title).filter_by(playlist_id=id).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(titles), 200)
 
+@app.route('/playlist/<id>/title', methods = ['POST'])
+@auth.login_required
+def addTitle(id):
+    content = JSONRequest.getJSON(request)
+    if (JSONRequest.checkFields(content, ['name', 'publication', 'url']) == False):
+        return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
+    try:
+        playlist = db.session.query(Playlist).filter_by(id=id).first()
+        if (playlist is None):
+            return JSONRequest.sendError("Playlist with id " + id + " does not exist", 404)
+        if (playlist.user_email != g.user_email):
+            return JSONRequest.sendError("Adding a title on a playlist owned by " + playlist.user_email + " is not authorized", 401)
+        title = Title(content['name'], content['publication'], content['url'], g.user_email, id)
+        db.session.add(title)
+        db.session.commit()
+    except (IntegrityError, InternalError) as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    db.session.refresh(title)
+    return JSONRequest.sendAnswer(title.serialize, 200)
+
 @app.route('/title', methods = ['GET'])
 @auth.login_required
 def getTitles():
@@ -406,25 +437,8 @@ def getTitles():
 @auth.login_required
 def getTitle(id):
     title = db.session.query(Title).filter_by(id=id).first()
-    return JSONRequest.sendAnswer(title.serialize, 200)
-
-@app.route('/title', methods = ['POST'])
-@auth.login_required
-def addTitle():
-    content = JSONRequest.getJSON(request)
-    if (JSONRequest.checkFields(content, ['name', 'publication', 'url', 'playlist_id']) == False):
-        return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
-    try:
-        playlist = db.session.query(Playlist).filter_by(playlist_id=content['playlist_id']).first()
-        if (playlist.user_email != g.user_email):
-            return JSONRequest.sendError("Adding a title on a playlist owned by " + playlist.user_email + " is not authorized", 401)
-        title = Title(content['name'], content['publication'], content['url'], g.user_email, content['playlist_id'])
-        db.session.add(title)
-        db.session.commit()
-    except (IntegrityError, InternalError) as error:
-        return JSONRequest.sendError(error.args[0], 500)
-
-    db.session.refresh(title)
+    if (title is None):
+        return JSONRequest.sendError("Title with id " + id + " does not exist", 404)
     return JSONRequest.sendAnswer(title.serialize, 200)
 
 @app.route('/title/<id>/commentary', methods = ['GET'])
