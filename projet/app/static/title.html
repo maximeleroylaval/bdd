@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <hr>
-                <div id="commentaries" class="title_commentaries">
+                <div id="commentaries">
     
                 </div>
             </div>
@@ -68,20 +68,24 @@
                         pTitle.classList.add("commentary_title");
                         pTitle.innerHTML = "Commentaries";
                         divCommentaries.appendChild(pTitle);
+                        var pInnerCommentary = document.createElement("div");
+                        pInnerCommentary.classList.add("inner_commentary");
                         commentaries.forEach((commentary) => {
-                            var pUser = document.createElement("p");
+                            var pUser = document.createElement("a");
                             pUser.classList.add("commentary_user");
+                            pUser.href = "profile.html?email=" + commentary.user_email;
                             pUser.innerHTML = commentary.user_email;
                             var pPublication = document.createElement("p");
                             pPublication.classList.add("commentary_publication");
-                            pPublication.innerHTML = commentary.publication;
+                            pPublication.innerHTML = "Added " + formatDateToHuman(commentary.publication);
                             var pCommentary = document.createElement("p");
                             pCommentary.classList.add("title_commentary");
                             pCommentary.innerHTML = commentary.description;
-                            divCommentaries.appendChild(pUser);
-                            divCommentaries.appendChild(pPublication);
-                            divCommentaries.appendChild(pCommentary);
+                            pInnerCommentary.appendChild(pUser);
+                            pInnerCommentary.appendChild(pPublication);
+                            pInnerCommentary.appendChild(pCommentary);
                         });
+                        divCommentaries.appendChild(pInnerCommentary);
                     }).catch((e) => {
                         alert(e);
                     });

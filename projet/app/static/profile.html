@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Soundhub - Profile</title>
     <meta charset="utf-8">
@@ -7,71 +8,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="index.html">SoundHub</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id= "nav-profil">Profil</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Playlists
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Mes playlists</a>
-                    <a class="dropdown-item" href="#">Créer une playlist</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Mes playlists suivies</a>
-                </div>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
-<div class="container" id="spinner_profil_detail" style="margin-top: 100px">
-    <div class="row">
-        <div class="col-md-6"></div>
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+    <div w3-include-html="navbar.html"></div>
+    <div class="container" id="spinner_profil_detail" style="margin-top: 100px">
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
     </div>
-</div>
-</div>
-<div class="container base content-block" id="profil_detail" hidden>
-    <div class="row">
-        <div class="col-3">
-            <img class="img-fluid rounded" id="pp" src="https://via.placeholder.com/250">
-        </div>
-        <div class="col">
-            <dl class="row">
-                <dd class="col-sm-9" id="username" style="font-weight: bold; font-size: 40px"></dd>
-                <dt class="col-sm-3 label-profile">Née le :</dt>
-                <dd class="col-sm-9" id="birthdate"></dd>
+    </div>
+    <div class="container base content-block" id="profil_detail" hidden>
+        <div class="row">
+            <div class="col-3">
+                <img class="img-fluid rounded" id="pp" src="https://via.placeholder.com/250">
+            </div>
+            <div class="col">
+                <dl class="row">
+                    <dd class="col-sm-9" id="username" style="font-weight: bold; font-size: 40px"></dd>
+                    <dt class="col-sm-3 label-profile">Née le :</dt>
+                    <dd class="col-sm-9" id="birthdate"></dd>
 
-                <dt class="col-sm-3 label-profile">Email :</dt>
-                <dd class="col-sm-9" id="email"></dd>
+                    <dt class="col-sm-3 label-profile">Email :</dt>
+                    <dd class="col-sm-9" id="email"></dd>
 
-                <dt class="col-sm-3 label-profile">Genre :</dt>
-                <dd class="col-sm-9" id="gender"></dd>
-            </dl>
+                    <dt class="col-sm-3 label-profile">Genre :</dt>
+                    <dd class="col-sm-9" id="gender"></dd>
+                </dl>
+            </div>
         </div>
     </div>
-</div>
 
     <div class="container base">
         <ul class="nav nav-tabs">
@@ -84,195 +54,39 @@
         </ul>
     </div>
     <div class="container" id="spinner_playlist" style="margin-top: 100px">
-    <div class="row">
-        <div class="col-md-6"></div>
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
     </div>
     </div>
-</div>
     <div class="container base">
         <!-- Mes playlists -->
         <ul class="list-group" id="playlists-container" hidden>
         </ul>
         <!-- Fin mes playlists -->
     </div>
-</div>
+    </div>
 
-<!-- External libs -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
-<script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
-<script>
-    System.import("js/sdk/sdk").then((m) => {
-        SDK = m.SDK;
-        let params = SDK.getQueryParameters(window.location.href);
-        let userEmail = params.email;
+    <!-- External libs -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="http://www.w3schools.com/lib/w3data.js"></script>
+    <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
+    <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
+    <script>
+        w3IncludeHTML();
 
-        loadProfile();
-
-        function loadProfile(){
-
-            if (userEmail !== undefined) {
-                SDK.getUser(userEmail).then(profil => {
-                    document.getElementById("pp").src = profil.picture;
-                    document.getElementById("username").textContent = profil.name;
-                    let d = new Date(profil.birthdate);
-                    let day = (d.getDate() < 10 ? "0" + d.getDate() : d.getDate());
-                    let month = ((d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1));
-                    document.getElementById("birthdate").textContent = day + "/" + month + "/" + d.getFullYear();
-                    document.getElementById("email").textContent = profil.email;
-                    userEmail = profil.email;
-                    if (profil.gender_name === "Man") {
-                        document.getElementById("gender").innerHTML = "<i class=\"fas fa-mars\"></i>"
-                    } else {
-                        document.getElementById("gender").innerHTML = "<i class=\"fas venus\"></i>"
-                    }
-
-                    document.getElementById("spinner_profil_detail").hidden = true;
-                    document.getElementById("profil_detail").hidden = false;
-                    loadUserPlaylist();
-                });
-            } else {
-                SDK.getUserProfile().then(profil => {
-                    document.getElementById("pp").src = profil.picture;
-                    document.getElementById("username").textContent = profil.name;
-                    let d = new Date(profil.birthdate);
-                    let day = (d.getDate() < 10 ? "0" + d.getDate() : d.getDate());
-                    let month = ((d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1));
-                    document.getElementById("birthdate").textContent = day + "/" + month + "/" + d.getFullYear();
-                    document.getElementById("email").textContent = profil.email;
-                    userEmail = profil.email;
-                    if (profil.gender_name === "Man") {
-                        document.getElementById("gender").innerHTML = "<i class=\"fas fa-mars\"></i>"
-                    } else {
-                        document.getElementById("gender").innerHTML = "<i class=\"fas venus\"></i>"
-                    }
-
-                    document.getElementById("spinner_profil_detail").hidden = true;
-                    document.getElementById("profil_detail").hidden = false;
-                    loadUserPlaylist();
-                });
-            }
-        }
-
-        function loadUserPlaylist() {
-            if (userEmail !== null) {
-                SDK.getUserPlaylists(userEmail).then(playlists => {
-                    //console.log(playlists);
-
-                    playlists.forEach(element => {
-                        playlistGenerator(element);
-                    });
-
-                    document.getElementById("playlists-container").hidden = false;
-                    document.getElementById("spinner_playlist").hidden = true;
-                });
-            }
-        }
-
-        function playlistGenerator(element) {
-            let ul = document.getElementById("playlists-container");
-
-            // li
-            let li = document.createElement("li");
-            li.setAttribute("class", "list-group-item playlist-list-item");
-
-            //containeur
-            let cont = document.createElement("div");
-            cont.setAttribute("class", "container");
-
-            //row
-            let row = document.createElement("div");
-            row.setAttribute("class", "row");
-
-            // First column, img
-
-            let c1 = document.createElement("div");
-            c1.setAttribute("class", "col-2");
-
-            let img = document.createElement("img");
-            img.setAttribute("class", "img-fluid rounded");
-            img.setAttribute("src", element.picture);
-
-            // link the image to the first column
-            c1.appendChild(img);
-
-            // link the first column to the row
-            row.appendChild(c1);
-
-
-            // Second column, name
-
-            let c2 = document.createElement("div");
-            c2.setAttribute("class", "col-2");
-
-            let name = document.createElement("h3");
-            //name.setAttribute("class", "playlist-item-centered");
-            name.innerText = element.name;
-
-            // link the image to the first column
-            c2.appendChild(name);
-
-            // link the second column to the row
-            row.appendChild(c2);
-
-
-            // Third column, description
-
-            let c3 = document.createElement("div");
-            c3.setAttribute("class", "col-6");
-
-            let desc = document.createElement("p");
-            desc.innerText = element.descritpion;
-
-            // link the image to the first column
-            c3.appendChild(desc);
-
-            // link the second column to the row
-            row.appendChild(c3);
-
-
-            // 4th column, button
-
-            let c4 = document.createElement("div");
-            c4.setAttribute("class", "col-2");
-
-            let butt = document.createElement("button");
-            butt.setAttribute("type", "button");
-            butt.setAttribute("class", "btn btn-primary");
-            butt.innerText = "Accèder à la playlist";
-
-
-            // link the image to the first column
-            c4.appendChild(butt);
-
-            // link the second column to the row
-            row.appendChild(c4);
-
-
-            // link row to the container
-            cont.appendChild(row);
-
-            // link container to the li
-            li.appendChild(cont);
-
-            // link the li to the ul
-            ul.appendChild(li);
-        }
-
-        document.getElementById("nav-profil").addEventListener('click', (e) => {
-            SDK.getUserProfile().then(profil => {
-                window.open("profil.html?email=" + profil.email, "_self");
-            });
+        System.import("js/profile").then((m) => {
+            m.Profile.loadProfile();
         });
-    });
-</script>
+    </script>
 </body>
 <footer>
 
 </footer>
+
 </html>

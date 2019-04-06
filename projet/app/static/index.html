@@ -12,11 +12,18 @@
         <div w3-include-html="navbar.html"></div>
         <div class="body">
             <p class="text-center playlist_title">Playlists</p>
-            <div id="playlists" class="login-form">
-            </div>
-            <div class="playlist_add">
+            <div class="playlist_add container base">
                 <input id="name" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Name" required="required">
+                <input id="description" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Description" required="required">
+                <input id="picture" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Picture URL">
                 <button id="add" type="button" class="btn btn-primary btn-block">Add a new playlist</button>
+                <hr>
+            </div>
+            <div id="playlists" class="container base">
+                <!-- Mes playlists -->
+                <ul class="list-group" id="playlists-container">
+                </ul>
+                <!-- Fin mes playlists -->
             </div>
         </div>
 
@@ -36,32 +43,22 @@
                 loadPlaylists();
 
                 function loadPlaylists() {
-                    SDK.getPlaylists().then((playlists) => {
-                        var divPlaylist = document.getElementById("playlists");
-                        divPlaylist.innerHTML = "";
-                        playlists.forEach(playlist => {
-                            var pPlaylist = document.createElement('div');
-                            var pPlaylistButton = document.createElement('button');
-                            pPlaylistButton.type = "button";
-                            pPlaylistButton.classList.add("btn");
-                            pPlaylistButton.classList.add("btn-light");
-                            pPlaylistButton.classList.add("btn-block");
-                            pPlaylistButton.classList.add("playlist");
-                            pPlaylistButton.innerHTML = playlist.name;
-                            pPlaylistButton.addEventListener('click', (e) => {
-                                window.open("playlist.html?id=" + playlist.id, "_self");
+                    System.import("js/profile").then((m) => {
+                        SDK.getPlaylists().then((playlists) => {
+                            playlists.forEach(playlist => {
+                                m.Profile.playlistGenerator(playlist);
                             });
-                            pPlaylist.appendChild(pPlaylistButton);
-                            divPlaylist.appendChild(pPlaylist);
+                        }).catch((e) => {
+                            alert(e);
                         });
-                    }).catch((e) => {
-                        alert(e);
                     });
                 }
 
                 document.getElementById("add").addEventListener('click', (e) => {
                     var name = document.getElementById("name").value;
-                    SDK.addPlaylist(name).then((playlists) => {
+                    var description = document.getElementById("description").value;
+                    var picture = document.getElementById("picture").value;
+                    SDK.addPlaylist(name, description, picture).then((playlists) => {
                         loadPlaylists();
                     }).catch((e) => {
                         alert(e);
