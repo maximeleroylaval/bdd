@@ -12,9 +12,7 @@
 }
 
 .playlist_add {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
+    
 }
 
 .playlist_title {
@@ -43,8 +41,8 @@
     font-size: large;
 }
 
-.title_commentaries {
-
+.inner_commentary {
+    margin: 10px;
 }
 
 .title_commentary {

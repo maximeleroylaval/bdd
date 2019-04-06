@@ -9,45 +9,21 @@
         <link rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="index.html">SoundHub</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id= "nav-profil">Profil</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Playlists
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Mes playlists</a>
-                            <a class="dropdown-item" href="#">Créer une playlist</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Mes playlists suivies</a>
-                        </div>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-            </div>
-        </nav>
+        <div w3-include-html="navbar.html"></div>
         <div class="body">
             <p class="text-center playlist_title">Playlists</p>
-            <div id="playlists" class="login-form">
-            </div>
-            <div class="playlist_add">
+            <div class="playlist_add container base">
                 <input id="name" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Name" required="required">
+                <input id="description" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Description" required="required">
+                <input id="picture" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Picture URL">
                 <button id="add" type="button" class="btn btn-primary btn-block">Add a new playlist</button>
+                <hr>
+            </div>
+            <div id="playlists" class="container base">
+                <!-- Mes playlists -->
+                <ul class="list-group" id="playlists-container">
+                </ul>
+                <!-- Fin mes playlists -->
             </div>
         </div>
 
@@ -55,47 +31,34 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="http://www.w3schools.com/lib/w3data.js"></script>
         <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
         <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
         <script>
+            w3IncludeHTML();
+
             System.import("js/sdk/sdk").then((m) => {
                 SDK = m.SDK;
 
                 loadPlaylists();
 
                 function loadPlaylists() {
-                    SDK.getPlaylists().then((playlists) => {
-                        var divPlaylist = document.getElementById("playlists");
-                        divPlaylist.innerHTML = "";
-                        playlists.forEach(playlist => {
-                            var pPlaylist = document.createElement('div');
-                            var pPlaylistButton = document.createElement('button');
-                            pPlaylistButton.type = "button";
-                            pPlaylistButton.classList.add("btn");
-                            pPlaylistButton.classList.add("btn-light");
-                            pPlaylistButton.classList.add("btn-block");
-                            pPlaylistButton.classList.add("playlist");
-                            pPlaylistButton.innerHTML = playlist.name;
-                            pPlaylistButton.addEventListener('click', (e) => {
-                                window.open("playlist.html?id=" + playlist.id, "_self");
+                    System.import("js/profile").then((m) => {
+                        SDK.getPlaylists().then((playlists) => {
+                            playlists.forEach(playlist => {
+                                m.Profile.playlistGenerator(playlist);
                             });
-                            pPlaylist.appendChild(pPlaylistButton);
-                            divPlaylist.appendChild(pPlaylist);
+                        }).catch((e) => {
+                            alert(e);
                         });
-                    }).catch((e) => {
-                        alert(e);
                     });
                 }
 
-                document.getElementById("nav-profil").addEventListener('click', (e) => {
-                    SDK.getUserProfile().then(profil => {
-                        window.open("profile.html?email=" + profil.email, "_self");
-                    });
-                });
-
                 document.getElementById("add").addEventListener('click', (e) => {
                     var name = document.getElementById("name").value;
-                    SDK.addPlaylist(name).then((playlists) => {
+                    var description = document.getElementById("description").value;
+                    var picture = document.getElementById("picture").value;
+                    SDK.addPlaylist(name, description, picture).then((playlists) => {
                         loadPlaylists();
                     }).catch((e) => {
                         alert(e);

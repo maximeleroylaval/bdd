@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
+        <div w3-include-html="navbar.html"></div>
         <div class="body">
             <div id="url" class="title_video">
             </div>
@@ -27,7 +28,7 @@
                     </div>
                 </div>
                 <hr>
-                <div id="commentaries" class="title_commentaries">
+                <div id="commentaries">
     
                 </div>
             </div>
@@ -37,9 +38,11 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="http://www.w3schools.com/lib/w3data.js"></script>
         <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
         <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
         <script>
+            w3IncludeHTML();
             System.import("js/sdk/sdk").then((m) => {
                 const SDK = m.SDK;
                 const params = SDK.getQueryParameters(window.location.href);
@@ -65,20 +68,24 @@
                         pTitle.classList.add("commentary_title");
                         pTitle.innerHTML = "Commentaries";
                         divCommentaries.appendChild(pTitle);
+                        var pInnerCommentary = document.createElement("div");
+                        pInnerCommentary.classList.add("inner_commentary");
                         commentaries.forEach((commentary) => {
-                            var pUser = document.createElement("p");
+                            var pUser = document.createElement("a");
                             pUser.classList.add("commentary_user");
+                            pUser.href = "profile.html?email=" + commentary.user_email;
                             pUser.innerHTML = commentary.user_email;
                             var pPublication = document.createElement("p");
                             pPublication.classList.add("commentary_publication");
-                            pPublication.innerHTML = commentary.publication;
+                            pPublication.innerHTML = "Added " + formatDateToHuman(commentary.publication);
                             var pCommentary = document.createElement("p");
                             pCommentary.classList.add("title_commentary");
                             pCommentary.innerHTML = commentary.description;
-                            divCommentaries.appendChild(pUser);
-                            divCommentaries.appendChild(pPublication);
-                            divCommentaries.appendChild(pCommentary);
+                            pInnerCommentary.appendChild(pUser);
+                            pInnerCommentary.appendChild(pPublication);
+                            pInnerCommentary.appendChild(pCommentary);
                         });
+                        divCommentaries.appendChild(pInnerCommentary);
                     }).catch((e) => {
                         alert(e);
                     });

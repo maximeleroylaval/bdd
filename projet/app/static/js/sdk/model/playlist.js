@@ -4,26 +4,27 @@ export class Playlist {
             this.deserialize(result)
     }
 
-    static newInstance(name) {
+    static newInstance(name, description, picture) {
         const playlist = new Playlist();
         playlist.name = name;
+        playlist.descritpion = description;
+        playlist.picture = picture;
         return playlist;
     }
 
     deserialize(result) {
         this.id = result.id;
         this.name = result.name;
-        this.user_email = result.user_email;
         this.picture = result.picture;
         this.descritpion = result.description;
+        this.user_email = result.user_email;
     }
 
     serialize() {
         let obj = {};
         obj.name = this.name;
-        obj.picture = this.picture;
         obj.description = this.descritpion;
-
+        obj.picture = this.picture;
         return obj;
     }
 }

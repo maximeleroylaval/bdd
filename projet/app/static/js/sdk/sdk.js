@@ -97,8 +97,8 @@ export class SDK {
             });
     }
 
-    static addPlaylist(name) {
-        const playlist = Playlist.newInstance(name);
+    static addPlaylist(name, description, picture) {
+        const playlist = Playlist.newInstance(name, description, picture);
         return Request.Post("playlist", playlist.serialize())
             .catch(err => {
                 throw err;

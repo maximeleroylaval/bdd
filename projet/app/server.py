@@ -14,7 +14,7 @@ from pymysql.err import MySQLError
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@db/soundhub'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@localhost/soundhub'
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 auth = HTTPTokenAuth(scheme='Bearer')
@@ -147,7 +147,7 @@ class User(db.Model):
     name =  db.Column(db.String(255))
     password =  db.Column(db.String(255))
     birthdate =  db.Column(db.TIMESTAMP(timezone=False))
-    picture = db.Column(db.String(255))
+    picture = db.Column(db.String(255), default="https://www.watsonmartin.com/wp-content/uploads/2016/03/default-profile-picture.jpg")
     publication = db.Column(db.TIMESTAMP(timezone=False), default=datetime.datetime.utcnow)
     gender_name = db.Column(db.String(255), db.ForeignKey('gender.name'))
 
@@ -158,6 +158,8 @@ class User(db.Model):
         self.birthdate = birthdate
         self.picture = picture
         self.gender_name = gender_name
+        if (self.picture == ""):
+            del self.picture
 
     @property
     def serialize(self):
@@ -197,15 +199,18 @@ class Playlist(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    picture = db.Column(db.String(255))
-    publication = db.Column(db.TIMESTAMP(timezone=False))
+    picture = db.Column(db.String(255), default="https://pbs.twimg.com/profile_images/1013450639215431680/qO1FApK4_400x400.jpg")
+    publication = db.Column(db.TIMESTAMP(timezone=False), default=datetime.datetime.utcnow)
     description = db.Column(db.String(1024))
     user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
 
-    def __init__(self, name, picture, user_email):
+    def __init__(self, name, description, picture, user_email):
         self.name = name
+        self.description = description
         self.picture = picture
         self.user_email = user_email
+        if (self.picture == ""):
+            del self.picture
 
     @property
     def serialize(self):
@@ -217,7 +222,7 @@ class Title(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     url = db.Column(db.String(512))
-    publication = db.Column(db.TIMESTAMP(timezone=False))
+    publication = db.Column(db.TIMESTAMP(timezone=False), default=datetime.datetime.utcnow)
     user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
     playlist_id = db.Column(db.Integer, db.ForeignKey('playlist.id'))
 
@@ -236,7 +241,7 @@ class Commentary(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(512))
-    publication = db.Column(db.TIMESTAMP(timezone=False))
+    publication = db.Column(db.TIMESTAMP(timezone=False), default=datetime.datetime.utcnow)
     user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
     title_id = db.Column(db.Integer, db.ForeignKey('title.id'))
 
@@ -278,7 +283,7 @@ def addUser():
     if (JSONRequest.checkFields(content, ['email', 'name', 'password', 'birthdate', 'gender_name']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
-        if ('content' not in content):
+        if ('picture' not in content):
             content['picture'] = ""
         user = User(content['email'], content['name'], content['password'], content['birthdate'], content['picture'], content['gender_name'])
         db.session.add(user)
@@ -371,10 +376,12 @@ def getPlaylist(id):
 @auth.login_required
 def addPlaylist():
     content = JSONRequest.getJSON(request)
-    if (JSONRequest.checkFields(content, ['name']) == False):
+    if (JSONRequest.checkFields(content, ['name', 'description', 'picture']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
-        playlist = Playlist(content['name'], g.user_email)
+        if ('picture' not in content):
+            content['picture'] = ""
+        playlist = Playlist(content['name'], content['description'], content['picture'], g.user_email)
         db.session.add(playlist)
         db.session.commit()
     except (IntegrityError, InternalError) as error:
@@ -444,8 +451,7 @@ def addCommentary(id):
 
 # Main entry to run the server
 if __name__ == '__main__':
-    while (Auth.isConnected() == False):
+    if (Auth.isConnected() == False):
         print("Waiting for database...")
-        time.sleep(5)
     else:
         app.run(debug=False, host='0.0.0.0', port=80)
