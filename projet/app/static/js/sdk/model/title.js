@@ -4,12 +4,11 @@ export class Title {
             this.deserialize(result)
     }
 
-    static newInstance(name, publication, url, playlist_id) {
+    static newInstance(name, publication, url) {
         const title = new Title();
         title.name = name;
         title.publication = publication;
         title.url = url;
-        title.playlist_id = playlist_id;
         return title;
     }
 

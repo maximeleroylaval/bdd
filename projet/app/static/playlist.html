@@ -11,13 +11,15 @@
     <body>
         <div w3-include-html="navbar.html"></div>
         <div class="body">
-            <p id="playlist_title" class="text-center playlist_title"></p>
-            <div id="titles" class="login-form">
+            <div id="playlist_header" style="text-align:center">
             </div>
             <div class="title_add">
-                <input id="name" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Name" required="required">
-                <input id="url" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Url" required="required">
+                <input id="name" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Name" required="required">
+                <input id="url" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Url" required="required">
                 <button id="add" type="button" class="btn btn-primary btn-block">Add a new title</button>
+                <hr>
+            </div>
+            <div id="titles" class="container" style="margin-bottom: 40px;">
             </div>
         </div>
 
@@ -35,16 +37,21 @@
                 const params = SDK.getQueryParameters(window.location.href);
                 const playlist_id = params.id;
 
-                loadPlaylistName(playlist_id);
+                loadPlaylistHeader(playlist_id);
                 loadPlaylistTitles(playlist_id);
 
-                function loadPlaylistName(playlist_id) {
+                function loadPlaylistHeader(playlist_id) {
                     SDK.getPlaylist(playlist_id).then((playlist) => {
-                        var divPlaylistName = document.getElementById("playlist_title");
-                        if (playlist.name !== undefined && playlist.name !== '')
-                            divPlaylistName.innerHTML = playlist.name;
-                        else
-                            divPlaylistName.innerHTML = "Invalid playlist";
+                        var divPlaylistHeader = document.getElementById("playlist_header");
+                        var pName = document.createElement("h4");
+                        pName.innerHTML = playlist.name;
+                        var pPicture = document.createElement("img");
+                        pPicture.style = "margin-bottom:14px;";
+                        pPicture.width = 250;
+                        pPicture.src = playlist.picture;
+                        divPlaylistHeader.appendChild(pPicture);
+                        divPlaylistHeader.appendChild(pName);
+                        divPlaylistHeader.appendChild(document.createElement("hr"));
                     }).catch((e) => {
                         alert(e);
                     });
@@ -54,6 +61,10 @@
                     SDK.getTitlesByPlaylist(playlist_id).then((titles) => {
                         var divTitles = document.getElementById("titles");
                         divTitles.innerHTML = "";
+                        var divName = document.createElement("h4");
+                        divName.innerHTML = "Songs";
+                        divName.style = "margin-bottom:30px";
+                        divTitles.appendChild(divName);
                         titles.forEach(title => {
                             var pTitle = document.createElement('div');
                             var pTitleButton = document.createElement('button');
