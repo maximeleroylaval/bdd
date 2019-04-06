@@ -61,7 +61,7 @@ CREATE TABLE followed (
 CREATE TABLE followed_user (
 	id int NOT NULL auto_increment,
     user_email varchar(255) NOT NULL,
-    follow varchar (255) NOT NULL,
+    follow_id varchar (255) NOT NULL,
     primary key(id)
 ); 
 

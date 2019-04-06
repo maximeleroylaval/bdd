@@ -13,6 +13,7 @@
         <div class="body">
             <div id="playlist_header" style="text-align:center">
             </div>
+            <hr>
             <div class="title_add">
                 <input id="name" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Name" required="required">
                 <input id="url" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Url" required="required">
@@ -45,13 +46,30 @@
                         var divPlaylistHeader = document.getElementById("playlist_header");
                         var pName = document.createElement("h4");
                         pName.innerHTML = playlist.name;
+                        var pFollow = document.createElement("button");
+                        pFollow.type = "button";
+                        pFollow.classList.add("btn");
+                        pFollow.classList.add("btn-info");
+                        pFollow.classList.add("playlist");
+                        pFollow.style = "margin-top: 8px;";
+                        pFollow.innerHTML = "Follow";
+                        pFollow.hidden = true;
+                        SDK.getUserProfile().then((user) => {
+                            if (user.email !== playlist.user_email)
+                                pFollow.hidden = false;
+                        });
+                        pFollow.addEventListener('click', (e) => {
+                            //SDK.followUser
+                            //If succeed
+                            //pFollow.hidden = true;
+                        });
                         var pPicture = document.createElement("img");
                         pPicture.style = "margin-bottom:14px;";
                         pPicture.width = 250;
                         pPicture.src = playlist.picture;
                         divPlaylistHeader.appendChild(pPicture);
                         divPlaylistHeader.appendChild(pName);
-                        divPlaylistHeader.appendChild(document.createElement("hr"));
+                        divPlaylistHeader.appendChild(pFollow);
                     }).catch((e) => {
                         alert(e);
                     });
