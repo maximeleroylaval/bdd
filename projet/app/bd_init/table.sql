@@ -3,7 +3,7 @@ USE soundhub;
 CREATE TABLE commentary (
 	id int NOT NULL AUTO_INCREMENT,
 	description varchar(512) NOT NULL,
-	publication TIMESTAMP NOT NULL,
+	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	user_email varchar(255) NOT NULL,
 	title_id int NOT NULL,
 	PRIMARY KEY (id)
@@ -13,7 +13,7 @@ CREATE TABLE title (
 	id int NOT NULL AUTO_INCREMENT,
 	name varchar(255) NOT NULL,
 	url varchar(512) NOT NULL UNIQUE,
-	publication TIMESTAMP NOT NULL,
+	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	user_email varchar(255) NOT NULL,
 	playlist_id int NOT NULL,
 	PRIMARY KEY (id)
@@ -24,7 +24,7 @@ CREATE TABLE playlist (
 	name varchar(255) NOT NULL,
 	user_email varchar(255) NOT NULL,
     picture varchar(255) NOT NULL DEFAULT 'https://pbs.twimg.com/profile_images/1013450639215431680/qO1FApK4_400x400.jpg',
-	publication TIMESTAMP NOT NULL,
+	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (id)
 );
 
@@ -35,7 +35,7 @@ CREATE TABLE user (
 	birthdate TIMESTAMP NOT NULL,
 	gender_name varchar(255) NOT NULL,
     picture varchar(255) NOT NULL DEFAULT 'https://www.watsonmartin.com/wp-content/uploads/2016/03/default-profile-picture.jpg',
-	publication TIMESTAMP NOT NULL,
+	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (email)
 );
 

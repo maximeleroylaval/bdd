@@ -14,11 +14,16 @@ export class Playlist {
         this.id = result.id;
         this.name = result.name;
         this.user_email = result.user_email;
+        this.picture = result.picture;
+        this.descritpion = result.description;
     }
 
     serialize() {
         let obj = {};
         obj.name = this.name;
+        obj.picture = this.picture;
+        obj.description = this.descritpion;
+
         return obj;
     }
 }

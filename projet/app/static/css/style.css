@@ -54,3 +54,62 @@
 .title_commentary_add {
 
 }
+
+.user_picture {
+    display: inline;
+    width: 48px;
+    border-radius: 60px;
+}
+
+.user_name {
+    display: inline;
+    font-size: medium;
+    margin-left: 10px;
+}
+
+.user_publication {
+    display: inline;
+    float:right;
+    margin-top:10px;
+    font-size:small
+}
+
+.commentary_title {
+    font-size: large;
+    font-weight: bold;
+}
+
+.commentary_user {
+    display:inline;
+    font-weight:bold;
+    font-size:small;
+}
+
+.commentary_publication {
+    display: inline;
+    float:right;
+    font-size:small;
+}
+
+.base {
+    margin-top: 50px;
+}
+
+.profile-picture {
+    max-width: 250px;
+}
+
+.content-block {
+    background: #F7F7F9;
+}
+
+.profile-content {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.label-profile {
+    margin-right: 10px;
+}
+

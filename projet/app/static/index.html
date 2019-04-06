@@ -48,7 +48,7 @@
             <div class="playlist_add">
                 <input id="name" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Name" required="required">
                 <button id="add" type="button" class="btn btn-primary btn-block">Add a new playlist</button>
-            </div>            
+            </div>
         </div>
 
         <!-- External libs -->
@@ -89,7 +89,7 @@
 
                 document.getElementById("nav-profil").addEventListener('click', (e) => {
                     SDK.getUserProfile().then(profil => {
-                        window.open("profil.html?email=" + profil.email, "_self");
+                        window.open("profile.html?email=" + profil.email, "_self");
                     });
                 });
 

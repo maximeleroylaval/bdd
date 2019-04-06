@@ -296,6 +296,11 @@ def getUsers():
     users = db.session.query(User).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(users), 200)
 
+@app.route('/user/<email>', methods = ['GET'])
+@auth.login_required
+def getUser(email):
+    user = db.session.query(User).filter_by(email=email).first()
+    return JSONRequest.sendAnswer(user.serialize, 200)
 
 @app.route('/profile', methods = ['GET'])
 @auth.login_required
@@ -303,16 +308,9 @@ def getUserProfile():
     user = db.session.query(User).filter_by(email=g.user_email).first()
     return JSONRequest.sendAnswer(user.serialize, 200)
 
-@app.route('/user/<email>', methods = ['GET'])
+@app.route('/profile', methods = ['PUT'])
 @auth.login_required
-def getUser(email):
-    user = db.session.query(User).filter_by(email=email).first()
-    return JSONRequest.sendAnswer(user.serialize, 200)
-
-
-@app.route('/user', methods = ['PUT'])
-@auth.login_required
-def updateUser():
+def updateUserProfile():
     content = JSONRequest.getJSON(request)
     if (JSONRequest.checkFields(content, ['name', 'password', 'birthdate', 'gender_name']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
@@ -331,8 +329,11 @@ def updateUser():
 @app.route('/user/<email>', methods = ['DELETE'])
 @auth.login_required
 def deleteUser(email):
+    if (g.user_email != email):
+        return JSONRequest.sendError("Delete on user email " + email + " is not authorized", 401)
+
     try:
-        user = db.session.query(User).filter_by(email=g.user_email).first()
+        user = db.session.query(User).filter_by(email=email).first()
         db.session.delete(user)
         db.session.commit()
     except IntegrityError as error:
@@ -399,6 +400,9 @@ def addTitle():
     if (JSONRequest.checkFields(content, ['name', 'publication', 'url', 'playlist_id']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
+        playlist = db.session.query(Playlist).filter_by(playlist_id=content['playlist_id']).first()
+        if (playlist.user_email != g.user_email):
+            return JSONRequest.sendError("Adding a title on a playlist owned by " + playlist.user_email + " is not authorized", 401)
         title = Title(content['name'], content['publication'], content['url'], g.user_email, content['playlist_id'])
         db.session.add(title)
         db.session.commit()
