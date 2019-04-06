@@ -256,6 +256,21 @@ export class SDK {
             });
     }
 
+    static getUserPlaylists(email) {
+        return Request.Get("user/" + email + "/playlists").catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            let playlists = [];
+            response.data.forEach(playlist => {
+                playlists.push(new Playlist(playlist));
+            });
+            return playlists;
+        });
+    }
+
     static getUsers() {
         return Request.Get("user")
             .catch(err => {
