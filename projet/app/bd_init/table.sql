@@ -2,7 +2,7 @@ USE soundhub;
 
 CREATE TABLE commentary (
 	id int NOT NULL AUTO_INCREMENT,
-	description varchar(512) NOT NULL,
+	description varchar(1024) NOT NULL,
 	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	user_email varchar(255) NOT NULL,
 	title_id int NOT NULL,
@@ -51,6 +51,20 @@ CREATE TABLE token (
 	PRIMARY KEY (token)
 );
 
+CREATE TABLE followed (
+	id int NOT NULL AUTO_INCREMENT,
+    user_email varchar(255) NOT NULL,
+    playlist_id int NOT NULL,
+    primary key (id)
+);
+
+CREATE TABLE followed_user (
+	id int NOT NULL auto_increment,
+    user_email varchar(255) NOT NULL,
+    follow varchar (255) NOT NULL,
+    primary key(id)
+); 
+
 ALTER TABLE commentary ADD CONSTRAINT commentary_fk0 FOREIGN KEY (user_email) REFERENCES user(email) ON DELETE CASCADE;
 
 ALTER TABLE commentary ADD CONSTRAINT commentary_fk1 FOREIGN KEY (title_id) REFERENCES title(id) ON DELETE CASCADE;
@@ -64,3 +78,11 @@ ALTER TABLE playlist ADD CONSTRAINT playlist_fk0 FOREIGN KEY (user_email) REFERE
 ALTER TABLE user ADD CONSTRAINT user_fk0 FOREIGN KEY (gender_name) REFERENCES gender(name) ON DELETE CASCADE;
 
 ALTER TABLE token ADD CONSTRAINT token_fk0 FOREIGN KEY (user_email) REFERENCES user(email) ON DELETE CASCADE;
+
+ALTER TABLE followed ADD constraint followed_fk0 foreign key (user_email) references user(email) ON DELETE cascade;
+
+ALTER TABLE followed ADD constraint followed_fk1 foreign key (playlist_id) references playlist(id) ON DELETE cascade;
+
+ALTER TABLE followed_user ADD constraint followed_user_fk0 foreign key (user_email) references user(email) ON DELETE cascade;
+
+ALTER TABLE followed_user ADD constraint followed_user_fk1 foreign key (user_email) references user(email) ON DELETE cascade;

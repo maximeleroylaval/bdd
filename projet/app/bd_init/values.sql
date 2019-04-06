@@ -32,4 +32,39 @@ INSERT INTO title(id, name, publication, url, user_email, playlist_id) VALUES
     (5, 'Affirmative Action', '2019/01/01', 'https://youtu.be/9wZ7qXhbvxE', 'rap@rap.com', 1)
     ;
     
+INSERT INTO commentary(user_email, title_id, description) VALUES
+	('rap@rap.com', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et aliquam neque. Maecenas leo felis, tincidunt at est a, congue maximus ex. Aliquam sit amet nunc tortor. Nullam vel egestas nunc. In quis rhoncus urna. Morbi a magna sit amet leo convallis laoreet non et elit. Donec ac justo id lectus feugiat lobortis. Vivamus eu congue libero'),
+	('rap@rap.com', 2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et aliquam neque. Maecenas leo felis, tincidunt at est a, congue maximus ex. Aliquam sit amet nunc tortor. Nullam vel egestas nunc. In quis rhoncus urna. Morbi a magna sit amet leo convallis laoreet non et elit. Donec ac justo id lectus feugiat lobortis. Vivamus eu congue libero'),
+	('rap@rap.com', 3, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et aliquam neque. Maecenas leo felis, tincidunt at est a, congue maximus ex. Aliquam sit amet nunc tortor. Nullam vel egestas nunc. In quis rhoncus urna. Morbi a magna sit amet leo convallis laoreet non et elit. Donec ac justo id lectus feugiat lobortis. Vivamus eu congue libero'),    
+	('metal@metal.com', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et aliquam neque. Maecenas leo felis, tincidunt at est a, congue maximus ex. Aliquam sit amet nunc tortor. Nullam vel egestas nunc. In quis rhoncus urna. Morbi a magna sit amet leo convallis laoreet non et elit. Donec ac justo id lectus feugiat lobortis. Vivamus eu congue libero'),
+	('metal@metal.com', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et aliquam neque. Maecenas leo felis, tincidunt at est a, congue maximus ex. Aliquam sit amet nunc tortor. Nullam vel egestas nunc. In quis rhoncus urna. Morbi a magna sit amet leo convallis laoreet non et elit. Donec ac justo id lectus feugiat lobortis. Vivamus eu congue libero'),    
+	('metal@metal.com', 5, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et aliquam neque. Maecenas leo felis, tincidunt at est a, congue maximus ex. Aliquam sit amet nunc tortor. Nullam vel egestas nunc. In quis rhoncus urna. Morbi a magna sit amet leo convallis laoreet non et elit. Donec ac justo id lectus feugiat lobortis. Vivamus eu congue libero'),
+	('female@female.com', 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et aliquam neque. Maecenas leo felis, tincidunt at est a, congue maximus ex. Aliquam sit amet nunc tortor. Nullam vel egestas nunc. In quis rhoncus urna. Morbi a magna sit amet leo convallis laoreet non et elit. Donec ac justo id lectus feugiat lobortis. Vivamus eu congue libero'),
+	('420@420.com', 1, 'BLAZE IT')
+    ;
+ INSERT INTO followed(user_email, playlist_id) VALUES
+	('rap@rap.com', 1),
+    ('rap@rap.com', 2),
+    ('rap@rap.com', 3),
+    ('rap@rap.com', 4),
+    ('rap@rap.com', 5),
+    ('classic@classic.com', 3),
+    ('classic@classic.com', 4),
+    ('420@420.com', 3),
+    ('female@female.com', 2),
+    ('metal@metal.com', 3),
+    ('metal@metal.com', 4),
+    ('metal@metal.com', 2)
+    ;
     
+INSERT INTO followed_user(user_email, follow) VALUES
+	('rap@rap.com', 'metal@metal.com'),
+    ('rap@rap.com', 'female@female.com'),
+    ('rap@rap.com', '420@420.com'),
+    ('420@420.com', 'rap@rap.com'),
+    ('metal@metal.com', 'classic@classic.com'),
+    ('got@got.com', 'classic@classic.com'),
+    ('classic@classic.com', 'got@got.com'),
+    ('classic@classic.com', 'rap@rap.com'),
+    ('ulaval@ulaval.com', 'got@got.com')
+    ;
