@@ -24,6 +24,7 @@ CREATE TABLE playlist (
 	name varchar(255) NOT NULL,
 	user_email varchar(255) NOT NULL,
     picture varchar(255) NOT NULL DEFAULT 'https://pbs.twimg.com/profile_images/1013450639215431680/qO1FApK4_400x400.jpg',
+    description varchar(1024),
 	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (id)
 );

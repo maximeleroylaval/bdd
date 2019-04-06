@@ -109,31 +109,54 @@
 <script>
     System.import("js/sdk/sdk").then((m) => {
         SDK = m.SDK;
-        let userEmail = null;
+        let params = SDK.getQueryParameters(window.location.href);
+        let userEmail = params.email;
 
         loadProfile();
 
         function loadProfile(){
 
-            SDK.getUserProfile().then(profil => {
-                document.getElementById("pp").src=profil.picture;
-                document.getElementById("username").textContent = profil.name;
-                let d = new Date(profil.birthdate);
-                let day = (d.getDate() < 10 ? "0" + d.getDate(): d.getDate());
-                let month = ((d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1): (d.getMonth() + 1));
-                document.getElementById("birthdate").textContent =  day + "/" +  month + "/" + d.getFullYear();
-                document.getElementById("email").textContent = profil.email;
-                userEmail = profil.email;
-                if (profil.gender_name === "Man") {
-                    document.getElementById("gender").innerHTML = "<i class=\"fas fa-mars\"></i>"
-                } else {
-                    document.getElementById("gender").innerHTML = "<i class=\"fas venus\"></i>"
-                }
+            if (userEmail !== undefined) {
+                SDK.getUser(userEmail).then(profil => {
+                    document.getElementById("pp").src = profil.picture;
+                    document.getElementById("username").textContent = profil.name;
+                    let d = new Date(profil.birthdate);
+                    let day = (d.getDate() < 10 ? "0" + d.getDate() : d.getDate());
+                    let month = ((d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1));
+                    document.getElementById("birthdate").textContent = day + "/" + month + "/" + d.getFullYear();
+                    document.getElementById("email").textContent = profil.email;
+                    userEmail = profil.email;
+                    if (profil.gender_name === "Man") {
+                        document.getElementById("gender").innerHTML = "<i class=\"fas fa-mars\"></i>"
+                    } else {
+                        document.getElementById("gender").innerHTML = "<i class=\"fas venus\"></i>"
+                    }
 
-                document.getElementById("spinner_profil_detail").hidden = true;
-                document.getElementById("profil_detail").hidden = false;
-                loadUserPlaylist();
-            });
+                    document.getElementById("spinner_profil_detail").hidden = true;
+                    document.getElementById("profil_detail").hidden = false;
+                    loadUserPlaylist();
+                });
+            } else {
+                SDK.getUserProfile().then(profil => {
+                    document.getElementById("pp").src = profil.picture;
+                    document.getElementById("username").textContent = profil.name;
+                    let d = new Date(profil.birthdate);
+                    let day = (d.getDate() < 10 ? "0" + d.getDate() : d.getDate());
+                    let month = ((d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1));
+                    document.getElementById("birthdate").textContent = day + "/" + month + "/" + d.getFullYear();
+                    document.getElementById("email").textContent = profil.email;
+                    userEmail = profil.email;
+                    if (profil.gender_name === "Man") {
+                        document.getElementById("gender").innerHTML = "<i class=\"fas fa-mars\"></i>"
+                    } else {
+                        document.getElementById("gender").innerHTML = "<i class=\"fas venus\"></i>"
+                    }
+
+                    document.getElementById("spinner_profil_detail").hidden = true;
+                    document.getElementById("profil_detail").hidden = false;
+                    loadUserPlaylist();
+                });
+            }
         }
 
         function loadUserPlaylist() {
