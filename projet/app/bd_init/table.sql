@@ -22,6 +22,7 @@ CREATE TABLE playlist (
 	id int NOT NULL AUTO_INCREMENT,
 	name varchar(255) NOT NULL,
 	user_email varchar(255) NOT NULL,
+    description varchar(1024),
     /* Default playlist picture */
     picture varchar(255) NOT NULL DEFAULT 'https://pbs.twimg.com/profile_images/1013450639215431680/qO1FApK4_400x400.jpg',
 	PRIMARY KEY (id)

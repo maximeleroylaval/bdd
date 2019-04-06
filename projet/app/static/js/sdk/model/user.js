@@ -11,6 +11,7 @@ export class User {
         user.name = name;
         user.birthdate = birthdate;
         user.gender_name = gender_name;
+        user.picture = null;
         return user;
     }
 
@@ -20,6 +21,7 @@ export class User {
         this.password = result.password;
         this.birthdate = result.birthdate;
         this.gender_name = result.gender_name;
+        this.picture = result.picture;
     }
 
     serialize() {
@@ -29,6 +31,7 @@ export class User {
         obj.password = this.password;
         obj.birthdate = this.birthdate;
         obj.gender_name = this.gender_name;
+        obj.picture = this.picture;
         return obj;
     }
 

@@ -197,6 +197,7 @@ class Playlist(db.Model):
     name = db.Column(db.String(255))
     user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
     picture = db.Column(db.String(255))
+    description = db.Column(db.String(1024))
 
     def __init__(self, name, user_email):
         self.name = name

@@ -2,3 +2,26 @@
     width: 340px;
     margin: 50px auto;
 }
+
+.base {
+    margin-top: 50px;
+}
+
+.profile-picture {
+    max-width: 250px;
+}
+
+.content-block {
+    background: #F7F7F9;
+}
+
+.profile-content {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.label-profile {
+    margin-right: 10px;
+}
+

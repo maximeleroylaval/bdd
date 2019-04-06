@@ -68,8 +68,11 @@ export class SDK {
             .catch(err => {
                 throw err;
             }).then(response => {
-                if (response.message !== '')
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
                     throw response.message;
+                }
                 return new User(response.data);
             })
     }

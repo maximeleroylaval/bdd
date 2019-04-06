@@ -75,7 +75,7 @@
 
                 document.getElementById("nav-profil").addEventListener('click', (e) => {
                     SDK.getUserProfile().then(profil => {
-                        window.open("profil.html?email=" + profil.email, "_self");
+                        window.open("profile.html?email=" + profil.email, "_self");
                     });
                 });
 
