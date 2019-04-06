@@ -148,6 +148,7 @@ class User(db.Model):
     password =  db.Column(db.String(255))
     birthdate =  db.Column(db.TIMESTAMP(timezone=False))
     picture = db.Column(db.String(255))
+    publication = db.Column(db.TIMESTAMP(timezone=False), default=datetime.datetime.utcnow)
     gender_name = db.Column(db.String(255), db.ForeignKey('gender.name'))
 
     def __init__(self, email, name, password, birthdate, picture, gender_name):
@@ -197,6 +198,7 @@ class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     picture = db.Column(db.String(255))
+    publication = db.Column(db.TIMESTAMP(timezone=False))
     user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
 
     def __init__(self, name, picture, user_email):
@@ -213,17 +215,34 @@ class Title(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    publication = db.Column(db.TIMESTAMP(timezone=False))
     url = db.Column(db.String(512))
+    publication = db.Column(db.TIMESTAMP(timezone=False))
     user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
     playlist_id = db.Column(db.Integer, db.ForeignKey('playlist.id'))
 
     def __init__(self, name, publication, url, user_email, playlist_id):
         self.name = name
-        self.publication = publication
         self.url = url
         self.user_email = user_email
         self.playlist_id = playlist_id
+
+    @property
+    def serialize(self):
+        return Serializer.serialize(self)
+
+class Commentary(db.Model):
+    __tablename__ = 'commentary'
+
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(512))
+    publication = db.Column(db.TIMESTAMP(timezone=False))
+    user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
+    title_id = db.Column(db.Integer, db.ForeignKey('title.id'))
+
+    def __init__(self, description, user_email, title_id):
+        self.description = description
+        self.user_email = user_email
+        self.title_id = title_id
 
     @property
     def serialize(self):
@@ -388,6 +407,28 @@ def addTitle():
 
     db.session.refresh(title)
     return JSONRequest.sendAnswer(title.serialize, 200)
+
+@app.route('/title/<id>/commentary', methods = ['GET'])
+@auth.login_required
+def getCommentariesByTitle(id):
+    commentaries = db.session.query(Commentary).filter_by(title_id=id).all()
+    return JSONRequest.sendAnswer(Serializer.serialize_list(commentaries), 200)
+
+@app.route('/title/<id>/commentary', methods = ['POST'])
+@auth.login_required
+def addCommentary(id):
+    content = JSONRequest.getJSON(request)
+    if (JSONRequest.checkFields(content, ['description']) == False):
+        return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
+    try:
+        commentary = Commentary(content['description'], g.user_email, id)
+        db.session.add(commentary)
+        db.session.commit()
+    except (IntegrityError, InternalError) as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    db.session.refresh(commentary)
+    return JSONRequest.sendAnswer(commentary.serialize, 200)
 
 # Main entry to run the server
 if __name__ == '__main__':

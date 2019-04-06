@@ -9,12 +9,52 @@
         <link rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="index.html">SoundHub</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id= "nav-profil">Profil</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Playlists
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Mes playlists</a>
+                            <a class="dropdown-item" href="#">Créer une playlist</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Mes playlists suivies</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
         <div class="body">
             <div id="url" class="title_video">
             </div>
             <div class="title_description">
                 <p id="name" class="title_name" type="text" style="margin-bottom: 10px" placeholder="Name"></p>
+                <hr>
                 <p id="publication" class="title_publication" type="text" style="margin-bottom: 10px" placeholder="Publication"></p>
+                <div class="title_commentary_add">
+                    <input id="description" type="text" class="form-control" style="margin-bottom: 2px" placeholder="Description" required="required">
+                    <button id="add" type="button" class="btn btn-primary">Add a new commentary</button>
+                </div>
+                <div id="commentaries" class="title_commentaries">
+    
+                </div>
             </div>
         </div>
 
@@ -42,8 +82,32 @@
                     return url.replace("watch?v=", "embed/");
                 }
 
+                function loadCommentaries(title_id) {
+                    SDK.getCommentariesByTitle(title_id).then((commentaries) => {
+                        var divCommentaries = document.getElementById("commentaries");
+                        commentaries.forEach((commentary) => {
+                            var pCommentary = document.createElement("p");
+                            pCommentary.classList.add("title_commentary");
+                            pCommentary.innerHTML = commentary.description;
+                            divCommentaries.appendChild(pCommentary);
+                        });
+                    }).catch((e) => {
+                        alert(e);
+                    });
+                }
+
+                function loadProfil(user_email) {
+                    SDK.getUser(user_email).then((user) => {
+                        
+                    }).catch((e) => {
+                        alert(e);
+                    });
+                }
+
                 function loadTitle(title_id) {
                     SDK.getTitle(title_id).then((title) => {
+                        loadProfil(title.user_email);
+                        loadCommentaries(title_id);
                         var url = document.getElementById("url");
                         var name = document.getElementById("name");
                         var publication = document.getElementById("publication");
@@ -61,6 +125,16 @@
                         alert(e);
                     });
                 }
+
+                document.getElementById("add").addEventListener('click', (e) => {
+                    var description = document.getElementById("description").value;
+                    SDK.addCommentary(description, title_id).then((commentary) => {
+                        loadCommentaries(title_id);
+                    }).catch((e) => {
+                        alert(e);
+                    });
+                    e.preventDefault();
+                });
             });
         </script>
     </body>

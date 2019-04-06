@@ -27,16 +27,30 @@
     bottom: 10px;
 }
 
+.title_description {
+    margin-left: 20px;
+}
+
 .title_video {
     text-align: center;
 }
 
 .title_name {
     font-size: xx-large;
-    margin-left: 20px;
 }
 
 .title_publication {
     font-size: large;
-    margin-left: 20px;
+}
+
+.title_commentaries {
+
+}
+
+.title_commentary {
+    font-size: medium;
+}
+
+.title_commentary_add {
+
 }

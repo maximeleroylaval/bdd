@@ -2,6 +2,7 @@ import { Request } from './tools/request'
 import { User } from './model/user';
 import { Playlist } from './model/playlist';
 import { Title } from './model/title';
+import { Commentary } from './model/commentary';
 
 export class SDK {
 
@@ -205,6 +206,39 @@ export class SDK {
                     throw response.message;
                 }
                 return new Title(response.data);
+            });
+    }
+
+    static getCommentariesByTitle(title_id) {
+        return Request.Get("title/" + title_id + "/commentary")
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
+                let commentaries = [];
+                response.data.forEach(commentary => {
+                    commentaries.push(new Commentary(commentary));
+                });
+                return commentaries;
+            });
+    }
+
+    static addCommentary(description, title_id) {
+        const commentary = Commentary.newInstance(description, title_id);
+        return Request.Post("title/" + title_id + "/commentary", commentary.serialize())
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
+                return new Commentary(response.data);
             });
     }
 
