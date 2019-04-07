@@ -196,6 +196,20 @@ export class SDK {
             });
     }
 
+    static editTitle(name, url, title_id) {
+        const title = Title.newInstance(name, url);
+        return Request.Put("title/" + title_id, title.serialize())
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
+            });
+    }
+
     static getTitles() {
         return Request.Get("title")
             .catch(err => {
@@ -279,6 +293,19 @@ export class SDK {
             });
     }
 
+    static deleteCommentary(commentary_id) {
+        return Request.Delete("commentary/" + commentary_id)
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
+            });
+    }
+
     static getUserProfile() {
         return Request.Get("profile")
             .catch(err => {
@@ -357,6 +384,17 @@ export class SDK {
                 }
                 return new User(response.data);
             });
+    }
+
+    static editUser(user) {
+        return Request.Put('profile', user.serialize()).catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            return user;
+        });
     }
 
     static getFriends(user_email) {

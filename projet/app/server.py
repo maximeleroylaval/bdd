@@ -14,7 +14,7 @@ from pymysql.err import MySQLError
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@localhost/soundhub'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@db/soundhub'
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 auth = HTTPTokenAuth(scheme='Bearer')
@@ -353,16 +353,18 @@ def getUserProfile():
 @auth.login_required
 def updateUserProfile():
     content = JSONRequest.getJSON(request)
-    if (JSONRequest.checkFields(content, ['name', 'password', 'birthdate', 'gender_name']) == False):
+    if (JSONRequest.checkFields(content, ['name', 'birthdate', 'gender_name']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
         user = db.session.query(User).filter_by(email=g.user_email).first()
         if (user is None):
             return JSONRequest.sendError("User with email " + g.user_email + " does not exist", 404)
         user.name = content['name']
-        user.password = content['password']
+        if ('password' in content):
+            user.password = content['password']
         user.birthdate = content['birthdate']
         user.gender_name = content['gender_name']
+        user.picture = content["picture"]
         db.session.commit()
     except IntegrityError as error:
         return JSONRequest.sendError(error.args[0], 500)
@@ -520,6 +522,26 @@ def getTitle(id):
         return JSONRequest.sendError("Title with id " + id + " does not exist", 404)
     return JSONRequest.sendAnswer(title.serialize, 200)
 
+@app.route('/title/<id>', methods = ['PUT'])
+@auth.login_required
+def updateTitle(id):
+    content = JSONRequest.getJSON(request)
+    if (JSONRequest.checkFields(content, ['name', 'url']) == False):
+        return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
+    try:
+        title = db.session.query(Title).filter_by(id=id).first()
+        if (title is None):
+            return JSONRequest.sendError("Title with id " + id + " does not exist", 404)
+        if (title.user_email != g.user_email):
+            return JSONRequest.sendError("You are not authorized to edit other user titles", 403)
+        title.name = content['name']
+        title.url = content['url']
+        db.session.commit()
+    except IntegrityError as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    return JSONRequest.sendEmptyAnswer(200)
+
 @app.route('/title/<id>/commentary', methods = ['GET'])
 @auth.login_required
 def getCommentariesByTitle(id):
@@ -541,6 +563,22 @@ def addCommentary(id):
 
     db.session.refresh(commentary)
     return JSONRequest.sendAnswer(commentary.serialize, 200)
+
+@app.route('/commentary/<id>', methods = ['DELETE'])
+@auth.login_required
+def deleteCommentary(id):
+    try:
+        commentary = db.session.query(Commentary).filter_by(id=id).first()
+        if (commentary is None):
+            return JSONRequest.sendError("Commentary with id " + id + " does not exist", 404)
+        if (commentary.user_email != g.user_email):
+            return JSONRequest.sendError("You are not authorized to delete other user commentaries", 403)
+        db.session.delete(commentary)
+        db.session.commit()
+    except IntegrityError as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    return JSONRequest.sendEmptyAnswer(200)
 
 # Main entry to run the server
 if __name__ == '__main__':

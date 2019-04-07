@@ -13,31 +13,44 @@
 <div class="body">
     <div class="container">
         <p class="text-center playlist_title">Edition du profil</p>
+
+        <div class="row justify-content-md-center" id="error" hidden>
+            <p id="error-mess" class="text-danger" hidden>Certains champs obligatoires sont manquant</p>
+            <p id="password_missmatch" class="text-danger" hidden>Les mots de passe ne sont pas indentiques</p>
+        </div>
+
         <div class="playlist_add">
             <div class="row justify-content-md-center form-base">
                 <div class="col-6">
-                    <h5 class="label-profile">Nom</h5>
+                    <h5 class="label-profile">Nom*</h5>
                     <input id="name" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Nom" required="required">
                 </div>
             </div>
             <div class="row justify-content-md-center form-base">
                 <div class="col-6 form-input">
-                    <h5 class="label-profile">Birthdate</h5>
-                    <textarea id="password" type="text" class="form-control" style="margin-bottom: 10px; min-height: 100px;" placeholder="Description"> </textarea>
+                    <h5 class="label-profile">Date de naissance*</h5>
+                    <input id="birthdate" type="text" class="form-control" style="margin-bottom: 10px" placeholder="Date de naissance" required>
                 </div>
             </div>
 
             <div class="row justify-content-md-center form-base">
                 <div class="col-6 form-input">
-                    <h5 class="label-profile">Password</h5>
-                    <textarea id="password_confirmation" type="text" class="form-control" style="margin-bottom: 10px; min-height: 100px;" placeholder="Description"> </textarea>
+                    <h5 class="label-profile">Nouveau mot de passe</h5>
+                    <input id="new_password" type="password" class="form-control" style="margin-bottom: 10px" placeholder="Nouveau mot de passe"> </input>
+                </div>
+            </div>
+
+            <div class="row justify-content-md-center form-base">
+                <div class="col-6 form-input">
+                    <h5 class="label-profile">Nouveau mot de passe (confirmation)</h5>
+                    <input id="new_password_confirmation" type="password" class="form-control" style="margin-bottom: 10px" placeholder="Confirmation"> </input>
                 </div>
             </div>
 
             <div class="row justify-content-md-center form-base">
                 <div class="col-4 form-input">
-                    <h5 class="label-profile">URL de l'image</h5>
-                    <input id="picture" type="text" class="form-control" style="margin-bottom: 10px" placeholder="URL de l'image">
+                    <h5 class="label-profile">URL de l'image*</h5>
+                    <input id="picture" type="text" class="form-control" style="margin-bottom: 10px" placeholder="URL de l'image" required>
                 </div>
                 <div class="col-2 form-input">
                     <button type="button" class="btn btn-outline-info" style="width: 100%; height: 100%" id="previsu">Prévisualiser</button>
@@ -59,9 +72,13 @@
                 </div>
                 </div>
             </div>
+            <div class="row justify-content-md-center">
+                <p class="text-warning">*Tous les champs marqués d'une "*" doivent être remplis</p>
+            </div>
+
             <div class="row justify-content-md-center form-base">
                 <div class="col-3 form-input">
-                    <button id="add" type="button" class="btn btn-outline-success" style="min-width: 250px">Créer une nouvelle playlist</button>
+                    <button id="add" type="button" class="btn btn-outline-success" style="min-width: 250px">Enregistrer les modifications</button>
                 </div>
             </div>
             <hr>
@@ -97,17 +114,63 @@
             }
         });
 
-        document.getElementById("add").addEventListener('click', (e) => {
-            var name = document.getElementById("name").value;
-            var description = document.getElementById("description").value;
-            var picture = document.getElementById("picture").value;
-            SDK.addPlaylist(name, description, picture).then((playlists) => {
-                window.open("playlist.html?id=" + playlists.id, "_self");
+            SDK.getUserProfile().then((profile) => {
+                let name = document.getElementById("name");
+                let picture = document.getElementById("picture");
+                let birthdate = document.getElementById("birthdate");
+                let password = document.getElementById("new_password");
+                let password_conf = document.getElementById("new_password_confirmation");
+
+                name.value = profile.name;
+                picture.value = profile.picture;
+                birthdate.value = profile.birthdate;
+
+                document.getElementById("add").addEventListener('click', () => {
+                    if (name.value === "" || picture.value === "" || birthdate.value === "") {
+                        if (name.value === "") {
+                            name.removeAttribute("class");
+                            name.setAttribute("class", "form-control is-invalid")
+                        }
+
+                        if (picture.value === "") {
+                            picture.removeAttribute("class");
+                            picture.setAttribute("class", "form-control is-invalid")
+                        }
+
+                        if (birthdate.value === "") {
+                            birthdate.removeAttribute("class");
+                            birthdate.setAttribute("class", "form-control is-invalid")
+                        }
+
+                        document.getElementById("error").hidden = false;
+                        document.getElementById("error-mess").hidden = false;
+
+                    } else {
+                        profile.name = name.value;
+                        profile.picture = picture.value;
+                        profile.birthdate = birthdate.value;
+                        if (password.value !== ""){
+                            if (password.value === password_conf.value) {
+                                profile.password = password.value;
+                                SDK.editUser(profile).catch(err => alert(err)).then(() => {
+                                    window.open("profile.html", "_self");
+                                })
+                            }
+                            else {
+                                document.getElementById("error").hidden = false;
+                                document.getElementById("password_missmatch").hidden = false;
+                            }
+                        } else {
+                            SDK.editUser(profile).catch(err => alert(err)).then(() => {
+                                window.open("profile.html", "_self");
+                            })
+                        }
+                    }
+                })
+
             }).catch((e) => {
                 alert(e);
             });
-            e.preventDefault();
-        });
     });
 </script>
 </body>
