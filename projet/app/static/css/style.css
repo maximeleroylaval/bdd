@@ -122,3 +122,7 @@ body {
 .form-base {
     margin-bottom: 20px;
 }
+
+.form-input {
+    min-width: 50px;
+}

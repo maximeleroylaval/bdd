@@ -256,6 +256,21 @@ export class SDK {
             });
     }
 
+    static getFollowedPlaylist(email) {
+        return Request.Get("user/" + email + "/followed_playlists").catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            let playlists = [];
+            response.data.forEach(playlist => {
+                playlists.push(new Playlist(playlist));
+            });
+            return playlists;
+        });
+    }
+
     static getUserPlaylists(email) {
         return Request.Get("user/" + email + "/playlists").catch(err => {
             throw err;

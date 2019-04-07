@@ -45,10 +45,10 @@
         <div class="container base">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Mes playlists</a>
+                    <a class="nav-link active" id="my_playlists" href="#">Mes playlists</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Playlists suivies</a>
+                    <a class="nav-link" id="followed_playlists" href="#">Playlists suivies</a>
                 </li>
             </ul>
         </div>
@@ -79,7 +79,29 @@
         w3IncludeHTML();
 
         System.import("js/profile").then((m) => {
-            m.Profile.loadProfile();
+
+            let email = m.Profile.getEmail();
+            m.Profile.loadProfile(email);
+
+            let playlist = document.getElementById("my_playlists");
+            let followed = document.getElementById("followed_playlists");
+
+            playlist.addEventListener('click', () => {
+                m.Profile.loadUserPlaylist(email);
+                playlist.removeAttribute("class");
+                playlist.setAttribute("class", "nav-link active");
+                followed.removeAttribute("class");
+                followed.setAttribute("class", "nav-link");
+            });
+
+            followed.addEventListener('click', () => {
+                m.Profile.loadFollowedPlaylist(email);
+                playlist.removeAttribute("class");
+                playlist.setAttribute("class", "nav-link");
+                followed.removeAttribute("class");
+                followed.setAttribute("class", "nav-link active");
+
+            });
         });
     </script>
 </body>

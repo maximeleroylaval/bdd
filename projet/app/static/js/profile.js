@@ -1,10 +1,7 @@
 import { SDK } from './sdk/sdk';
 
 export class Profile {
-    static loadProfile() {
-        let params = SDK.getQueryParameters(window.location.href);
-        let userEmail = params.email;
-        
+    static loadProfile(userEmail) {
         if (userEmail !== undefined) {
             SDK.getUser(userEmail).then(profil => {
                 document.getElementById("pp").src = profil.picture;
@@ -48,8 +45,39 @@ export class Profile {
         }
     }
 
+    static loadFollowedPlaylist(userEmail) {
+        document.getElementById("playlists-container").hidden = true;
+        document.getElementById("spinner_playlist").hidden = false;
+
+        if (userEmail !== undefined && userEmail !== null) {
+            SDK.getFollowedPlaylist(userEmail).then(playlists => {
+                playlists.forEach(element => {
+                    Profile.playlistGenerator(element);
+                });
+
+                document.getElementById("playlists-container").hidden = false;
+                document.getElementById("spinner_playlist").hidden = true;
+            });
+        } else {
+            SDK.getUserProfile().then(profil => {
+                userEmail = profil.email;
+                SDK.getFollowedPlaylist(userEmail).then(playlists => {
+                    playlists.forEach(element => {
+                        Profile.playlistGenerator(element);
+                    });
+
+                    document.getElementById("playlists-container").hidden = false;
+                    document.getElementById("spinner_playlist").hidden = true;
+                });
+            })
+        }
+    }
+
     static loadUserPlaylist(userEmail) {
-        if (userEmail !== null) {
+        document.getElementById("playlists-container").hidden = true;
+        document.getElementById("spinner_playlist").hidden = false;
+
+        if (userEmail !== undefined && userEmail !== null) {
             SDK.getUserPlaylists(userEmail).then(playlists => {
                 playlists.forEach(element => {
                     Profile.playlistGenerator(element);
@@ -126,7 +154,7 @@ export class Profile {
         // 4th column, button
 
         let c4 = document.createElement("div");
-        c4.setAttribute("class", "col-2 row");
+        c4.setAttribute("class", "col-2");
 
         let butt = document.createElement("button");
         butt.setAttribute("type", "button");
@@ -151,5 +179,10 @@ export class Profile {
 
         // link the li to the ul
         ul.appendChild(li);
+    }
+
+    static getEmail() {
+        let params = SDK.getQueryParameters(window.location.href);
+        return params.email;
     }
 }

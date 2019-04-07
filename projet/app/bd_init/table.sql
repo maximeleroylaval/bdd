@@ -51,7 +51,7 @@ CREATE TABLE token (
 	PRIMARY KEY (token)
 );
 
-CREATE TABLE followed (
+CREATE TABLE followed_playlist (
 	id int NOT NULL AUTO_INCREMENT,
     user_email varchar(255) NOT NULL,
     playlist_id int NOT NULL,
