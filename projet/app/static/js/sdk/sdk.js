@@ -196,6 +196,20 @@ export class SDK {
             });
     }
 
+    static editTitle(name, url, title_id) {
+        const title = Title.newInstance(name, url);
+        return Request.Put("title/" + title_id, title.serialize())
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
+            });
+    }
+
     static getTitles() {
         return Request.Get("title")
             .catch(err => {
@@ -276,6 +290,19 @@ export class SDK {
                     throw response.message;
                 }
                 return new Commentary(response.data);
+            });
+    }
+
+    static deleteCommentary(commentary_id) {
+        return Request.Delete("commentary/" + commentary_id)
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
             });
     }
 
