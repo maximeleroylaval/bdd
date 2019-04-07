@@ -265,7 +265,7 @@ export class SDK {
             }
             let playlists = [];
             response.data.forEach(playlist => {
-                playlists.push(new Playlist(playlist));
+                playlists.push(playlist);
             });
             return playlists;
         });
@@ -316,5 +316,20 @@ export class SDK {
                 }
                 return new User(response.data);
             });
+    }
+
+    static getFriends(user_email) {
+        return Request.Get('user/' + user_email + '/friends').catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            let friend_ids = [];
+            response.data.forEach(friend_id => {
+                friend_ids.push(friend_id);
+            });
+            return friend_ids;
+        });
     }
 }

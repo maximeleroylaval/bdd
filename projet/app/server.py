@@ -396,8 +396,14 @@ def getUserPlaylists(email):
 @app.route('/user/<email>/followed_playlists', methods = ['GET'])
 @auth.login_required
 def getFollowedPlaylists(email):
-    playlists = db.session.query(FollowPlaylist).filter_by(user_email=email).all()
+    playlists = db.session.query(FollowedPlaylist).filter_by(user_email=email)
     return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)
+
+@app.route('/user/<email>/friends', methods = ['GET'])
+@auth.login_required
+def getFriends(email):
+    friends = db.session.query(FollowedUser).filter_by(user_email=email).all()
+    return JSONRequest.sendAnswer(Serializer.serialize_list(friends), 200)
 
 
 @app.route('/gender', methods = ['GET'])

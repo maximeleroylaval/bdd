@@ -1,14 +1,12 @@
 import { SDK } from './sdk/sdk';
 
-export class Profile {
+export class ProfileController {
     static loadProfile(userEmail) {
         if (userEmail !== undefined) {
             SDK.getUser(userEmail).then(profil => {
                 document.getElementById("pp").src = profil.picture;
                 document.getElementById("username").textContent = profil.name;
                 let d = new Date(profil.birthdate);
-                let day = (d.getDate() < 10 ? "0" + d.getDate() : d.getDate());
-                let month = ((d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1));
                 document.getElementById("birthdate").textContent = day + "/" + month + "/" + d.getFullYear();
                 document.getElementById("email").textContent = profil.email;
                 userEmail = profil.email;
@@ -18,9 +16,7 @@ export class Profile {
                     document.getElementById("gender").innerHTML = "<i class=\"fas fa-venus\" style='\"color: rose\";'></i>"
                 }
 
-                document.getElementById("spinner_profil_detail").hidden = true;
-                document.getElementById("profil_detail").hidden = false;
-                Profile.loadUserPlaylist(userEmail);
+                ProfileController.loadUserPlaylist(userEmail);
             });
         } else {
             SDK.getUserProfile().then(profil => {
@@ -37,55 +33,74 @@ export class Profile {
                 } else {
                     document.getElementById("gender").innerHTML = "<i class=\"fas fa-venus\" style='\"color: rose\";'></i>"
                 }
-
-                document.getElementById("spinner_profil_detail").hidden = true;
-                document.getElementById("profil_detail").hidden = false;
-                Profile.loadUserPlaylist(userEmail);
+                ProfileController.loadUserPlaylist(userEmail);
             });
         }
+        document.getElementById("spinner_profil_detail").hidden = true;
+        document.getElementById("profil_detail").hidden = false;
+        document.getElementById("playlists-container").hidden = false;
+        document.getElementById("spinner_playlist").hidden = true;
     }
 
     static loadFollowedPlaylist(userEmail) {
-        document.getElementById("playlists-container").hidden = true;
-        document.getElementById("spinner_playlist").hidden = false;
-
         if (userEmail !== undefined && userEmail !== null) {
             SDK.getFollowedPlaylist(userEmail).then(playlists => {
                 playlists.forEach(element => {
-                    Profile.playlistGenerator(element);
+                    SDK.getPlaylist(element.playlist_id).then(playlist => {
+                        ProfileController.playlistGenerator(playlist);
+                    })
                 });
 
-                document.getElementById("playlists-container").hidden = false;
-                document.getElementById("spinner_playlist").hidden = true;
             });
         } else {
             SDK.getUserProfile().then(profil => {
                 userEmail = profil.email;
                 SDK.getFollowedPlaylist(userEmail).then(playlists => {
                     playlists.forEach(element => {
-                        Profile.playlistGenerator(element);
+                        SDK.getPlaylist(element.playlist_id).then(playlist => {
+                            ProfileController.playlistGenerator(playlist);
+                        })
                     });
-
-                    document.getElementById("playlists-container").hidden = false;
-                    document.getElementById("spinner_playlist").hidden = true;
                 });
             })
         }
     }
 
     static loadUserPlaylist(userEmail) {
-        document.getElementById("playlists-container").hidden = true;
-        document.getElementById("spinner_playlist").hidden = false;
-
         if (userEmail !== undefined && userEmail !== null) {
             SDK.getUserPlaylists(userEmail).then(playlists => {
                 playlists.forEach(element => {
-                    Profile.playlistGenerator(element);
+                    ProfileController.playlistGenerator(element);
                 });
 
-                document.getElementById("playlists-container").hidden = false;
-                document.getElementById("spinner_playlist").hidden = true;
             });
+        } else {
+            SDK.getUserProfile().then(profil => {
+                userEmail = profil.email;
+                SDK.getUserPlaylists(userEmail).then(playlists => {
+                    playlists.forEach(element => {
+                        ProfileController.playlistGenerator(element);
+                    });
+                });
+            })
+        }
+    }
+
+    static getFriends(userEmail) {
+        if (userEmail !== undefined && userEmail !== null) {
+            SDK.getFriends(userEmail).then(friends => {
+                friends.forEach(element => {
+                });
+
+            });
+        } else {
+            SDK.getUserProfile().then(profil => {
+                userEmail = profil.email;
+                SDK.getFriends(userEmail).then(friends => {
+                    friends.forEach(element => {
+                    });
+                });
+            })
         }
     }
 
