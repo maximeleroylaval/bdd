@@ -226,7 +226,7 @@ class Title(db.Model):
     user_email = db.Column(db.String(255), db.ForeignKey('user.email'))
     playlist_id = db.Column(db.Integer, db.ForeignKey('playlist.id'))
 
-    def __init__(self, name, publication, url, user_email, playlist_id):
+    def __init__(self, name, url, user_email, playlist_id):
         self.name = name
         self.url = url
         self.user_email = user_email
@@ -386,7 +386,6 @@ def deleteUser(email):
 
     return JSONRequest.sendEmptyAnswer(200)
 
-
 @app.route('/user/<email>/playlists', methods = ['GET'])
 @auth.login_required
 def getUserPlaylists(email):
@@ -404,7 +403,6 @@ def getFollowedPlaylists(email):
 def getFriends(email):
     friends = db.session.query(FollowedUser).filter_by(user_email=email).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(friends), 200)
-
 
 @app.route('/gender', methods = ['GET'])
 @auth.login_required
@@ -425,6 +423,43 @@ def getPlaylist(id):
     if (playlist is None):
         return JSONRequest.sendError("Playlist with id " + id + " does not exist", 404)
     return JSONRequest.sendAnswer(playlist.serialize, 200)
+
+@app.route('/playlist/<id>', methods = ['PUT'])
+@auth.login_required
+def updatePlaylist(id):
+    content = JSONRequest.getJSON(request)
+    if (JSONRequest.checkFields(content, ['name', 'description', 'picture']) == False):
+        return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
+    try:
+        playlist = db.session.query(Playlist).filter_by(id=id).first()
+        if (playlist is None):
+            return JSONRequest.sendError("Playlist with id " + id + " does not exist", 404)
+        if (playlist.user_email != g.user_email):
+            return JSONRequest.sendError("You are not authorized to edit other user playlists", 401)
+        playlist.name = content['name']
+        playlist.description = content['description']
+        playlist.url = content['picture']
+        db.session.commit()
+    except IntegrityError as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    return JSONRequest.sendEmptyAnswer(200)
+
+@app.route('/playlist/<id>', methods = ['DELETE'])
+@auth.login_required
+def deletePlaylist(id):
+    try:
+        playlist = db.session.query(Playlist).filter_by(id=id).first()
+        if (playlist is None):
+            return JSONRequest.sendError("Playlist with id " + id + " does not exist", 404)
+        if (playlist.user_email != g.user_email):
+            return JSONRequest.sendError("You are not authorized to delete other user playlists", 401)
+        db.session.delete(playlist)
+        db.session.commit()
+    except IntegrityError as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    return JSONRequest.sendEmptyAnswer(200)
 
 @app.route('/playlist', methods = ['POST'])
 @auth.login_required
@@ -454,7 +489,7 @@ def getTitlesByPlaylist(id):
 @auth.login_required
 def addTitle(id):
     content = JSONRequest.getJSON(request)
-    if (JSONRequest.checkFields(content, ['name', 'publication', 'url']) == False):
+    if (JSONRequest.checkFields(content, ['name', 'url']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
         playlist = db.session.query(Playlist).filter_by(id=id).first()
@@ -462,7 +497,7 @@ def addTitle(id):
             return JSONRequest.sendError("Playlist with id " + id + " does not exist", 404)
         if (playlist.user_email != g.user_email):
             return JSONRequest.sendError("Adding a title on a playlist owned by " + playlist.user_email + " is not authorized", 401)
-        title = Title(content['name'], content['publication'], content['url'], g.user_email, id)
+        title = Title(content['name'], content['url'], g.user_email, id)
         db.session.add(title)
         db.session.commit()
     except (IntegrityError, InternalError) as error:

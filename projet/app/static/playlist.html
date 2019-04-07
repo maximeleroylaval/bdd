@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Playlist</title>
+        <title>SoundHub</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,12 +15,6 @@
                 <div class="content-block form-inline" id="playlist_header">
                 </div>
                 <hr>
-                <div class="title_add">
-                    <input id="name" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Nom" required="required">
-                    <input id="url" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Lien URL" required="required">
-                    <button id="add" type="button" class="btn btn-primary btn-block">Ajouter un nouveau titre</button>
-                    <hr>
-                </div>
                 <div id="titles" class="container" style="margin-bottom: 40px;">
                 </div>
             </div>
@@ -46,6 +40,10 @@
                 function loadPlaylistHeader(playlist_id) {
                     SDK.getPlaylist(playlist_id).then((playlist) => {
                         var divPlaylistHeader = document.getElementById("playlist_header");
+                        var pPicture = document.createElement("img");
+                        pPicture.classList.add("col-3");
+                        pPicture.setAttribute("style", "padding:2vh;");
+                        pPicture.src = playlist.picture;
                         var pName = document.createElement("h4");
                         pName.classList.add("col-2");
                         pName.setAttribute("style", "text-align:center;");
@@ -55,35 +53,68 @@
                         var pInnerDescription = document.createElement("p");
                         pInnerDescription.innerHTML = playlist.description;
                         pDescription.appendChild(pInnerDescription);
-                        var pDivFollow = document.createElement("div");
-                        pDivFollow.classList.add("col-12");
-                        pDivFollow.setAttribute("style", "padding-bottom:1vh;text-align:center;");
+                        var pDivOptions = document.createElement("div");
+                        pDivOptions.hidden = true;
+                        pDivOptions.classList.add("col-12");
+                        pDivOptions.setAttribute("style", "display: flex; justify-content: space-between;margin-bottom:2vh;")
                         var pFollow = document.createElement("button");
                         pFollow.type = "button";
                         pFollow.classList.add("btn");
                         pFollow.classList.add("btn-info");
-                        pFollow.classList.add("playlist");
-                        pFollow.setAttribute("style", "width:100%");
-                        pFollow.innerHTML = "Suivre";
+                        pFollow.innerHTML = "Suivre la playlist";
                         pFollow.hidden = true;
-                        pDivFollow.appendChild(pFollow);
-                        SDK.getUserProfile().then((user) => {
-                            if (user.email !== playlist.user_email)
-                                pFollow.hidden = false;
-                        });
                         pFollow.addEventListener('click', (e) => {
                             //SDK.followUser
                             //If succeed
                             //pFollow.hidden = true;
                         });
-                        var pPicture = document.createElement("img");
-                        pPicture.classList.add("col-3");
-                        pPicture.setAttribute("style", "padding:2vh;");
-                        pPicture.src = playlist.picture;
+                        var pAddTitle = document.createElement("button");
+                        pAddTitle.classList.add("btn");
+                        pAddTitle.classList.add("btn-primary");
+                        pAddTitle.addEventListener('click', (e) => {
+                            window.open("title_add.html?playlist_id=" + playlist_id, "_self");
+                        });
+                        pAddTitle.innerHTML = "Ajouter un titre";
+                        var pEditPlaylist = document.createElement("button");
+                        pEditPlaylist.classList.add("btn");
+                        pEditPlaylist.classList.add("btn-warning");
+                        pEditPlaylist.addEventListener('click', (e) => {
+                            window.open("playlist_edit.html?id=" + playlist_id, "_self");
+                        });
+                        pEditPlaylist.innerHTML = "Editer la playlist";
+                        var pDeletePlaylist = document.createElement("button");
+                        pDeletePlaylist.classList.add("btn");
+                        pDeletePlaylist.classList.add("btn-danger");
+                        pDeletePlaylist.addEventListener('click', (e) => {
+                            SDK.deletePlaylist(playlist_id).then(() => {
+                                window.open("index.html", "_self");
+                            }).catch((e) => {
+                                alert(e);
+                            });
+                        });
+                        pDeletePlaylist.innerHTML = "Supprimer la playlist";
+                        SDK.getUserProfile().then((user) => {
+                            if (user.email === playlist.user_email)
+                            {
+                                pFollow.hidden = true;
+                                pEditPlaylist.hidden = false;
+                                pDeletePlaylist.hidden = false;
+                            } else {
+                                pFollow.hidden = false;
+                                pEditPlaylist.hidden = true;
+                                pDeletePlaylist.hidden = true;
+                            }
+                            pDivOptions.hidden = false;
+                        });
+                        pDivOptions.appendChild(pFollow);
+                        pDivOptions.appendChild(pAddTitle);
+                        pDivOptions.appendChild(pEditPlaylist);
+                        pDivOptions.appendChild(pDeletePlaylist);
+
                         divPlaylistHeader.appendChild(pPicture);
                         divPlaylistHeader.appendChild(pName);
                         divPlaylistHeader.appendChild(pDescription);
-                        divPlaylistHeader.appendChild(pDivFollow);
+                        divPlaylistHeader.appendChild(pDivOptions);
                     }).catch((e) => {
                         alert(e);
                     });

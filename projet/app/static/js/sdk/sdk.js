@@ -122,6 +122,33 @@ export class SDK {
             });
     }
 
+    static editPlaylist(name, description, picture, playlist_id) {
+        const playlist = Playlist.newInstance(name, description, picture);
+        return Request.Put("playlist/" + playlist_id, playlist.serialize())
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
+            });
+    }
+
+    static deletePlaylist(playlist_id) {
+        return Request.Delete("playlist/" + playlist_id)
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
+            });
+    }
+
     static getPlaylist(playlist_id) {
         return Request.Get("playlist/" + playlist_id)
             .catch(err => {
@@ -154,8 +181,8 @@ export class SDK {
             });
     }
 
-    static addTitle(name, publication, url, playlist_id) {
-        const title = Title.newInstance(name, publication, url);
+    static addTitle(name, url, playlist_id) {
+        const title = Title.newInstance(name, url);
         return Request.Post("playlist/" + playlist_id + "/title", title.serialize())
             .catch(err => {
                 throw err;
