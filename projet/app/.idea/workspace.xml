@@ -3,13 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="97f2571c-4090-4c2d-bbc0-ceb1c2d91b22" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bd_init/table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/bd_init/table.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/playlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/playlist.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/title.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/title.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -37,13 +32,28 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/profile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
+            <state relative-caret-position="1827">
               <caret line="162" column="29" selection-start-line="162" selection-start-column="13" selection-end-line="162" selection-end-column="29" />
               <folding>
                 <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/playlist.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="629">
+              <caret line="37" column="74" lean-forward="true" selection-start-line="37" selection-start-column="74" selection-end-line="37" selection-end-column="74" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#input#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#input#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -81,8 +91,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="399" column="32" lean-forward="true" selection-start-line="399" selection-start-column="32" selection-end-line="399" selection-end-column="32" />
+            <state relative-caret-position="4638">
+              <caret line="507" column="21" selection-start-line="507" selection-start-column="21" selection-end-line="507" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -90,7 +100,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/profile.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="521">
+            <state relative-caret-position="1181">
               <caret line="97" selection-start-line="97" selection-end-line="97" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -154,8 +164,8 @@
         <option value="$PROJECT_DIR$/static/js/sdk/sdk.js" />
         <option value="$PROJECT_DIR$/static/index.html" />
         <option value="$PROJECT_DIR$/static/js/profile.js" />
-        <option value="$PROJECT_DIR$/server.py" />
         <option value="$PROJECT_DIR$/static/profile.html" />
+        <option value="$PROJECT_DIR$/server.py" />
       </list>
     </option>
   </component>
@@ -257,12 +267,12 @@
       <workItem from="1554421778571" duration="1957000" />
       <workItem from="1554495978725" duration="11388000" />
       <workItem from="1554569959728" duration="1470000" />
-      <workItem from="1554574836471" duration="18788000" />
+      <workItem from="1554574836471" duration="20190000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36005000" />
+    <option name="totallyTimeSpent" value="37407000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -340,26 +350,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/playlist.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="37" column="74" lean-forward="true" selection-start-line="37" selection-start-column="74" selection-end-line="37" selection-end-column="74" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="399" column="32" lean-forward="true" selection-start-line="399" selection-start-column="32" selection-end-line="399" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="793">
@@ -383,9 +373,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4638">
+          <caret line="507" column="21" selection-start-line="507" selection-start-column="21" selection-end-line="507" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/profile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
+        <state relative-caret-position="1827">
           <caret line="162" column="29" selection-start-line="162" selection-start-column="13" selection-end-line="162" selection-end-column="29" />
           <folding>
             <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
@@ -396,9 +393,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/static/playlist.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="37" column="74" lean-forward="true" selection-start-line="37" selection-start-column="74" selection-end-line="37" selection-end-column="74" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/profile.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
+        <state relative-caret-position="1181">
           <caret line="97" selection-start-line="97" selection-end-line="97" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
