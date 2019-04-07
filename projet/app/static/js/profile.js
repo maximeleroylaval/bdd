@@ -2,8 +2,6 @@ import { SDK } from './sdk/sdk';
 
 export class Profile {
     static loadProfile(userEmail) {
-
-        
         if (userEmail !== undefined) {
             SDK.getUser(userEmail).then(profil => {
                 document.getElementById("pp").src = profil.picture;
@@ -51,7 +49,7 @@ export class Profile {
         document.getElementById("playlists-container").hidden = true;
         document.getElementById("spinner_playlist").hidden = false;
 
-        if (userEmail !== null) {
+        if (userEmail !== undefined && userEmail !== null) {
             SDK.getFollowedPlaylist(userEmail).then(playlists => {
                 playlists.forEach(element => {
                     Profile.playlistGenerator(element);
@@ -60,6 +58,18 @@ export class Profile {
                 document.getElementById("playlists-container").hidden = false;
                 document.getElementById("spinner_playlist").hidden = true;
             });
+        } else {
+            SDK.getUserProfile().then(profil => {
+                userEmail = profil.email;
+                SDK.getFollowedPlaylist(userEmail).then(playlists => {
+                    playlists.forEach(element => {
+                        Profile.playlistGenerator(element);
+                    });
+
+                    document.getElementById("playlists-container").hidden = false;
+                    document.getElementById("spinner_playlist").hidden = true;
+                });
+            })
         }
     }
 
@@ -67,7 +77,7 @@ export class Profile {
         document.getElementById("playlists-container").hidden = true;
         document.getElementById("spinner_playlist").hidden = false;
 
-        if (userEmail !== null) {
+        if (userEmail !== undefined && userEmail !== null) {
             SDK.getUserPlaylists(userEmail).then(playlists => {
                 playlists.forEach(element => {
                     Profile.playlistGenerator(element);
@@ -169,5 +179,10 @@ export class Profile {
 
         // link the li to the ul
         ul.appendChild(li);
+    }
+
+    static getEmail() {
+        let params = SDK.getQueryParameters(window.location.href);
+        return params.email;
     }
 }

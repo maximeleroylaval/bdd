@@ -11,7 +11,6 @@
     <body>
         <div w3-include-html="navbar.html"></div>
         <div class="body">
-            <!-- a déplacer -->
             <p class="text-center playlist_title">Playlists</p>
             <div class="playlist_add container base">
                     <div class="row justify-content-md-center form-base">
@@ -39,16 +38,7 @@
                     </div>
                     <hr>
             </div>
-            <!-- fin -->
-            <div class="container" id="spinner_playlist" style="margin-top: 100px">
-                <div class="row">
-                    <div class="col-md-6"></div>
-                    <div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
-            </div>
-            <div id="playlists" class="container" hidden>
+            <div id="playlists" class="container">
                 <!-- Mes playlists -->
                 <ul class="list-group" id="playlists-container">
                 </ul>
@@ -76,8 +66,6 @@
                         SDK.getPlaylists().then((playlists) => {
                             playlists.forEach(playlist => {
                                 m.Profile.playlistGenerator(playlist);
-                                document.getElementById("spinner_playlist").hidden = true;
-                                document.getElementById("playlists").hidden = false;
                             });
                         }).catch((e) => {
                             alert(e);

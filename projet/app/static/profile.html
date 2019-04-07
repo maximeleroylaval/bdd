@@ -44,11 +44,11 @@
         </div>
         <div class="container base">
             <ul class="nav nav-tabs">
-                <li class="nav-item" id="my_playlists">
-                    <a class="nav-link active" href="#">Mes playlists</a>
+                <li class="nav-item">
+                    <a class="nav-link active" id="my_playlists" href="#">Mes playlists</a>
                 </li>
-                <li class="nav-item" id="followed_playlist">
-                    <a class="nav-link" href="#">Playlists suivies</a>
+                <li class="nav-item">
+                    <a class="nav-link" id="followed_playlists" href="#">Playlists suivies</a>
                 </li>
             </ul>
         </div>
@@ -79,22 +79,28 @@
         w3IncludeHTML();
 
         System.import("js/profile").then((m) => {
-            let params = SDK.getQueryParameters(window.location.href);
-            let userEmail = params.email;
-            m.Profile.loadProfile(userEmail);
 
-            let playlist = document.getElementById("my_playlist");
-            playlist.addEventListener('click', (e) => {
-                m.Profile.loadUserPlaylist(userEmail);
+            let email = m.Profile.getEmail();
+            m.Profile.loadProfile(email);
+
+            let playlist = document.getElementById("my_playlists");
+            let followed = document.getElementById("followed_playlists");
+
+            playlist.addEventListener('click', () => {
+                m.Profile.loadUserPlaylist(email);
                 playlist.removeAttribute("class");
-                playlist.setAttribute("class", "nav-link active")
+                playlist.setAttribute("class", "nav-link active");
+                followed.removeAttribute("class");
+                followed.setAttribute("class", "nav-link");
             });
 
-            let followed = document.getElementById("followed_playlist");
-            followed.addEventListener('click', (e) => {
-                m.Profile.loadFollowedPlaylist(userEmail);
+            followed.addEventListener('click', () => {
+                m.Profile.loadFollowedPlaylist(email);
+                playlist.removeAttribute("class");
+                playlist.setAttribute("class", "nav-link");
                 followed.removeAttribute("class");
-                followed.setAttribute("class", "nav-link active")
+                followed.setAttribute("class", "nav-link active");
+
             });
         });
     </script>
