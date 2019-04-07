@@ -1,9 +1,8 @@
 import { SDK } from './sdk/sdk';
 
 export class Profile {
-    static loadProfile() {
-        let params = SDK.getQueryParameters(window.location.href);
-        let userEmail = params.email;
+    static loadProfile(userEmail) {
+
         
         if (userEmail !== undefined) {
             SDK.getUser(userEmail).then(profil => {
@@ -48,7 +47,26 @@ export class Profile {
         }
     }
 
+    static loadFollowedPlaylist(userEmail) {
+        document.getElementById("playlists-container").hidden = true;
+        document.getElementById("spinner_playlist").hidden = false;
+
+        if (userEmail !== null) {
+            SDK.getFollowedPlaylist(userEmail).then(playlists => {
+                playlists.forEach(element => {
+                    Profile.playlistGenerator(element);
+                });
+
+                document.getElementById("playlists-container").hidden = false;
+                document.getElementById("spinner_playlist").hidden = true;
+            });
+        }
+    }
+
     static loadUserPlaylist(userEmail) {
+        document.getElementById("playlists-container").hidden = true;
+        document.getElementById("spinner_playlist").hidden = false;
+
         if (userEmail !== null) {
             SDK.getUserPlaylists(userEmail).then(playlists => {
                 playlists.forEach(element => {
