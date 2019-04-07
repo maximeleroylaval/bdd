@@ -126,7 +126,7 @@ export class Profile {
         // 4th column, button
 
         let c4 = document.createElement("div");
-        c4.setAttribute("class", "col-2");
+        c4.setAttribute("class", "col-2 row");
 
         let butt = document.createElement("button");
         butt.setAttribute("type", "button");

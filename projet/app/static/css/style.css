@@ -1,4 +1,5 @@
 .body {
+    margin: 10px;
 }
 
 .login-form {
@@ -109,7 +110,6 @@
 }
 
 .playlist-list-item {
-    height: 200px;
     overflow: auto;
 }
 

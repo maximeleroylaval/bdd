@@ -21,10 +21,10 @@
                 </div>
                 <div class="title_commentary_add form-inline">
                     <div class="mb-2 col-9">
-                        <input id="description" type="text" class="form-control" style="margin-right: 14px;width:100%;" placeholder="Description" required="required">
+                        <input id="description" type="text" class="form-control" style="margin-right: 14px;width:100%;" placeholder="Nouveau commentaire" required="required">
                     </div>
                     <div class="mb-2 col-3">
-                        <button id="add" type="button" class="btn btn-primary" style="width:100%">Add a new commentary</button>
+                        <button id="add" type="button" class="btn btn-primary" style="width:100%">Envoyer</button>
                     </div>
                 </div>
                 <hr>
@@ -52,7 +52,7 @@
 
                 function formatDateToHuman(date) {
                     var date = new Date(date);
-                    return date.toDateString();
+                    return "Ajoutée le " + date.toDateString();
                 }
 
                 function convertToYoutube(url) {
@@ -66,7 +66,7 @@
                         divCommentaries.innerHTML = "";
                         var pTitle = document.createElement("p")
                         pTitle.classList.add("commentary_title");
-                        pTitle.innerHTML = "Commentaries";
+                        pTitle.innerHTML = "Commentaires";
                         divCommentaries.appendChild(pTitle);
                         var pInnerCommentary = document.createElement("div");
                         pInnerCommentary.classList.add("inner_commentary");
@@ -77,7 +77,7 @@
                             pUser.innerHTML = commentary.user_email;
                             var pPublication = document.createElement("p");
                             pPublication.classList.add("commentary_publication");
-                            pPublication.innerHTML = "Added " + formatDateToHuman(commentary.publication);
+                            pPublication.innerHTML = formatDateToHuman(commentary.publication);
                             var pCommentary = document.createElement("p");
                             pCommentary.classList.add("title_commentary");
                             pCommentary.innerHTML = commentary.description;
@@ -103,7 +103,7 @@
                         pName.innerHTML = user.name;
                         var pPublication = document.createElement("p");
                         pPublication.classList.add("user_publication");
-                        pPublication.innerHTML = "Added " + formatDateToHuman(title.publication);                        
+                        pPublication.innerHTML = formatDateToHuman(title.publication);                        
                         divUser.appendChild(pPicture);
                         divUser.appendChild(pName);
                         divUser.appendChild(pPublication);

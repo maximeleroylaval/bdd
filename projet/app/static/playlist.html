@@ -15,9 +15,9 @@
             </div>
             <hr>
             <div class="title_add">
-                <input id="name" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Name" required="required">
-                <input id="url" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Url" required="required">
-                <button id="add" type="button" class="btn btn-primary btn-block">Add a new title</button>
+                <input id="name" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Nom" required="required">
+                <input id="url" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Lien URL" required="required">
+                <button id="add" type="button" class="btn btn-primary btn-block">Ajouter un nouveau titre</button>
                 <hr>
             </div>
             <div id="titles" class="container" style="margin-bottom: 40px;">
@@ -52,7 +52,7 @@
                         pFollow.classList.add("btn-info");
                         pFollow.classList.add("playlist");
                         pFollow.style = "margin-top: 8px;";
-                        pFollow.innerHTML = "Follow";
+                        pFollow.innerHTML = "Suivre";
                         pFollow.hidden = true;
                         SDK.getUserProfile().then((user) => {
                             if (user.email !== playlist.user_email)
@@ -80,7 +80,7 @@
                         var divTitles = document.getElementById("titles");
                         divTitles.innerHTML = "";
                         var divName = document.createElement("h4");
-                        divName.innerHTML = "Songs";
+                        divName.innerHTML = "Titres";
                         divName.style = "margin-bottom:30px";
                         divTitles.appendChild(divName);
                         titles.forEach(title => {
