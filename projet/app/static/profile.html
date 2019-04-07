@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <div class="content-block row" id="profil_detail" hidden>
+            <div class="content-block row" id="profil_detail" style="margin-bottom: 4vh;" hidden>
                 <div class="row">
                     <div class="col-3 align-self-center">
                         <img class="img-fluid rounded" id="pp" src="https://via.placeholder.com/250" style="margin:2vh">
@@ -43,83 +43,41 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container base">
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" id="my_playlists" href="#">Mes playlists</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="followed_playlists" href="#">Playlists suivies</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="friends" href="#">Mes amis</a>
-                </li>
-            </ul>
-        </div>
-        <div class="container" id="spinner_playlist" style="margin-top: 100px">
             <div class="row">
-                <div class="col-md-6"></div>
-                <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <!-- playlists -->
-            <ul class="list-group" id="playlists-container" hidden>
-            </ul>
-            <!-- playlists -->
-
-            <!-- friends -->
-            <div class="container" id="friends-container" hidden>
-                <div class="row align-items-stretch">
-                        <div class="card">
-                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="my_playlists" href="#">Mes playlists</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="followed_playlists" href="#">Playlists suivies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="friends" href="#">Mes amis</a>
+                    </li>
+                </ul>
+            </div>       
+            <div id="spinner_playlist" style="margin-top: 100px">
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
                         </div>
-                        <div class="card">
-                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
                     </div>
                 </div>
+                <div>
+                    <!-- playlists -->
+                    <ul class="list-group" id="playlists-container" hidden>
+                    </ul>
+                    <!-- playlists -->
+        
+                    <!-- friends -->
+                    <div class="container" id="friends-container" hidden>
+                        <div class="row align-items-stretch">
+                        </div>
+                    </div>
+                    <!-- friends -->
+                </div>
             </div>
-            <!-- friends -->
-        </div>
     </div>
 
     <!-- External libs -->

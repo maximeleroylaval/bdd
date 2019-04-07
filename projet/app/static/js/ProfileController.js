@@ -52,7 +52,6 @@ export class ProfileController {
                         ProfileController.playlistGenerator(playlist);
                     })
                 });
-
             });
         } else {
             SDK.getUserProfile().then(profil => {
