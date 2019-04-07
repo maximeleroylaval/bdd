@@ -25,21 +25,32 @@
                 </div>
                 <div class="row justify-content-md-center form-base">
                     <div class="col-10 form-input">
-                        <h5 class="label-profile">Description</h5>
+                        <h5 class="label-profile" style="text-align: center;">Description</h5>
                         <textarea id="description" type="text" class="form-control"
                             style="margin-bottom: 10px; min-height: 26vh;" placeholder="Description"
                             required="required"> </textarea>
                     </div>
                 </div>
                 <div class="row justify-content-md-center form-base">
-                    <div class="col-10 form-input">
+                    <div class="col-8 form-input">
                         <h5 class="label-profile">URL de l'image</h5>
                         <input id="picture" type="text" class="form-control" style="margin-bottom: 10px"
                             placeholder="URL de l'image">
                     </div>
+                    <div class="col-2 form-input">
+                        <button type="button" class="btn btn-outline-info" style="width: 100%; height: 100%" id="preview">Prévisualiser</button>
+                    </div>
+                </div>
+                <div class="row justify-content-md-center form-base" id="img-preview-container" hidden>
+                    <div class="col-12 form-input">
+                        <h5 class="label-profile" style="text-align:center;">Prévisualisation de l'image</h5>
+                        <div class="row justify-content-md-center form-base">
+                            <img class="img-fluid" src="https://via.placeholder.com/3000" id="imgPreview" style="max-height:30vh;"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="row justify-content-md-center form-base">
-                    <div class="col-3 form-input">
+                    <div class="col-12 form-input" style="text-align: center;">
                         <button id="add" type="button" class="btn btn-outline-success" style="min-width: 250px">Mettre à jour la playlist</button>
                     </div>
                 </div>
@@ -83,6 +94,18 @@
                 alert(e);
             });
 
+            document.getElementById("preview").addEventListener('click', () => {
+                if ( document.getElementById("picture").value !== null &&
+                    document.getElementById("picture").value !== "" &&
+                    document.getElementById("picture").value !== undefined) {
+                    document.getElementById("img-preview-container").hidden = true;
+                    document.getElementById("imgPreview").src = document.getElementById("picture").value;
+                    document.getElementById("img-preview-container").hidden = false;
+                    document.getElementById("picture").className = "form-control";
+                } else {
+                    document.getElementById("picture").className += " is-invalid";
+                }
+            });
         });
     </script>
 </body>

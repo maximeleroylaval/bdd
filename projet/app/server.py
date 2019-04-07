@@ -438,7 +438,7 @@ def updatePlaylist(id):
             return JSONRequest.sendError("You are not authorized to edit other user playlists", 403)
         playlist.name = content['name']
         playlist.description = content['description']
-        playlist.url = content['picture']
+        playlist.picture = content['picture']
         db.session.commit()
     except IntegrityError as error:
         return JSONRequest.sendError(error.args[0], 500)
