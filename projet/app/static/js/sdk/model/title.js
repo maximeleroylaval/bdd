@@ -4,10 +4,9 @@ export class Title {
             this.deserialize(result)
     }
 
-    static newInstance(name, publication, url) {
+    static newInstance(name, url) {
         const title = new Title();
         title.name = name;
-        title.publication = publication;
         title.url = url;
         return title;
     }

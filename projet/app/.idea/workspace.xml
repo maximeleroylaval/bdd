@@ -2,7 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="97f2571c-4090-4c2d-bbc0-ceb1c2d91b22" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/static/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/profile.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/playlist_edit.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/title_add.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bd_init/table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/bd_init/table.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/create_playlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/playlist_add.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/sdk/model/title.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/sdk/model/title.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/sdk/sdk.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/sdk/sdk.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/sdk/tools/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/sdk/tools/request.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/navbar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/playlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/playlist.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,25 +27,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/sdk/sdk.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1156">
+            <state relative-caret-position="748">
               <caret line="110" column="41" lean-forward="true" selection-start-line="110" selection-start-column="41" selection-end-line="110" selection-end-column="41" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/create_playlist.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="77" column="56" selection-start-line="77" selection-start-column="56" selection-end-line="77" selection-end-column="56" />
-              <folding>
-                <element signature="n#style#0;n#button#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#img#0;n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#4;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#0;n#div#4;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -57,7 +51,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/edit_profile.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="476">
@@ -72,11 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/navbar.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="63" lean-forward="true" selection-start-line="19" selection-start-column="63" selection-end-line="19" selection-end-column="63" />
+            <state relative-caret-position="340">
+              <caret line="20" column="92" lean-forward="true" selection-start-line="20" selection-start-column="92" selection-end-line="20" selection-end-column="92" />
             </state>
           </provider>
         </entry>
@@ -126,8 +120,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="398" column="84" lean-forward="true" selection-start-line="398" selection-start-column="84" selection-end-line="398" selection-end-column="84" />
+            <state relative-caret-position="952">
+              <caret line="397" column="84" lean-forward="true" selection-start-line="397" selection-start-column="84" selection-end-line="397" selection-end-column="84" />
             </state>
           </provider>
         </entry>
@@ -179,10 +173,10 @@
         <option value="$PROJECT_DIR$/static/index.html" />
         <option value="$PROJECT_DIR$/server.py" />
         <option value="$PROJECT_DIR$/static/js/ProfileController.js" />
-        <option value="$PROJECT_DIR$/static/navbar.html" />
         <option value="$PROJECT_DIR$/static/edit_user.html" />
         <option value="$PROJECT_DIR$/static/profile.html" />
         <option value="$PROJECT_DIR$/static/edit_profile.html" />
+        <option value="$PROJECT_DIR$/static/navbar.html" />
       </list>
     </option>
   </component>
@@ -263,12 +257,12 @@
       <workItem from="1554495978725" duration="11388000" />
       <workItem from="1554569959728" duration="1470000" />
       <workItem from="1554574836471" duration="30566000" />
-      <workItem from="1554660068713" duration="12997000" />
+      <workItem from="1554660068713" duration="13239000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60780000" />
+    <option name="totallyTimeSpent" value="61022000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -378,8 +372,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="398" column="84" lean-forward="true" selection-start-line="398" selection-start-column="84" selection-end-line="398" selection-end-column="84" />
+        <state relative-caret-position="952">
+          <caret line="397" column="84" lean-forward="true" selection-start-line="397" selection-start-column="84" selection-end-line="397" selection-end-column="84" />
         </state>
       </provider>
     </entry>
@@ -399,23 +393,6 @@
             <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/navbar.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="63" lean-forward="true" selection-start-line="19" selection-start-column="63" selection-end-line="19" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/sdk/sdk.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="110" column="41" lean-forward="true" selection-start-line="110" selection-start-column="41" selection-end-line="110" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -456,6 +433,23 @@
             <element signature="n#style#0;n#div#4;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#div#4;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/sdk/sdk.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="748">
+          <caret line="110" column="41" lean-forward="true" selection-start-line="110" selection-start-column="41" selection-end-line="110" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/navbar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="92" lean-forward="true" selection-start-line="20" selection-start-column="92" selection-end-line="20" selection-end-column="92" />
         </state>
       </provider>
     </entry>

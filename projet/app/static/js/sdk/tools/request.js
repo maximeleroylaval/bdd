@@ -57,7 +57,7 @@ export class Request {
         }).then(res => res.json())
     }
 
-    static Delete(url) {
+    static Delete(route) {
         const header = Request.addTokenToHeader(new Headers());
 
         return fetch(Request.BuildURL(route), {

@@ -12,7 +12,7 @@ CREATE TABLE commentary (
 CREATE TABLE title (
 	id int NOT NULL AUTO_INCREMENT,
 	name varchar(255) NOT NULL,
-	url varchar(512) NOT NULL UNIQUE,
+	url varchar(512) NOT NULL,
 	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	user_email varchar(255) NOT NULL,
 	playlist_id int NOT NULL,
