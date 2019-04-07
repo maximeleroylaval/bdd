@@ -399,6 +399,17 @@ export class SDK {
             });
     }
 
+    static editUser(user) {
+        return Request.Put('profile', user.serialize()).catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            return user;
+        });
+    }
+
     static getFriends(user_email) {
         return Request.Get('user/' + user_email + '/friends').catch(err => {
             throw err;

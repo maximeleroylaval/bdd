@@ -14,7 +14,7 @@ from pymysql.err import MySQLError
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@localhost/soundhub'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@db/soundhub'
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 auth = HTTPTokenAuth(scheme='Bearer')
@@ -364,6 +364,7 @@ def updateUserProfile():
             user.password = content['password']
         user.birthdate = content['birthdate']
         user.gender_name = content['gender_name']
+        user.picture = content["picture"]
         db.session.commit()
     except IntegrityError as error:
         return JSONRequest.sendError(error.args[0], 500)
