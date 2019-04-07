@@ -271,6 +271,8 @@ export class SDK {
             throw err;
         }).then(response => {
             if (response.message !== '') {
+                if (response.code == 401)
+                    window.open("login.html", "_self");
                 throw response.message;
             }
             let playlists = [];
@@ -286,6 +288,8 @@ export class SDK {
             throw err;
         }).then(response => {
             if (response.message !== '') {
+                if (response.code == 401)
+                    window.open("login.html", "_self");
                 throw response.message;
             }
             let playlists = [];

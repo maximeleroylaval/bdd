@@ -109,7 +109,7 @@ class Auth():
 
     @auth.error_handler
     def auth_error():
-        return JSONRequest.sendError("Unauthorized Access (invalid token)", 401)
+        return JSONRequest.sendError("Unauthorized Access", 401)
 
     # Try to connect to the database
     @staticmethod

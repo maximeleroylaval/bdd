@@ -5,12 +5,13 @@ body {
 .body {
     height: 92vh;
     padding: 2vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .login-form {
-    width: 340px;
-    margin: 50px auto;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 14vh;
 }
 
 .playlist {
