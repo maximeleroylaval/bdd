@@ -1,53 +1,79 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>SoundHub</title>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/style.css"/>
-    </head>
-    <body>
-        <div w3-include-html="navbar.html"></div>
-        <div class="body">
-            <div class="container">
-                <div class="title_add">
-                    <input id="name" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Nom" required="required">
-                    <input id="url" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Lien URL" required="required">
-                    <button id="add" type="button" class="btn btn-primary btn-block">Ajouter un nouveau titre</button>
+
+<head>
+    <title>SoundHub</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <div w3-include-html="navbar.html"></div>
+    <div class="body">
+        <div class="container">
+            <div class="playlist_add">
+                <div class="row justify-content-md-center form-base">
+                    <div class="col-6">
+                        <h5 class="label-profile" style="text-align: center">Nom</h5>
+                        <input id="name" type="text" class="form-control" style="margin-bottom: 4px; text-align:center;" placeholder="Nom"
+                        required="required">
+                    </div>
+                </div>
+                <div class="row justify-content-md-center form-base">
+                    <div class="col-10 form-input">
+                        <h5 class="label-profile" style="text-align:center;">URL de l'image</h5>
+                        <input id="url" type="text" class="form-control" style="margin-bottom: 4px;text-align:center;" placeholder="Lien URL"
+                        required="required">
+                    </div>
+                </div>
+                <div class="row justify-content-md-center form-base">
+                    <div class="col-3 form-input">
+                        <button id="add" type="button" class="btn btn-outline-success" style="min-width: 250px">Ajouter un nouveau titre</button>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- External libs -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="http://www.w3schools.com/lib/w3data.js"></script>
-        <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
-        <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
-        <script>
-            w3IncludeHTML();
-            System.import("js/sdk/sdk").then((m) => {
-                const SDK = m.SDK;
-                const params = SDK.getQueryParameters(window.location.href);
-                const playlist_id = params.playlist_id;
+    <!-- External libs -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="http://www.w3schools.com/lib/w3data.js"></script>
+    <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
+    <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
+    <script>
+        w3IncludeHTML();
+        System.import("js/sdk/sdk").then((m) => {
+            const SDK = m.SDK;
+            const params = SDK.getQueryParameters(window.location.href);
+            const playlist_id = params.playlist_id;
 
-                document.getElementById("add").addEventListener('click', (e) => {
-                    var name = document.getElementById("name").value;
-                    var url = document.getElementById("url").value;
-                    SDK.addTitle(name, url, playlist_id).then((title) => {
-                        window.open("playlist.html?id=" + playlist_id, "_self");
-                    }).catch((e) => {
-                        alert(e);
-                    });
-                    e.preventDefault();
+            document.getElementById("add").addEventListener('click', (e) => {
+                var name = document.getElementById("name").value;
+                var url = document.getElementById("url").value;
+                SDK.addTitle(name, url, playlist_id).then((title) => {
+                    window.open("playlist.html?id=" + playlist_id, "_self");
+                }).catch((e) => {
+                    alert(e);
                 });
+                e.preventDefault();
             });
-        </script>
-    </body>
-    <footer>
+        });
+    </script>
+</body>
+<footer>
 
-    </footer>
+</footer>
+
 </html>

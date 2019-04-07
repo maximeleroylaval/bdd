@@ -298,7 +298,7 @@ def loginUser():
     try:
         user = db.session.query(User).filter_by(email=content['email'], password=content['password']).first()
         if (user is None):
-            return JSONRequest.sendError("Email and password combinaison does not match", 401)
+            return JSONRequest.sendError("Email and password combinaison does not match", 403)
         token = Token(uuid.uuid4().__str__(), user.email)
         db.session.add(token)
         db.session.commit()
@@ -373,7 +373,7 @@ def updateUserProfile():
 @auth.login_required
 def deleteUser(email):
     if (g.user_email != email):
-        return JSONRequest.sendError("Delete on user email " + email + " is not authorized", 401)
+        return JSONRequest.sendError("Delete on user email " + email + " is not authorized", 403)
 
     try:
         user = db.session.query(User).filter_by(email=email).first()
@@ -435,7 +435,7 @@ def updatePlaylist(id):
         if (playlist is None):
             return JSONRequest.sendError("Playlist with id " + id + " does not exist", 404)
         if (playlist.user_email != g.user_email):
-            return JSONRequest.sendError("You are not authorized to edit other user playlists", 401)
+            return JSONRequest.sendError("You are not authorized to edit other user playlists", 403)
         playlist.name = content['name']
         playlist.description = content['description']
         playlist.url = content['picture']
@@ -453,7 +453,7 @@ def deletePlaylist(id):
         if (playlist is None):
             return JSONRequest.sendError("Playlist with id " + id + " does not exist", 404)
         if (playlist.user_email != g.user_email):
-            return JSONRequest.sendError("You are not authorized to delete other user playlists", 401)
+            return JSONRequest.sendError("You are not authorized to delete other user playlists", 403)
         db.session.delete(playlist)
         db.session.commit()
     except IntegrityError as error:
@@ -496,7 +496,7 @@ def addTitle(id):
         if (playlist is None):
             return JSONRequest.sendError("Playlist with id " + id + " does not exist", 404)
         if (playlist.user_email != g.user_email):
-            return JSONRequest.sendError("Adding a title on a playlist owned by " + playlist.user_email + " is not authorized", 401)
+            return JSONRequest.sendError("Adding a title on a playlist owned by " + playlist.user_email + " is not authorized", 403)
         title = Title(content['name'], content['url'], g.user_email, id)
         db.session.add(title)
         db.session.commit()
