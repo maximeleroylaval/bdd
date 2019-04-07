@@ -17,8 +17,6 @@ export class ProfileController {
                 } else {
                     document.getElementById("gender").innerHTML = "<i class=\"fas fa-venus\" style='\"color: rose\";'></i>"
                 }
-
-                ProfileController.loadUserPlaylist(userEmail);
             });
         } else {
             SDK.getUserProfile().then(profil => {
@@ -35,13 +33,8 @@ export class ProfileController {
                 } else {
                     document.getElementById("gender").innerHTML = "<i class=\"fas fa-venus\" style='\"color: rose\";'></i>"
                 }
-                ProfileController.loadUserPlaylist(userEmail);
             });
         }
-        document.getElementById("spinner_profil_detail").hidden = true;
-        document.getElementById("profil_detail").hidden = false;
-        document.getElementById("playlists-container").hidden = false;
-        document.getElementById("spinner_playlist").hidden = true;
     }
 
     static loadFollowedPlaylist(userEmail) {
