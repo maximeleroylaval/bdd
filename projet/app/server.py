@@ -353,14 +353,15 @@ def getUserProfile():
 @auth.login_required
 def updateUserProfile():
     content = JSONRequest.getJSON(request)
-    if (JSONRequest.checkFields(content, ['name', 'password', 'birthdate', 'gender_name']) == False):
+    if (JSONRequest.checkFields(content, ['name', 'birthdate', 'gender_name']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
         user = db.session.query(User).filter_by(email=g.user_email).first()
         if (user is None):
             return JSONRequest.sendError("User with email " + g.user_email + " does not exist", 404)
         user.name = content['name']
-        user.password = content['password']
+        if ('password' in content):
+            user.password = content['password']
         user.birthdate = content['birthdate']
         user.gender_name = content['gender_name']
         db.session.commit()
