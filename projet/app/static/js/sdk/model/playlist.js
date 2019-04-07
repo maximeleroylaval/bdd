@@ -7,7 +7,7 @@ export class Playlist {
     static newInstance(name, description, picture) {
         const playlist = new Playlist();
         playlist.name = name;
-        playlist.descritpion = description;
+        playlist.description = description;
         playlist.picture = picture;
         return playlist;
     }

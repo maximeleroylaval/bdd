@@ -430,7 +430,7 @@ def getPlaylist(id):
 @auth.login_required
 def addPlaylist():
     content = JSONRequest.getJSON(request)
-    if (JSONRequest.checkFields(content, ['name', 'description', 'picture']) == False):
+    if (JSONRequest.checkFields(content, ['name']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
         if ('picture' not in content):
