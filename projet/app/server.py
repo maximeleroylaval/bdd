@@ -496,8 +496,6 @@ def addTitle(id):
         playlist = db.session.query(Playlist).filter_by(id=id).first()
         if (playlist is None):
             return JSONRequest.sendError("Playlist with id " + id + " does not exist", 404)
-        if (playlist.user_email != g.user_email):
-            return JSONRequest.sendError("Adding a title on a playlist owned by " + playlist.user_email + " is not authorized", 403)
         title = Title(content['name'], content['url'], g.user_email, id)
         db.session.add(title)
         db.session.commit()
@@ -535,6 +533,25 @@ def updateTitle(id):
             return JSONRequest.sendError("You are not authorized to edit other user titles", 403)
         title.name = content['name']
         title.url = content['url']
+        db.session.commit()
+    except IntegrityError as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    return JSONRequest.sendEmptyAnswer(200)
+
+@app.route('/title/<id>', methods = ['DELETE'])
+@auth.login_required
+def deleteTitle(id):
+    try:
+        title = db.session.query(Title).filter_by(id=id).first()
+        if (title is None):
+            return JSONRequest.sendError("Title with id " + id + " does not exist", 404)
+        playlist = db.session.query(Playlist).filter_by(id=title.playlist_id).first()
+        if (playlist is None):
+            return JSONRequest.sendError("Title with id " + id + " is not associated to any playlist", 404)
+        if (title.user_email != g.user_email and playlist.user_email != g.user_email):
+            return JSONRequest.sendError("You are not authorized to delete other user titles", 403)
+        db.session.delete(title)
         db.session.commit()
     except IntegrityError as error:
         return JSONRequest.sendError(error.args[0], 500)

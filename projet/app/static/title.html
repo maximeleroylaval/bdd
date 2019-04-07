@@ -18,9 +18,12 @@
             <div id="url" class="title_video" allowfullscreen>
             </div>
             <div class="title_description">
-                <div id="title_options" style="display: flex;height:6vh;margin-top:1vh;margin-bottom:3vh;" hidden>
-                    <p id="name" class="title_name col-10" type="text" placeholder="Name">Title</p>
-                    <button id="title_edit" type="button" class="btn btn-warning col-2" hidden>Editer</button>
+                <div id="title_header" style="display: flex;height:6vh;margin-top:1vh;margin-bottom:3vh;" hidden>
+                    <p id="name" class="title_name col-9" type="text" placeholder="Name">Title</p>
+                    <div class="col-3" id="title_options" style="text-align: center;" hidden>
+                        <button id="title_edit" type="button" class="btn btn-warning">Editer</button>
+                        <button id="title_delete" type="button" class="btn btn-danger">Supprimer</button>
+                    </div>
                 </div>
                 <hr>
                 <div id="user_description">
@@ -129,17 +132,23 @@
                 divUser.appendChild(pName);
                 divUser.appendChild(pPublication);
                 divUser.appendChild(document.createElement("hr"));
-                document.getElementById("title_options").hidden = false;
+                document.getElementById("title_header").hidden = false;
             }
 
             function loadInformations(title) {
                 renderTitle(title);
                 SDK.getUser(title.user_email).then((user) => {
                     renderUser(user, title);
+                }).catch((e) => {
+                    alert(e);
                 });
                 SDK.getUserProfile().then((profile) => {
-                    if (profile.email == title.user_email)
-                        document.getElementById("title_edit").hidden = false;
+                    SDK.getPlaylist(title.playlist_id).then((playlist) => {
+                        if (profile.email == playlist.user_email || profile.email == title.user_email)
+                            document.getElementById("title_options").hidden = false;
+                    }).catch((e) => {
+                        alert(e);
+                    });
                     SDK.getCommentariesByTitle(title.id).then((commentaries) => {
                         if (commentaries.length <= 0)
                             return;
@@ -177,11 +186,18 @@
             function loadTitle(title_id) {
                 SDK.getTitle(title_id).then((title) => {
                     loadInformations(title);
+                    document.getElementById("title_delete").addEventListener('click', (e) => {
+                        SDK.deleteTitle(title_id).then((e) => {
+                            window.open("playlist.html?id=" + title.playlist_id, "_self");
+                        }).catch((e) => {
+                            alert(e);
+                        });
+                    });
                 }).catch((e) => {
                     alert(e);
                 });
 
-                document.getElementById("edit_video").addEventListener('click', (e) => {
+                document.getElementById("title_edit").addEventListener('click', (e) => {
                     window.open("title_edit.html?id=" + title_id, "_self");
                 });
 

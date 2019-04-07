@@ -210,6 +210,19 @@ export class SDK {
             });
     }
 
+    static deleteTitle(title_id) {
+        return Request.Delete("title/" + title_id)
+            .catch(err => {
+                throw err;
+            }).then(response => {
+                if (response.message !== '') {
+                    if (response.code == 401)
+                        window.open("login.html", "_self");
+                    throw response.message;
+                }
+            });
+    }
+
     static getTitles() {
         return Request.Get("title")
             .catch(err => {
