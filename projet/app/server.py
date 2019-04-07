@@ -288,7 +288,7 @@ class FollowedUser(db.Model):
 # List of all routes
 @app.route('/')
 def home():
-    return redirect("static/index.html", code=200)
+    return "<script>location.href='static/index.html'</script>"
 
 @app.route('/login', methods = ['POST'])
 def loginUser():

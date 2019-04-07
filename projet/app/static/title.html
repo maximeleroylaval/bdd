@@ -117,11 +117,20 @@
                         var url = document.getElementById("url");
                         var name = document.getElementById("name");
                         name.innerHTML = title.name;
-                        var pFrame = document.createElement("iframe");
-                        pFrame.src = convertToYoutube(title.url);
-                        pFrame.frameBorder = 0;
-                        pFrame.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
-                        pFrame.style="height:66vh; width:100%;allowfullscreen=allowfullscreen;frameBorder=0;";
+                        if (convertToYoutube(title.url).indexOf("youtube.com/embed/") !== -1) {
+                            var pFrame = document.createElement("iframe");
+                            pFrame.src = convertToYoutube(title.url);
+                            pFrame.allowfullscreen = "allowfullscreen";
+                            pFrame.frameBorder = 0;
+                            pFrame.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+                        } else {
+                            var pFrame = document.createElement("video");
+                            pFrame.controls = true;
+                            var pInnerFrame = document.createElement("source");
+                            pInnerFrame.src = title.url;
+                            pFrame.appendChild(pInnerFrame);
+                        }
+                        pFrame.style="height:66vh; width:100%;";
                         url.appendChild(pFrame);
                     }).catch((e) => {
                         alert(e);

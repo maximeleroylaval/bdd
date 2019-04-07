@@ -76,6 +76,11 @@ export class SDK {
         return obj;
     }
 
+    static disconnect() {
+        Request.setToken("");
+        window.open("login.html", "_self");
+    }
+
     static login(email, password) {
         const user = new User();
         user.email = email;
