@@ -7,6 +7,8 @@ export class ProfileController {
                 document.getElementById("pp").src = profil.picture;
                 document.getElementById("username").textContent = profil.name;
                 let d = new Date(profil.birthdate);
+                let day = (d.getDate() < 10 ? "0" + d.getDate() : d.getDate());
+                let month = ((d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1));
                 document.getElementById("birthdate").textContent = day + "/" + month + "/" + d.getFullYear();
                 document.getElementById("email").textContent = profil.email;
                 userEmail = profil.email;
@@ -97,29 +99,66 @@ export class ProfileController {
             SDK.getUserProfile().then(profil => {
                 userEmail = profil.email;
                 SDK.getFriends(userEmail).then(friends => {
-                    let number = 0;
-                    friends.forEach(element => {
+                        ProfileController.usersGenerator(friends)
                     });
-                });
             })
         }
     }
 
-    static userGenerator(users) {
+    static usersGenerator(users) {
+        let container = document.getElementById("friends-container");
+        let rowContainer;
 
+        rowContainer = document.createElement("div");
+        rowContainer.setAttribute("class", "row align-items-stretch");
+        container.appendChild(rowContainer);
+
+
+        users.forEach(element => {
+            SDK.getUser(element.follow_email).then(user => {
+
+                // Création de la card
+                let card = document.createElement("div");
+                card.setAttribute("class", "card user-card");
+                card.addEventListener('click', (e) => {
+                    window.open("profile.html?email=" + user.email, "_self");
+                });
+
+                rowContainer.appendChild(card);
+
+                // Affichage de la pp
+                let pp = document.createElement("img");
+                pp.src = user.picture;
+                pp.setAttribute("class", "card-img-top");
+                card.appendChild(pp);
+
+                // Creéation du body de la card
+                let cardBody = document.createElement("div");
+                cardBody.setAttribute("class", "card-body");
+                card.appendChild(cardBody);
+
+                // Card title, ,om de profil
+                let cardTitle = document.createElement("h5");
+                cardTitle.setAttribute("class", "card-title");
+                cardTitle.innerText = user.name;
+                cardBody.appendChild(cardTitle);
+            })
+        });
     }
 
     static playlistGenerator(element) {
         let ul = document.getElementById("playlists-container");
-
         // li
         let li = document.createElement("li");
-        li.setAttribute("class", "list-group-item playlist-list-item row");
+        li.setAttribute("class", "list-group-item playlist-list-item row nav-link");
+
 
         //row
         let row = document.createElement("div");
         row.setAttribute("class", "row");
-
+        row.addEventListener('click', (e) => {
+            window.open("playlist.html?id=" + element.id, "_self");
+        });
         // First column, img
 
         let c1 = document.createElement("div");
@@ -186,7 +225,14 @@ export class ProfileController {
         // link the second column to the row
         row.appendChild(c4);
 
-        // link container to the li
+        li.addEventListener('focus', () => {
+ //           row.style.backgroundColor = "blue";
+        });
+
+        li.addEventListener('focusout', () => {
+//            row.style.backgroundColor = "white";
+        });
+        // link to the lo
         li.appendChild(row);
 
         // link the li to the ul

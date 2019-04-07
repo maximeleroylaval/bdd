@@ -73,8 +73,7 @@
 
             <!-- friends -->
             <div class="container" id="friends-container" hidden>
-                <div class="row">
-                    <div class="card-deck">
+                <div class="row align-items-stretch">
                         <div class="card">
                             <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
                             <div class="card-body">
@@ -116,7 +115,6 @@
                                 <h5 class="card-title">Card title</h5>
                                 <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -137,6 +135,8 @@
         System.import("js/ProfileController").then((m) => {
 
             let email = m.ProfileController.getEmail();
+            console.log(email);
+
             m.ProfileController.loadProfile(email);
 
             let playlist = document.getElementById("my_playlists");
@@ -184,9 +184,9 @@
                 document.getElementById("playlists-container").hidden = true;
                 document.getElementById("friends-container").hidden = true;
                 document.getElementById("spinner_playlist").hidden = false;
-//                document.getElementById("friends-container").innerHTML = '';
+                document.getElementById("friends-container").innerHTML = '';
 
-                //m.ProfileController.getFriends(email);
+                m.ProfileController.getFriends(email);
                 playlist.removeAttribute("class");
                 playlist.setAttribute("class", "nav-link");
                 followed.removeAttribute("class");
