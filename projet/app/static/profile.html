@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Soundhub - Profile</title>
+    <title>Soundhub - ProfileController</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -43,31 +43,82 @@
                     </div>
                 </div>
             </div>
-            <hr>
-            <div>
-                <ul class="nav nav-tabs row">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="my_playlists" href="#">Mes playlists</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="followed_playlists" href="#">Playlists suivies</a>
-                    </li>
-                </ul>
+        </div>
+        <div class="container base">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" id="my_playlists" href="#">Mes playlists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="followed_playlists" href="#">Playlists suivies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="friends" href="#">Mes amis</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container" id="spinner_playlist" style="margin-top: 100px">
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
-            <div id="spinner_playlist" style="margin-top: 100px">
-                <div class="row">
-                    <div class="col-md-6"></div>
-                    <div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
+        </div>
+        <div class="container">
+            <!-- playlists -->
+            <ul class="list-group" id="playlists-container" hidden>
+            </ul>
+            <!-- playlists -->
+
+            <!-- friends -->
+            <div class="container" id="friends-container" hidden>
+                <div class="row align-items-stretch">
+                        <div class="card">
+                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
                     </div>
                 </div>
             </div>
-            <div>
-                <!-- Mes playlists -->
-                <ul class="list-group" id="playlists-container" hidden>
-                </ul>
-                <!-- Fin mes playlists -->
-            </div>
+            <!-- friends -->
         </div>
     </div>
 
@@ -81,30 +132,72 @@
     <script>
         w3IncludeHTML();
 
-        System.import("js/profile").then((m) => {
+        System.import("js/ProfileController").then((m) => {
 
-            let email = m.Profile.getEmail();
-            m.Profile.loadProfile(email);
+            let email = m.ProfileController.getEmail();
+            console.log(email);
+
+            m.ProfileController.loadProfile(email);
 
             let playlist = document.getElementById("my_playlists");
             let followed = document.getElementById("followed_playlists");
+            let friends = document.getElementById("friends");
+
 
             playlist.addEventListener('click', () => {
-                m.Profile.loadUserPlaylist(email);
+                document.getElementById("playlists-container").hidden = true;
+                document.getElementById("spinner_playlist").hidden = false;
+                document.getElementById("playlists-container").innerHTML = '';
+                document.getElementById("friends-container").hidden = true;
+
+                m.ProfileController.loadUserPlaylist(email);
                 playlist.removeAttribute("class");
                 playlist.setAttribute("class", "nav-link active");
+                friends.removeAttribute("class");
+                friends.setAttribute("class", "nav-link");
                 followed.removeAttribute("class");
                 followed.setAttribute("class", "nav-link");
+
+                document.getElementById("playlists-container").hidden = false;
+                document.getElementById("spinner_playlist").hidden = true;
             });
 
             followed.addEventListener('click', () => {
-                m.Profile.loadFollowedPlaylist(email);
+                document.getElementById("playlists-container").hidden = true;
+                document.getElementById("spinner_playlist").hidden = false;
+                document.getElementById("playlists-container").innerHTML = '';
+                document.getElementById("friends-container").hidden = true;
+
+                m.ProfileController.loadFollowedPlaylist(email);
                 playlist.removeAttribute("class");
                 playlist.setAttribute("class", "nav-link");
                 followed.removeAttribute("class");
                 followed.setAttribute("class", "nav-link active");
+                friends.removeAttribute("class");
+                friends.setAttribute("class", "nav-link");
 
+                document.getElementById("playlists-container").hidden = false;
+                document.getElementById("spinner_playlist").hidden = true;
             });
+
+            friends.addEventListener('click', () => {
+                document.getElementById("playlists-container").hidden = true;
+                document.getElementById("friends-container").hidden = true;
+                document.getElementById("spinner_playlist").hidden = false;
+                document.getElementById("friends-container").innerHTML = '';
+
+                m.ProfileController.getFriends(email);
+                playlist.removeAttribute("class");
+                playlist.setAttribute("class", "nav-link");
+                followed.removeAttribute("class");
+                followed.setAttribute("class", "nav-link");
+                friends.removeAttribute("class");
+                friends.setAttribute("class", "nav-link");
+
+                document.getElementById("friends-container").hidden = false;
+                document.getElementById("spinner_playlist").hidden = true;
+
+            })
         });
     </script>
 </body>

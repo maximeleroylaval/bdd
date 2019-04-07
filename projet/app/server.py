@@ -14,7 +14,7 @@ from pymysql.err import MySQLError
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@localhost/soundhub'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@db/soundhub'
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 auth = HTTPTokenAuth(scheme='Bearer')
@@ -396,8 +396,14 @@ def getUserPlaylists(email):
 @app.route('/user/<email>/followed_playlists', methods = ['GET'])
 @auth.login_required
 def getFollowedPlaylists(email):
-    playlists = db.session.query(FollowPlaylist).filter_by(user_email=email).all()
+    playlists = db.session.query(FollowedPlaylist).filter_by(user_email=email)
     return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)
+
+@app.route('/user/<email>/friends', methods = ['GET'])
+@auth.login_required
+def getFriends(email):
+    friends = db.session.query(FollowedUser).filter_by(user_email=email).all()
+    return JSONRequest.sendAnswer(Serializer.serialize_list(friends), 200)
 
 
 @app.route('/gender', methods = ['GET'])
@@ -503,7 +509,8 @@ def addCommentary(id):
 
 # Main entry to run the server
 if __name__ == '__main__':
-    if (Auth.isConnected() == False):
+    while (Auth.isConnected() == False):
         print("Waiting for database...")
+        time.sleep(5)
     else:
         app.run(debug=False, host='0.0.0.0', port=80)

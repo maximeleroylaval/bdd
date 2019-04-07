@@ -65,10 +65,10 @@
                 loadPlaylists();
 
                 function loadPlaylists() {
-                    System.import("js/profile").then((m) => {
+                    System.import("js/ProfileController").then((m) => {
                         SDK.getPlaylists().then((playlists) => {
                             playlists.forEach(playlist => {
-                                m.Profile.playlistGenerator(playlist);
+                                m.ProfileController.playlistGenerator(playlist);
                             });
                         }).catch((e) => {
                             alert(e);

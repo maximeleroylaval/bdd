@@ -1,6 +1,6 @@
 import { SDK } from './sdk/sdk';
 
-export class Profile {
+export class ProfileController {
     static loadProfile(userEmail) {
         if (userEmail !== undefined) {
             SDK.getUser(userEmail).then(profil => {
@@ -18,9 +18,7 @@ export class Profile {
                     document.getElementById("gender").innerHTML = "<i class=\"fas fa-venus\" style='\"color: rose\";'></i>"
                 }
 
-                document.getElementById("spinner_profil_detail").hidden = true;
-                document.getElementById("profil_detail").hidden = false;
-                Profile.loadUserPlaylist(userEmail);
+                ProfileController.loadUserPlaylist(userEmail);
             });
         } else {
             SDK.getUserProfile().then(profil => {
@@ -37,69 +35,130 @@ export class Profile {
                 } else {
                     document.getElementById("gender").innerHTML = "<i class=\"fas fa-venus\" style='\"color: rose\";'></i>"
                 }
-
-                document.getElementById("spinner_profil_detail").hidden = true;
-                document.getElementById("profil_detail").hidden = false;
-                Profile.loadUserPlaylist(userEmail);
+                ProfileController.loadUserPlaylist(userEmail);
             });
         }
+        document.getElementById("spinner_profil_detail").hidden = true;
+        document.getElementById("profil_detail").hidden = false;
+        document.getElementById("playlists-container").hidden = false;
+        document.getElementById("spinner_playlist").hidden = true;
     }
 
     static loadFollowedPlaylist(userEmail) {
-        document.getElementById("playlists-container").hidden = true;
-        document.getElementById("spinner_playlist").hidden = false;
-
         if (userEmail !== undefined && userEmail !== null) {
             SDK.getFollowedPlaylist(userEmail).then(playlists => {
                 playlists.forEach(element => {
-                    Profile.playlistGenerator(element);
+                    SDK.getPlaylist(element.playlist_id).then(playlist => {
+                        ProfileController.playlistGenerator(playlist);
+                    })
                 });
 
-                document.getElementById("playlists-container").hidden = false;
-                document.getElementById("spinner_playlist").hidden = true;
             });
         } else {
             SDK.getUserProfile().then(profil => {
                 userEmail = profil.email;
                 SDK.getFollowedPlaylist(userEmail).then(playlists => {
                     playlists.forEach(element => {
-                        Profile.playlistGenerator(element);
+                        SDK.getPlaylist(element.playlist_id).then(playlist => {
+                            ProfileController.playlistGenerator(playlist);
+                        })
                     });
-
-                    document.getElementById("playlists-container").hidden = false;
-                    document.getElementById("spinner_playlist").hidden = true;
                 });
             })
         }
     }
 
     static loadUserPlaylist(userEmail) {
-        document.getElementById("playlists-container").hidden = true;
-        document.getElementById("spinner_playlist").hidden = false;
-
         if (userEmail !== undefined && userEmail !== null) {
             SDK.getUserPlaylists(userEmail).then(playlists => {
                 playlists.forEach(element => {
-                    Profile.playlistGenerator(element);
+                    ProfileController.playlistGenerator(element);
                 });
 
-                document.getElementById("playlists-container").hidden = false;
-                document.getElementById("spinner_playlist").hidden = true;
             });
+        } else {
+            SDK.getUserProfile().then(profil => {
+                userEmail = profil.email;
+                SDK.getUserPlaylists(userEmail).then(playlists => {
+                    playlists.forEach(element => {
+                        ProfileController.playlistGenerator(element);
+                    });
+                });
+            })
         }
+    }
+
+    static getFriends(userEmail) {
+        if (userEmail !== undefined && userEmail !== null) {
+            SDK.getFriends(userEmail).then(friends => {
+                friends.forEach(element => {
+                });
+
+            });
+        } else {
+            SDK.getUserProfile().then(profil => {
+                userEmail = profil.email;
+                SDK.getFriends(userEmail).then(friends => {
+                        ProfileController.usersGenerator(friends)
+                    });
+            })
+        }
+    }
+
+    static usersGenerator(users) {
+        let container = document.getElementById("friends-container");
+        let rowContainer;
+
+        rowContainer = document.createElement("div");
+        rowContainer.setAttribute("class", "row align-items-stretch");
+        container.appendChild(rowContainer);
+
+
+        users.forEach(element => {
+            SDK.getUser(element.follow_email).then(user => {
+
+                // Création de la card
+                let card = document.createElement("div");
+                card.setAttribute("class", "card user-card");
+                card.addEventListener('click', (e) => {
+                    window.open("profile.html?email=" + user.email, "_self");
+                });
+
+                rowContainer.appendChild(card);
+
+                // Affichage de la pp
+                let pp = document.createElement("img");
+                pp.src = user.picture;
+                pp.setAttribute("class", "card-img-top");
+                card.appendChild(pp);
+
+                // Creéation du body de la card
+                let cardBody = document.createElement("div");
+                cardBody.setAttribute("class", "card-body");
+                card.appendChild(cardBody);
+
+                // Card title, ,om de profil
+                let cardTitle = document.createElement("h5");
+                cardTitle.setAttribute("class", "card-title");
+                cardTitle.innerText = user.name;
+                cardBody.appendChild(cardTitle);
+            })
+        });
     }
 
     static playlistGenerator(element) {
         let ul = document.getElementById("playlists-container");
-
         // li
         let li = document.createElement("li");
-        li.setAttribute("class", "list-group-item playlist-list-item row");
+        li.setAttribute("class", "list-group-item playlist-list-item row nav-link");
+
 
         //row
         let row = document.createElement("div");
         row.setAttribute("class", "row");
-
+        row.addEventListener('click', (e) => {
+            window.open("playlist.html?id=" + element.id, "_self");
+        });
         // First column, img
 
         let c1 = document.createElement("div");
@@ -166,7 +225,14 @@ export class Profile {
         // link the second column to the row
         row.appendChild(c4);
 
-        // link container to the li
+        li.addEventListener('focus', () => {
+ //           row.style.backgroundColor = "blue";
+        });
+
+        li.addEventListener('focusout', () => {
+//            row.style.backgroundColor = "white";
+        });
+        // link to the lo
         li.appendChild(row);
 
         // link the li to the ul
