@@ -14,7 +14,7 @@ from pymysql.err import MySQLError
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@localhost/soundhub'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@db/soundhub'
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 auth = HTTPTokenAuth(scheme='Bearer')
@@ -465,7 +465,7 @@ def deletePlaylist(id):
 @auth.login_required
 def addPlaylist():
     content = JSONRequest.getJSON(request)
-    if (JSONRequest.checkFields(content, ['name', 'description', 'picture']) == False):
+    if (JSONRequest.checkFields(content, ['name']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
         if ('picture' not in content):
