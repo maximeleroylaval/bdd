@@ -97,6 +97,7 @@ export class ProfileController {
             SDK.getUserProfile().then(profil => {
                 userEmail = profil.email;
                 SDK.getFriends(userEmail).then(friends => {
+                    let number = 0;
                     friends.forEach(element => {
                     });
                 });
@@ -104,16 +105,16 @@ export class ProfileController {
         }
     }
 
+    static userGenerator(users) {
+
+    }
+
     static playlistGenerator(element) {
         let ul = document.getElementById("playlists-container");
 
         // li
         let li = document.createElement("li");
-        li.setAttribute("class", "list-group-item playlist-list-item");
-
-        //containeur
-        let cont = document.createElement("div");
-        cont.setAttribute("class", "container");
+        li.setAttribute("class", "list-group-item playlist-list-item row");
 
         //row
         let row = document.createElement("div");
@@ -122,7 +123,7 @@ export class ProfileController {
         // First column, img
 
         let c1 = document.createElement("div");
-        c1.setAttribute("class", "col-2");
+        c1.setAttribute("class", "col-2 align-self-center");
 
         let img = document.createElement("img");
         img.setAttribute("class", "img-fluid rounded");
@@ -138,7 +139,7 @@ export class ProfileController {
         // Second column, name
 
         let c2 = document.createElement("div");
-        c2.setAttribute("class", "col-2");
+        c2.setAttribute("class", "col-2 align-self-center");
 
         let name = document.createElement("h3");
         //name.setAttribute("class", "playlist-item-centered");
@@ -154,10 +155,10 @@ export class ProfileController {
         // Third column, description
 
         let c3 = document.createElement("div");
-        c3.setAttribute("class", "col-6");
+        c3.setAttribute("class", "col-6 align-self-center");
 
         let desc = document.createElement("p");
-        desc.innerText = element.descritpion;
+        desc.innerText = element.description;
 
         // link the image to the first column
         c3.appendChild(desc);
@@ -169,7 +170,7 @@ export class ProfileController {
         // 4th column, button
 
         let c4 = document.createElement("div");
-        c4.setAttribute("class", "col-2");
+        c4.setAttribute("class", "col-2 align-self-center");
 
         let butt = document.createElement("button");
         butt.setAttribute("type", "button");
@@ -185,12 +186,8 @@ export class ProfileController {
         // link the second column to the row
         row.appendChild(c4);
 
-
-        // link row to the container
-        cont.appendChild(row);
-
         // link container to the li
-        li.appendChild(cont);
+        li.appendChild(row);
 
         // link the li to the ul
         ul.appendChild(li);

@@ -14,31 +14,33 @@
 <body>
     <div w3-include-html="navbar.html"></div>
     <div class="body">
-        <div class="container" id="spinner_profil_detail" style="margin-top: 100px">
-            <div class="row">
-                <div class="col-md-6"></div>
-                <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
+        <div class="container">
+            <div id="spinner_profil_detail" style="margin-top: 100px">
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="container base content-block" id="profil_detail" hidden>
-            <div class="row">
-                <div class="col-3">
-                    <img class="img-fluid rounded" id="pp" src="https://via.placeholder.com/250">
-                </div>
-                <div class="col">
-                    <dl class="row">
-                        <dd class="col-sm-9" id="username" style="font-weight: bold; font-size: 40px"></dd>
-                        <dt class="col-sm-3 label-profile">Née le :</dt>
-                        <dd class="col-sm-9" id="birthdate"></dd>
+            <div class="content-block row" id="profil_detail" hidden>
+                <div class="row">
+                    <div class="col-3 align-self-center">
+                        <img class="img-fluid rounded" id="pp" src="https://via.placeholder.com/250" style="margin:2vh">
+                    </div>
+                    <div class="col">
+                        <dl class="row">
+                            <dd class="col-sm-9" id="username" style="font-weight: bold; font-size: 40px"></dd>
+                            <dt class="col-sm-3 label-profile">Née le :</dt>
+                            <dd class="col-sm-9" id="birthdate"></dd>
 
-                        <dt class="col-sm-3 label-profile">Email :</dt>
-                        <dd class="col-sm-9" id="email"></dd>
+                            <dt class="col-sm-3 label-profile">Email :</dt>
+                            <dd class="col-sm-9" id="email"></dd>
 
-                        <dt class="col-sm-3 label-profile">Genre :</dt>
-                        <dd class="col-sm-9" id="gender"></dd>
-                    </dl>
+                            <dt class="col-sm-3 label-profile">Genre :</dt>
+                            <dd class="col-sm-9" id="gender"></dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>

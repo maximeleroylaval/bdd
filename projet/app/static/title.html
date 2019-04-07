@@ -11,25 +11,27 @@
     <body>
         <div w3-include-html="navbar.html"></div>
         <div class="body">
-            <div id="url" class="title_video">
-            </div>
-            <div class="title_description">
-                <p id="name" class="title_name" type="text" style="margin-bottom: 10px; margin-top:4px; text-align:center;" placeholder="Name"></p>
-                <hr>
-                <div id="user_description">
+            <div class="container">
+                <div id="url" class="title_video" allowfullscreen>
+                </div>
+                <div class="title_description">
+                    <p id="name" class="title_name" type="text" style="margin-bottom: 10px; margin-top:4px; text-align:center;" placeholder="Name"></p>
+                    <hr>
+                    <div id="user_description">
 
-                </div>
-                <div class="title_commentary_add form-inline">
-                    <div class="mb-2 col-9">
-                        <input id="description" type="text" class="form-control" style="margin-right: 14px;width:100%;" placeholder="Nouveau commentaire" required="required">
                     </div>
-                    <div class="mb-2 col-3">
-                        <button id="add" type="button" class="btn btn-primary" style="width:100%">Envoyer</button>
+                    <div class="title_commentary_add form-inline">
+                        <div class="mb-2 col-9">
+                            <input id="description" type="text" class="form-control" style="margin-right: 14px;width:100%;" placeholder="Nouveau commentaire" required="required">
+                        </div>
+                        <div class="mb-2 col-3">
+                            <button id="add" type="button" class="btn btn-primary" style="width:100%">Envoyer</button>
+                        </div>
                     </div>
-                </div>
-                <hr>
-                <div id="commentaries">
-    
+                    <hr>
+                    <div id="commentaries">
+        
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,11 +51,6 @@
                 const title_id = params.id;
 
                 loadTitle(title_id);
-
-                function formatDateToHuman(date) {
-                    var date = new Date(date);
-                    return "Ajoutée le " + date.toDateString();
-                }
 
                 function convertToYoutube(url) {
                     url = url.replace("youtu.be/", "youtube.com/embed/")
@@ -77,7 +74,7 @@
                             pUser.innerHTML = commentary.user_email;
                             var pPublication = document.createElement("p");
                             pPublication.classList.add("commentary_publication");
-                            pPublication.innerHTML = formatDateToHuman(commentary.publication);
+                            pPublication.innerHTML = SDK.formatDateToHuman(commentary.publication);
                             var pCommentary = document.createElement("p");
                             pCommentary.classList.add("title_commentary");
                             pCommentary.innerHTML = commentary.description;
@@ -103,7 +100,7 @@
                         pName.innerHTML = user.name;
                         var pPublication = document.createElement("p");
                         pPublication.classList.add("user_publication");
-                        pPublication.innerHTML = formatDateToHuman(title.publication);                        
+                        pPublication.innerHTML = SDK.formatDateToHuman(title.publication);                        
                         divUser.appendChild(pPicture);
                         divUser.appendChild(pName);
                         divUser.appendChild(pPublication);
@@ -121,12 +118,10 @@
                         var name = document.getElementById("name");
                         name.innerHTML = title.name;
                         var pFrame = document.createElement("iframe");
-                        pFrame.width = 900;
-                        pFrame.height = 506;
                         pFrame.src = convertToYoutube(title.url);
                         pFrame.frameBorder = 0;
                         pFrame.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
-                        pFrame.allowFullscreen = "";
+                        pFrame.style="height:66vh; width:100%;allowfullscreen=allowfullscreen;frameBorder=0;";
                         url.appendChild(pFrame);
                     }).catch((e) => {
                         alert(e);

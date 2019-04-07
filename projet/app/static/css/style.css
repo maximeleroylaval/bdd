@@ -1,5 +1,11 @@
+body {
+    overflow: hidden;
+}
+
 .body {
-    margin: 10px;
+    height: 92vh;
+    padding: 2vh;
+    overflow-y: scroll;
 }
 
 .login-form {
@@ -24,7 +30,7 @@
 }
 
 .title_description {
-    margin-left: 20px;
+
 }
 
 .title_video {

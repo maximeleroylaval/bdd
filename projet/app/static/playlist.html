@@ -11,16 +11,18 @@
     <body>
         <div w3-include-html="navbar.html"></div>
         <div class="body">
-            <div id="playlist_header" style="text-align:center">
-            </div>
-            <hr>
-            <div class="title_add">
-                <input id="name" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Nom" required="required">
-                <input id="url" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Lien URL" required="required">
-                <button id="add" type="button" class="btn btn-primary btn-block">Ajouter un nouveau titre</button>
+            <div class="container">
+                <div class="content-block form-inline" id="playlist_header">
+                </div>
                 <hr>
-            </div>
-            <div id="titles" class="container" style="margin-bottom: 40px;">
+                <div class="title_add">
+                    <input id="name" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Nom" required="required">
+                    <input id="url" type="text" class="form-control" style="margin-bottom: 4px" placeholder="Lien URL" required="required">
+                    <button id="add" type="button" class="btn btn-primary btn-block">Ajouter un nouveau titre</button>
+                    <hr>
+                </div>
+                <div id="titles" class="container" style="margin-bottom: 40px;">
+                </div>
             </div>
         </div>
 
@@ -45,15 +47,26 @@
                     SDK.getPlaylist(playlist_id).then((playlist) => {
                         var divPlaylistHeader = document.getElementById("playlist_header");
                         var pName = document.createElement("h4");
+                        pName.classList.add("col-2");
+                        pName.setAttribute("style", "text-align:center;");
                         pName.innerHTML = playlist.name;
+                        var pDescription = document.createElement("div");
+                        pDescription.classList.add("col-7");
+                        var pInnerDescription = document.createElement("p");
+                        pInnerDescription.innerHTML = playlist.description;
+                        pDescription.appendChild(pInnerDescription);
+                        var pDivFollow = document.createElement("div");
+                        pDivFollow.classList.add("col-12");
+                        pDivFollow.setAttribute("style", "padding-bottom:1vh;text-align:center;");
                         var pFollow = document.createElement("button");
                         pFollow.type = "button";
                         pFollow.classList.add("btn");
                         pFollow.classList.add("btn-info");
                         pFollow.classList.add("playlist");
-                        pFollow.style = "margin-top: 8px;";
+                        pFollow.setAttribute("style", "width:100%");
                         pFollow.innerHTML = "Suivre";
                         pFollow.hidden = true;
+                        pDivFollow.appendChild(pFollow);
                         SDK.getUserProfile().then((user) => {
                             if (user.email !== playlist.user_email)
                                 pFollow.hidden = false;
@@ -64,12 +77,13 @@
                             //pFollow.hidden = true;
                         });
                         var pPicture = document.createElement("img");
-                        pPicture.style = "margin-bottom:14px;";
-                        pPicture.width = 250;
+                        pPicture.classList.add("col-3");
+                        pPicture.setAttribute("style", "padding:2vh;");
                         pPicture.src = playlist.picture;
                         divPlaylistHeader.appendChild(pPicture);
                         divPlaylistHeader.appendChild(pName);
-                        divPlaylistHeader.appendChild(pFollow);
+                        divPlaylistHeader.appendChild(pDescription);
+                        divPlaylistHeader.appendChild(pDivFollow);
                     }).catch((e) => {
                         alert(e);
                     });
