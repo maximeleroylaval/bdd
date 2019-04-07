@@ -390,13 +390,13 @@ def deleteUser(email):
 @app.route('/user/<email>/playlists', methods = ['GET'])
 @auth.login_required
 def getUserPlaylists(email):
-    playlists = db.session.query(Playlist).filter_by(user_email=email).all()
+    playlists = db.session.query(Playlist).filter_by(user_email=email).order_by(Playlist.publication.desc()).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)
 
 @app.route('/user/<email>/followed_playlists', methods = ['GET'])
 @auth.login_required
 def getFollowedPlaylists(email):
-    playlists = db.session.query(FollowedPlaylist).filter_by(user_email=email)
+    playlists = db.session.query(FollowedPlaylist).filter_by(user_email=email).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)
 
 @app.route('/user/<email>/friends', methods = ['GET'])
@@ -415,7 +415,7 @@ def getGenders():
 @app.route('/playlist', methods = ['GET'])
 @auth.login_required
 def getPlaylists():
-    playlists = db.session.query(Playlist).all()
+    playlists = db.session.query(Playlist).order_by(Playlist.publication.desc()).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(playlists), 200)
 
 @app.route('/playlist/<id>', methods = ['GET'])
