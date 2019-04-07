@@ -5,14 +5,29 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="css/style.css"/>
+
+        <!-- External libs -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <div class="body">
             <div class="login-form">
                 <form method="post" style="margin-bottom: 4vh;">
                     <h2 class="text-center" style="margin-bottom: 8vh;">Nouveau compte</h2>
+                    <div class="form-group form-inline">
+                        <p class="col-2 mb-2">Genre:</p>
+                        <div class="col-10 mb-2">
+                            <select id="gender_name">
+                                <option value="Man">Homme</option>
+                                <option value="Woman">Femme</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input id="birthdate" type="text" class="form-control" placeholder="Date de naissance" required="required" readonly>
+                    </div>
                     <div class="form-group">
                         <input id="email" type="email" class="form-control" placeholder="Email" required="required">
                     </div>
@@ -21,12 +36,6 @@
                     </div>
                     <div class="form-group">
                         <input id="name" type="text" class="form-control" placeholder="Pseudo" required="required">
-                    </div>
-                    <div class="form-group">
-                        <input id="birthdate" type="text" class="form-control" placeholder="Date de naissance" required="required">
-                    </div>
-                    <div class="form-group">
-                        <input id="gender_name" type="text" class="form-control" placeholder="Genre sexuel" required="required">
                     </div>
                     <div class="form-group">
                         <button id="register_submit" type="button" class="btn btn-primary btn-block">Créer</button>
@@ -40,9 +49,18 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
         <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
         <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
+
         <script>
+            $('#birthdate').datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy/mm/dd'
+            });
+            $('#gender_name').dropdown({
+                width: "100%"
+            });
             System.import("js/sdk/sdk").then((m) => {
                 SDK = m.SDK;
                 document.getElementById("register_submit").addEventListener('click', (e) => {
