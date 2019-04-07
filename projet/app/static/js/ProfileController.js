@@ -83,9 +83,7 @@ export class ProfileController {
     static getFriends(userEmail) {
         if (userEmail !== undefined && userEmail !== null) {
             SDK.getFriends(userEmail).then(friends => {
-                friends.forEach(element => {
-                });
-
+                ProfileController.usersGenerator(friends)
             });
         } else {
             SDK.getUserProfile().then(profil => {
@@ -136,6 +134,30 @@ export class ProfileController {
                 cardBody.appendChild(cardTitle);
             })
         });
+    }
+
+    static loadButton(email) {
+        let edition = document.getElementById("edition_user");
+        let follow = document.getElementById("follow_user");
+        let button_container = document.getElementById("button_container");
+
+        if (email === undefined) {
+            edition.hidden = false;
+            follow.hidden = true;
+            button_container.hidden = false;
+        } else {
+            SDK.getUserProfile().then(profile => {
+                if (profile.email === email) {
+                    edition.hidden = false;
+                    follow.hidden = true;
+                    button_container.hidden = false;
+                } else {
+                    edition.hidden = true;
+                    follow.hidden = false;
+                    button_container.hidden = false;
+                }
+            })
+        }
     }
 
     static playlistGenerator(element) {
@@ -234,5 +256,10 @@ export class ProfileController {
     static getEmail() {
         let params = SDK.getQueryParameters(window.location.href);
         return params.email;
+    }
+
+    static getTab() {
+        let params = SDK.getQueryParameters(window.location.href);
+        return params.tab;
     }
 }

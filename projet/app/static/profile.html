@@ -28,7 +28,7 @@
                 <div class="col-3 align-self-center">
                     <img class="img-fluid rounded" id="pp" src="https://via.placeholder.com/250" style="margin:2vh">
                 </div>
-                <div class="col">
+                <div class="col-6">
                     <dl class="row">
                         <dd class="col-sm-9" id="username" style="font-weight: bold; font-size: 40px"></dd>
                         <dt class="col-sm-3 label-profile">Née le :</dt>
@@ -41,12 +41,25 @@
                         <dd class="col-sm-9" id="gender"></dd>
                     </dl>
                 </div>
+                <div class="col align-self-start" id="button_container" style="margin-top: 20px" hidden>
+                    <div class="row">
+                        <div class="col-4 offset-6">
+                            <button class="btn btn-outline-primary" id="follow_user" style="min-width: 50px;" hidden>Suivre</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 offset-6">
+                            <button class="btn btn-outline-primary" id="edition_user" style="min-width: 50px;" hidden>Edition</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="row">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" id="my_playlists_id" href="#playlists">Mes playlists</a>
+                    <a class="nav-link active" id="my_playlists_id" href="#playlist">Mes playlists</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="followed_playlists_id" href="#followed">Playlists suivies</a>
@@ -64,17 +77,19 @@
             </div>
         </div>
         <div>
-            <!-- playlists -->
-            <ul class="list-group" id="playlists-container" hidden>
-            </ul>
-            <!-- playlists -->
+            <div>
+                <!-- playlists -->
+                <ul class="list-group" id="playlists-container" hidden>
+                </ul>
+                <!-- playlists -->
 
-            <!-- friends -->
-            <div class="container" id="friends-container" hidden>
-                <div class="row align-items-stretch">
+                <!-- friends -->
+                <div class="container" id="friends-container" hidden>
+                    <div class="row align-items-stretch">
+                    </div>
                 </div>
+                <!-- friends -->
             </div>
-            <!-- friends -->
         </div>
     </div>
 </div>
@@ -92,6 +107,7 @@
     System.import("js/ProfileController").then((m) => {
 
         let email = m.ProfileController.getEmail();
+        let tab = m.ProfileController.getTab();
 
         let index = window.location.href.lastIndexOf("#");
         let playlist = document.getElementById("my_playlists_id");
@@ -99,7 +115,9 @@
         let friends = document.getElementById("friends_id");
 
 
+        m.ProfileController.loadButton(email);
         m.ProfileController.loadProfile(email);
+
 
         document.getElementById("spinner_profil_detail").hidden = true;
         document.getElementById("profil_detail").hidden = false;
@@ -141,6 +159,7 @@
         });
 
         friends.addEventListener('click', () => {
+
             document.getElementById("playlists-container").hidden = true;
             document.getElementById("friends-container").hidden = true;
             document.getElementById("spinner_playlist").hidden = false;
@@ -169,9 +188,22 @@
             }
         }
 
-        if (index === -1) {
-            eventFire(playlist, 'click');
-        } else {
+        if (tab !== undefined) {
+            switch (tab) {
+                case 'playlist':
+                    eventFire(playlist, 'click');
+                    break;
+                case 'friends':
+                    eventFire(friends, 'click');
+                    break;
+                case 'followed':
+                    eventFire(followed, 'click');
+                    break;
+                default:
+                    eventFire(playlist, 'click');
+                    break;
+            }
+        } else if (index !== - 1) {
             let hook = window.location.href.substr(index, window.location.href.length - index);
             switch (hook) {
                 case '#':
@@ -191,6 +223,8 @@
                     eventFire(playlist, 'click');
                     break;
             }
+        } else {
+            eventFire(playlist, 'click');
         }
     });
 
