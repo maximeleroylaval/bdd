@@ -41,6 +41,7 @@
                         <dd class="col-sm-9" id="gender"></dd>
                     </dl>
                 </div>
+                <!-- Button -->
                 <div class="col align-self-start" id="button_container" style="margin-top: 20px" hidden>
                     <div class="row">
                         <div class="col-4 offset-6">
@@ -53,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- Button -->
             </div>
         </div>
         <div class="row">
@@ -121,6 +122,10 @@
 
         document.getElementById("spinner_profil_detail").hidden = true;
         document.getElementById("profil_detail").hidden = false;
+
+        document.getElementById("edition_user").addEventListener('click', () => {
+           window.open('edit_profile.html', '_self');
+        });
 
         playlist.addEventListener('click', () => {
             document.getElementById("playlists-container").hidden = true;
