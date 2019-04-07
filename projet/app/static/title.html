@@ -52,11 +52,6 @@
 
                 loadTitle(title_id);
 
-                function formatDateToHuman(date) {
-                    var date = new Date(date);
-                    return "Ajoutée le " + date.toDateString();
-                }
-
                 function convertToYoutube(url) {
                     url = url.replace("youtu.be/", "youtube.com/embed/")
                     return url.replace("watch?v=", "embed/");
@@ -79,7 +74,7 @@
                             pUser.innerHTML = commentary.user_email;
                             var pPublication = document.createElement("p");
                             pPublication.classList.add("commentary_publication");
-                            pPublication.innerHTML = formatDateToHuman(commentary.publication);
+                            pPublication.innerHTML = SDK.formatDateToHuman(commentary.publication);
                             var pCommentary = document.createElement("p");
                             pCommentary.classList.add("title_commentary");
                             pCommentary.innerHTML = commentary.description;
@@ -105,7 +100,7 @@
                         pName.innerHTML = user.name;
                         var pPublication = document.createElement("p");
                         pPublication.classList.add("user_publication");
-                        pPublication.innerHTML = formatDateToHuman(title.publication);                        
+                        pPublication.innerHTML = SDK.formatDateToHuman(title.publication);                        
                         divUser.appendChild(pPicture);
                         divUser.appendChild(pName);
                         divUser.appendChild(pPublication);

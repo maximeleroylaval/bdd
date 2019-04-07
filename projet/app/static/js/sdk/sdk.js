@@ -5,6 +5,11 @@ import { Title } from './model/title';
 import { Commentary } from './model/commentary';
 
 export class SDK {
+    
+    static formatDateToHuman(date) {
+        var date = new Date(date);
+        return "Ajoutée le " + date.toLocaleDateString("fr-FR");
+    }
 
     static getQueryParameters(url) {
         // get query string from url (optional) or window

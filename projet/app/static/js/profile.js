@@ -135,10 +135,10 @@ export class Profile {
         // Third column, description
 
         let c3 = document.createElement("div");
-        c3.setAttribute("class", "col-6");
+        c3.setAttribute("class", "col-6 align-self-center");
 
         let desc = document.createElement("p");
-        desc.innerText = element.descritpion;
+        desc.innerText = element.description;
 
         // link the image to the first column
         c3.appendChild(desc);
