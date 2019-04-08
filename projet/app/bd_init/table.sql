@@ -22,10 +22,10 @@ CREATE TABLE title (
 CREATE TABLE playlist (
 	id int NOT NULL AUTO_INCREMENT,
 	name varchar(255) NOT NULL,
-	user_email varchar(255) NOT NULL,
     picture varchar(255) NOT NULL DEFAULT 'https://pbs.twimg.com/profile_images/1013450639215431680/qO1FApK4_400x400.jpg',
     description varchar(1024),
 	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	user_email varchar(255) NOT NULL,
 	PRIMARY KEY (id)
 );
 
@@ -34,9 +34,9 @@ CREATE TABLE user (
 	name varchar(255) NOT NULL,
 	password varchar(255) NOT NULL,
 	birthdate TIMESTAMP NOT NULL,
-	gender_name varchar(255) NOT NULL,
     picture varchar(255) NOT NULL DEFAULT 'https://www.watsonmartin.com/wp-content/uploads/2016/03/default-profile-picture.jpg',
 	publication TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	gender_name varchar(255) NOT NULL,
 	PRIMARY KEY (email)
 );
 
