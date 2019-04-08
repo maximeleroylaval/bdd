@@ -39,6 +39,46 @@
 
                 function loadPlaylistHeader(playlist_id) {
                     SDK.getPlaylist(playlist_id).then((playlist) => {
+
+                        var pFollow = document.createElement("button");
+                        pFollow.type = "button";
+                        pFollow.classList.add("btn");
+                        pFollow.classList.add("btn-info");
+                        pFollow.innerHTML = "Suivre la playlist";
+                        pFollow.hidden = true;
+
+
+                        SDK.isFavorite(playlist_id).then(() => {
+                            // fav
+                            pFollow.removeAttribute("class");
+                            pFollow.setAttribute("class", "btn btn-outline-danger");
+                            pFollow.innerText = 'Ne plus suivre';
+
+                        }).catch(() => {
+                            // not fav
+                            pFollow.removeAttribute("class");
+                            pFollow.setAttribute("class", "btn btn-outline-primary");
+                            pFollow.innerText = 'Suivre';
+
+                        });
+
+                        pFollow.addEventListener('click', (e) => {
+                            SDK.isFavorite(playlist_id).then(() => {
+                                // delete fav
+                                SDK.deleteFavorite(playlist_id).catch(err => alert(err)).then(() => {
+                                    pFollow.removeAttribute("class");
+                                    pFollow.setAttribute("class", "btn btn-outline-primary");
+                                    pFollow.innerText = 'Suivre';
+                            });
+                            }).catch(() => {
+                                // add fav
+                                SDK.addFavorite(playlist_id).catch(err => alert(err)).then(() => {
+                                    pFollow.removeAttribute("class");
+                                    pFollow.setAttribute("class", "btn btn-outline-danger");
+                                    pFollow.innerText = 'Ne plus suivre';
+                                });
+                            });
+                        });
                         var divPlaylistHeader = document.getElementById("playlist_header");
                         var pPicture = document.createElement("img");
                         pPicture.classList.add("col-3");
@@ -57,20 +97,10 @@
                         pDivOptions.hidden = true;
                         pDivOptions.classList.add("col-12");
                         pDivOptions.setAttribute("style", "display: flex; justify-content: space-between;margin-bottom:2vh;")
-                        var pFollow = document.createElement("button");
-                        pFollow.type = "button";
-                        pFollow.classList.add("btn");
-                        pFollow.classList.add("btn-info");
-                        pFollow.innerHTML = "Suivre la playlist";
-                        pFollow.hidden = true;
-                        pFollow.addEventListener('click', (e) => {
-                            //SDK.followUser
-                            //If succeed
-                            //pFollow.hidden = true;
-                        });
+
                         var pAddTitle = document.createElement("button");
                         pAddTitle.classList.add("btn");
-                        pAddTitle.classList.add("btn-primary");
+                        pAddTitle.classList.add("btn-outline-primary");
                         pAddTitle.addEventListener('click', (e) => {
                             window.open("title_add.html?playlist_id=" + playlist_id, "_self");
                         });

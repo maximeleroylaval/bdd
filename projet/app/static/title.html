@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html>
 
 <head>
@@ -71,13 +71,15 @@
                 return url.replace("watch?v=", "embed/");
             }
 
-            function renderCommentaries(profile, commentaries) {
+            function renderCommentaries(profile, commentaries, title) {
                 var divCommentaries = document.getElementById("commentaries");
                 divCommentaries.innerHTML = "";
                 var pTitle = document.createElement("p")
                 pTitle.classList.add("commentary_title");
                 pTitle.innerHTML = "Commentaires";
-                divCommentaries.appendChild(pTitle);
+                if (commentaries.length > 0) {
+                    divCommentaries.appendChild(pTitle);
+                }
                 var pInnerCommentary = document.createElement("div");
                 pInnerCommentary.classList.add("inner_commentary");
                 commentaries.forEach((commentary) => {
@@ -99,7 +101,7 @@
                     pDelete.innerHTML = "Supprimer";
                     pDelete.addEventListener('click', (e) => {
                         SDK.deleteCommentary(commentary.id).then(() => {
-                            loadCommentaries(title_id);
+                            loadInformations(title);
                         }).catch((e) => {
                             alert(e);
                         });
@@ -136,7 +138,7 @@
             }
 
             function loadInformations(title) {
-                renderTitle(title);
+
                 SDK.getUser(title.user_email).then((user) => {
                     renderUser(user, title);
                 }).catch((e) => {
@@ -150,9 +152,7 @@
                         alert(e);
                     });
                     SDK.getCommentariesByTitle(title.id).then((commentaries) => {
-                        if (commentaries.length <= 0)
-                            return;
-                        renderCommentaries(profile, commentaries);
+                        renderCommentaries(profile, commentaries, title);
                     }).catch((e) => {
                         alert(e);
                     })
@@ -185,10 +185,19 @@
 
             function loadTitle(title_id) {
                 SDK.getTitle(title_id).then((title) => {
+                    renderTitle(title);
                     loadInformations(title);
                     document.getElementById("title_delete").addEventListener('click', (e) => {
                         SDK.deleteTitle(title_id).then((e) => {
                             window.open("playlist.html?id=" + title.playlist_id, "_self");
+                        }).catch((e) => {
+                            alert(e);
+                        });
+                    });
+                    document.getElementById("add").addEventListener('click', (e) => {
+                        var description = document.getElementById("description").value;
+                        SDK.addCommentary(description, title_id).then((commentary) => {
+                            loadInformations(title);
                         }).catch((e) => {
                             alert(e);
                         });
@@ -201,14 +210,7 @@
                     window.open("title_edit.html?id=" + title_id, "_self");
                 });
 
-                document.getElementById("add").addEventListener('click', (e) => {
-                    var description = document.getElementById("description").value;
-                    SDK.addCommentary(description, title_id).then((commentary) => {
-                        loadCommentaries(title_id);
-                    }).catch((e) => {
-                        alert(e);
-                    });
-                });
+
             }
         });
     </script>

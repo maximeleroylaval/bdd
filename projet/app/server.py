@@ -14,7 +14,7 @@ from pymysql.err import MySQLError
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@localhost/soundhub'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@db/soundhub'
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 auth = HTTPTokenAuth(scheme='Bearer')
@@ -279,7 +279,7 @@ class FollowedUser(db.Model):
 
     def __init__(self, user_email, follow):
         self.user_email = user_email
-        self.follow_email = follow_email
+        self.follow_email = follow
 
     @property
     def serialize(self):
@@ -405,6 +405,28 @@ def getFollowedPlaylists(email):
 def getFriends(email):
     friends = db.session.query(FollowedUser).filter_by(user_email=email).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(friends), 200)
+
+@app.route('/isFriend', methods = ['GET'])
+@auth.login_required
+def isFriend():
+    f_email = request.args.get('email')
+    friend = db.session.query(FollowedUser).filter_by(user_email=g.user_email, follow_email = f_email).first()
+    try:
+        return JSONRequest.sendAnswer(Serializer.serialize(friend), 200)
+    except:
+        return JSONRequest.sendError(error.args[0], 404)
+
+@app.route('/isFavorite', methods = ['GET'])
+@auth.login_required
+def isFavorite():
+    p_id = request.args.get('id')
+    fav = db.session.query(FollowedPlaylist).filter_by(user_email=g.user_email, playlist_id= p_id).first()
+    try:
+        return JSONRequest.sendAnswer(Serializer.serialize(fav), 200)
+    except:
+        return JSONRequest.sendError(error.args[0], 404)
+
+
 
 @app.route('/gender', methods = ['GET'])
 @auth.login_required
@@ -596,6 +618,67 @@ def deleteCommentary(id):
         return JSONRequest.sendError(error.args[0], 500)
 
     return JSONRequest.sendEmptyAnswer(200)
+
+@app.route('/friends', methods = ['POST'])
+@auth.login_required
+def addFriend():
+    content = JSONRequest.getJSON(request)
+    if (JSONRequest.checkFields(content, ['follow_email']) == False):
+        return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
+    try:
+        follow = FollowedUser(g.user_email, content['follow_email'])
+        db.session.add(follow)
+        db.session.commit()
+    except (IntegrityError, InternalError) as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    db.session.refresh(follow)
+    return JSONRequest.sendAnswer(follow.serialize, 200)
+
+@app.route('/favorite', methods = ['POST'])
+@auth.login_required
+def addFavorite():
+    content = JSONRequest.getJSON(request)
+    if (JSONRequest.checkFields(content, ['playlist_id']) == False):
+        return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
+    try:
+        follow = FollowedPlaylist(g.user_email, content['playlist_id'])
+        db.session.add(follow)
+        db.session.commit()
+    except (IntegrityError, InternalError) as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    db.session.refresh(follow)
+    return JSONRequest.sendAnswer(follow.serialize, 200)
+
+@app.route('/friends/<f_email>', methods = ['DELETE'])
+@auth.login_required
+def deleteFriend(f_email):
+    try:
+        friend = db.session.query(FollowedUser).filter_by(user_email=g.user_email, follow_email = f_email).first()
+        if (friend is None):
+            return JSONRequest.sendError("User is not friend with " + f_email, 404)
+        db.session.delete(friend)
+        db.session.commit()
+    except IntegrityError as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    return JSONRequest.sendEmptyAnswer(200)
+
+@app.route('/favorite/<f_id>', methods = ['DELETE'])
+@auth.login_required
+def deleteFavorite(f_id):
+    try:
+        fav = db.session.query(FollowedPlaylist).filter_by(user_email=g.user_email, playlist_id = f_id).first()
+        if (fav is None):
+            return JSONRequest.sendError("User has no followed playlist with id " + f_id, 404)
+        db.session.delete(fav)
+        db.session.commit()
+    except IntegrityError as error:
+        return JSONRequest.sendError(error.args[0], 500)
+
+    return JSONRequest.sendEmptyAnswer(200)
+
 
 # Main entry to run the server
 if __name__ == '__main__':

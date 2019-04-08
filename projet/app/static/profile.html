@@ -44,12 +44,12 @@
                 <!-- Button -->
                 <div class="col align-self-start" id="button_container" style="margin-top: 20px" hidden>
                     <div class="row">
-                        <div class="col-4 offset-6">
+                        <div class="col-5 offset-5">
                             <button class="btn btn-outline-primary" id="follow_user" style="min-width: 50px;" hidden>Suivre</button>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 offset-6">
+                        <div class="col-5 offset-5">
                             <button class="btn btn-outline-primary" id="edition_user" style="min-width: 50px;" hidden>Edition</button>
                         </div>
                     </div>
@@ -181,6 +181,23 @@
             document.getElementById("friends-container").hidden = false;
             document.getElementById("spinner_playlist").hidden = true;
 
+        });
+
+        let follow = document.getElementById("follow_user");
+        follow.addEventListener('click', () => {
+            m.ProfileController.isFriend(email).then(() => {
+                m.ProfileController.deleteFriend(email).then(() => {
+                    follow.removeAttribute("class");
+                    follow.setAttribute("class", "btn btn-outline-primary");
+                    follow.innerText = 'S\'abonner';
+                }).catch(err => alert(err));
+            }).catch(() => {
+                m.ProfileController.addFriend(email).then(() => {
+                    follow.removeAttribute("class");
+                    follow.setAttribute("class", "btn btn-outline-danger");
+                    follow.innerText = 'Se désabonner';
+                }).catch(err => alert(err));
+            });
         });
 
         function eventFire(el, etype){

@@ -410,6 +410,17 @@ export class SDK {
         });
     }
 
+    static isFriend(follow_email) {
+        return Request.Get('isFriend?email=' + follow_email).catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            return response.data;
+        });
+    }
+
     static getFriends(user_email) {
         return Request.Get('user/' + user_email + '/friends').catch(err => {
             throw err;
@@ -422,6 +433,61 @@ export class SDK {
                 friend_ids.push(friend_id);
             });
             return friend_ids;
+        });
+    }
+
+    static addFriend(follow_email) {
+        return Request.Post('friends', {follow_email: follow_email}).catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            return response.data;
+        });
+    }
+
+    static deleteFriend(email) {
+        return Request.Delete('friends/' + email).catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            return response.data;
+        });
+    }
+
+    static isFavorite(playlist_id) {
+        return Request.Get('isFavorite?id=' + playlist_id).catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            return response.data;
+        });
+    }
+
+    static addFavorite(playlist_id) {
+        return Request.Post('favorite', {playlist_id: playlist_id}).catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            return response.data;
+        });
+    }
+
+    static deleteFavorite(playlist_id) {
+        return Request.Delete('favorite/' + playlist_id).catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            return response.data;
         });
     }
 }
