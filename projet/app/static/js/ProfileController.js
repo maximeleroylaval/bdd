@@ -152,6 +152,19 @@ export class ProfileController {
                     follow.hidden = true;
                     button_container.hidden = false;
                 } else {
+                    SDK.isFriend(email).then(() => {
+                        // friends
+                        follow.removeAttribute("class");
+                        follow.setAttribute("class", "btn btn-outline-danger");
+                        follow.innerText = 'Se désabonner';
+
+                    }).catch(() => {
+                        // not friend
+                        follow.removeAttribute("class");
+                        follow.setAttribute("class", "btn btn-outline-primary");
+                        follow.innerText = 'S\'abonner';
+
+                    });
                     edition.hidden = true;
                     follow.hidden = false;
                     button_container.hidden = false;
@@ -253,6 +266,18 @@ export class ProfileController {
         ul.appendChild(li);
     }
 
+    static isFriend(email) {
+        return SDK.isFriend(email);
+    }
+
+    static addFriend(email) {
+        return SDK.addFriend(email);
+    }
+
+    static deleteFriend(email) {
+        return SDK.deleteFriend(email);
+    }
+
     static getEmail() {
         let params = SDK.getQueryParameters(window.location.href);
         return params.email;
@@ -262,4 +287,5 @@ export class ProfileController {
         let params = SDK.getQueryParameters(window.location.href);
         return params.tab;
     }
+
 }
