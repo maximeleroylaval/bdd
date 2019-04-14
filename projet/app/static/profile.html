@@ -103,153 +103,153 @@
 <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
 <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
 <script>
-    w3IncludeHTML();
+    $(document).ready(() => {
+        w3IncludeHTML();
+        System.import("js/ProfileController").then((m) => {
 
-    System.import("js/ProfileController").then((m) => {
+            let email = m.ProfileController.getEmail();
+            let tab = m.ProfileController.getTab();
 
-        let email = m.ProfileController.getEmail();
-        let tab = m.ProfileController.getTab();
-
-        let index = window.location.href.lastIndexOf("#");
-        let playlist = document.getElementById("my_playlists_id");
-        let followed = document.getElementById("followed_playlists_id");
-        let friends = document.getElementById("friends_id");
-
-
-        m.ProfileController.loadButton(email);
-        m.ProfileController.loadProfile(email);
+            let index = window.location.href.lastIndexOf("#");
+            let playlist = document.getElementById("my_playlists_id");
+            let followed = document.getElementById("followed_playlists_id");
+            let friends = document.getElementById("friends_id");
 
 
-        document.getElementById("spinner_profil_detail").hidden = true;
-        document.getElementById("profil_detail").hidden = false;
+            m.ProfileController.loadButton(email);
+            m.ProfileController.loadProfile(email);
 
-        document.getElementById("edition_user").addEventListener('click', () => {
-           window.open('profile_edit.html', '_self');
-        });
 
-        playlist.addEventListener('click', () => {
-            document.getElementById("playlists-container").hidden = true;
-            document.getElementById("spinner_playlist").hidden = false;
-            document.getElementById("playlists-container").innerHTML = '';
-            document.getElementById("friends-container").hidden = true;
+            document.getElementById("spinner_profil_detail").hidden = true;
+            document.getElementById("profil_detail").hidden = false;
 
-            m.ProfileController.loadUserPlaylist(email);
-            playlist.removeAttribute("class");
-            playlist.setAttribute("class", "nav-link active");
-            friends.removeAttribute("class");
-            friends.setAttribute("class", "nav-link");
-            followed.removeAttribute("class");
-            followed.setAttribute("class", "nav-link");
-
-            document.getElementById("playlists-container").hidden = false;
-            document.getElementById("spinner_playlist").hidden = true;
-        });
-
-        followed.addEventListener('click', () => {
-            document.getElementById("playlists-container").hidden = true;
-            document.getElementById("spinner_playlist").hidden = false;
-            document.getElementById("playlists-container").innerHTML = '';
-            document.getElementById("friends-container").hidden = true;
-
-            m.ProfileController.loadFollowedPlaylist(email);
-            playlist.removeAttribute("class");
-            playlist.setAttribute("class", "nav-link");
-            followed.removeAttribute("class");
-            followed.setAttribute("class", "nav-link active");
-            friends.removeAttribute("class");
-            friends.setAttribute("class", "nav-link");
-
-            document.getElementById("playlists-container").hidden = false;
-            document.getElementById("spinner_playlist").hidden = true;
-        });
-
-        friends.addEventListener('click', () => {
-
-            document.getElementById("playlists-container").hidden = true;
-            document.getElementById("friends-container").hidden = true;
-            document.getElementById("spinner_playlist").hidden = false;
-            document.getElementById("friends-container").innerHTML = '';
-
-            m.ProfileController.getFriends(email);
-            playlist.removeAttribute("class");
-            playlist.setAttribute("class", "nav-link");
-            followed.removeAttribute("class");
-            followed.setAttribute("class", "nav-link");
-            friends.removeAttribute("class");
-            friends.setAttribute("class", "nav-link active");
-
-            document.getElementById("friends-container").hidden = false;
-            document.getElementById("spinner_playlist").hidden = true;
-
-        });
-
-        let follow = document.getElementById("follow_user");
-        follow.addEventListener('click', () => {
-            m.ProfileController.isFriend(email).then(() => {
-                m.ProfileController.deleteFriend(email).then(() => {
-                    follow.removeAttribute("class");
-                    follow.setAttribute("class", "btn btn-outline-primary");
-                    follow.innerText = 'S\'abonner';
-                }).catch(err => alert(err));
-            }).catch(() => {
-                m.ProfileController.addFriend(email).then(() => {
-                    follow.removeAttribute("class");
-                    follow.setAttribute("class", "btn btn-outline-danger");
-                    follow.innerText = 'Se désabonner';
-                }).catch(err => alert(err));
+            document.getElementById("edition_user").addEventListener('click', () => {
+            window.open('profile_edit.html', '_self');
             });
-        });
 
-        function eventFire(el, etype){
-            if (el.fireEvent) {
-                el.fireEvent('on' + etype);
+            playlist.addEventListener('click', () => {
+                document.getElementById("playlists-container").hidden = true;
+                document.getElementById("spinner_playlist").hidden = false;
+                document.getElementById("playlists-container").innerHTML = '';
+                document.getElementById("friends-container").hidden = true;
+
+                m.ProfileController.loadUserPlaylist(email);
+                playlist.removeAttribute("class");
+                playlist.setAttribute("class", "nav-link active");
+                friends.removeAttribute("class");
+                friends.setAttribute("class", "nav-link");
+                followed.removeAttribute("class");
+                followed.setAttribute("class", "nav-link");
+
+                document.getElementById("playlists-container").hidden = false;
+                document.getElementById("spinner_playlist").hidden = true;
+            });
+
+            followed.addEventListener('click', () => {
+                document.getElementById("playlists-container").hidden = true;
+                document.getElementById("spinner_playlist").hidden = false;
+                document.getElementById("playlists-container").innerHTML = '';
+                document.getElementById("friends-container").hidden = true;
+
+                m.ProfileController.loadFollowedPlaylist(email);
+                playlist.removeAttribute("class");
+                playlist.setAttribute("class", "nav-link");
+                followed.removeAttribute("class");
+                followed.setAttribute("class", "nav-link active");
+                friends.removeAttribute("class");
+                friends.setAttribute("class", "nav-link");
+
+                document.getElementById("playlists-container").hidden = false;
+                document.getElementById("spinner_playlist").hidden = true;
+            });
+
+            friends.addEventListener('click', () => {
+
+                document.getElementById("playlists-container").hidden = true;
+                document.getElementById("friends-container").hidden = true;
+                document.getElementById("spinner_playlist").hidden = false;
+                document.getElementById("friends-container").innerHTML = '';
+
+                m.ProfileController.getFriends(email);
+                playlist.removeAttribute("class");
+                playlist.setAttribute("class", "nav-link");
+                followed.removeAttribute("class");
+                followed.setAttribute("class", "nav-link");
+                friends.removeAttribute("class");
+                friends.setAttribute("class", "nav-link active");
+
+                document.getElementById("friends-container").hidden = false;
+                document.getElementById("spinner_playlist").hidden = true;
+
+            });
+
+            let follow = document.getElementById("follow_user");
+            follow.addEventListener('click', () => {
+                m.ProfileController.isFriend(email).then(() => {
+                    m.ProfileController.deleteFriend(email).then(() => {
+                        follow.removeAttribute("class");
+                        follow.setAttribute("class", "btn btn-outline-primary");
+                        follow.innerText = 'S\'abonner';
+                    }).catch(err => alert(err));
+                }).catch(() => {
+                    m.ProfileController.addFriend(email).then(() => {
+                        follow.removeAttribute("class");
+                        follow.setAttribute("class", "btn btn-outline-danger");
+                        follow.innerText = 'Se désabonner';
+                    }).catch(err => alert(err));
+                });
+            });
+
+            function eventFire(el, etype){
+                if (el.fireEvent) {
+                    el.fireEvent('on' + etype);
+                } else {
+                    let evObj = document.createEvent('Events');
+                    evObj.initEvent(etype, true, false);
+                    el.dispatchEvent(evObj);
+                }
+            }
+
+            if (tab !== undefined) {
+                switch (tab) {
+                    case 'playlist':
+                        eventFire(playlist, 'click');
+                        break;
+                    case 'friends':
+                        eventFire(friends, 'click');
+                        break;
+                    case 'followed':
+                        eventFire(followed, 'click');
+                        break;
+                    default:
+                        eventFire(playlist, 'click');
+                        break;
+                }
+            } else if (index !== - 1) {
+                let hook = window.location.href.substr(index, window.location.href.length - index);
+                switch (hook) {
+                    case '#':
+                        eventFire(playlist, 'click');
+                        break;
+                    case '#playlists':
+                        eventFire(playlist, 'click');
+                        break;
+                    case '#friends':
+                        console.log("ici");
+                        eventFire(friends, 'click');
+                        break;
+                    case '#followed':
+                        eventFire(followed, 'click');
+                        break;
+                    default:
+                        eventFire(playlist, 'click');
+                        break;
+                }
             } else {
-                let evObj = document.createEvent('Events');
-                evObj.initEvent(etype, true, false);
-                el.dispatchEvent(evObj);
+                eventFire(playlist, 'click');
             }
-        }
-
-        if (tab !== undefined) {
-            switch (tab) {
-                case 'playlist':
-                    eventFire(playlist, 'click');
-                    break;
-                case 'friends':
-                    eventFire(friends, 'click');
-                    break;
-                case 'followed':
-                    eventFire(followed, 'click');
-                    break;
-                default:
-                    eventFire(playlist, 'click');
-                    break;
-            }
-        } else if (index !== - 1) {
-            let hook = window.location.href.substr(index, window.location.href.length - index);
-            switch (hook) {
-                case '#':
-                    eventFire(playlist, 'click');
-                    break;
-                case '#playlists':
-                    eventFire(playlist, 'click');
-                    break;
-                case '#friends':
-                    console.log("ici");
-                    eventFire(friends, 'click');
-                    break;
-                case '#followed':
-                    eventFire(followed, 'click');
-                    break;
-                default:
-                    eventFire(playlist, 'click');
-                    break;
-            }
-        } else {
-            eventFire(playlist, 'click');
-        }
+        });
     });
-
 </script>
 </body>
 <footer>

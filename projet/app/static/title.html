@@ -18,7 +18,7 @@
             <div id="url" class="title_video" allowfullscreen>
             </div>
             <div class="title_description">
-                <div id="title_header" style="display: flex;height:6vh;margin-top:1vh;margin-bottom:3vh;" hidden>
+                <div id="title_header" style="display: flex;height:6vh;margin-top:1vh;" hidden>
                     <p id="name" class="title_name col-9" type="text" placeholder="Name">Title</p>
                     <div class="col-3" id="title_options" style="text-align: center;" hidden>
                         <button id="title_edit" type="button" class="btn btn-warning">Editer</button>
@@ -26,8 +26,9 @@
                     </div>
                 </div>
                 <hr>
-                <div id="user_description">
+                <div id="user_description" class="form-inline">
                 </div>
+                <hr>
                 <div class="title_commentary_add form-inline" id="commentary_add" hidden>
                     <div class="mb-2 col-10">
                         <input id="description" type="text" class="form-control" style="margin-right: 14px;width:100%;"
@@ -58,155 +59,176 @@
     <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
     <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
     <script>
-        w3IncludeHTML();
-        System.import("js/sdk/sdk").then((m) => {
-            const SDK = m.SDK;
-            const params = SDK.getQueryParameters(window.location.href);
-            const title_id = params.id;
+        $(document).ready(() => {
+            w3IncludeHTML();
+            System.import("js/sdk/sdk").then((m) => {
+                const SDK = m.SDK;
+                const params = SDK.getQueryParameters(window.location.href);
+                const title_id = params.id;
 
-            loadTitle(title_id);
+                loadTitle(title_id);
 
-            function renderCommentaries(profile, commentaries, title) {
-                var divCommentaries = document.getElementById("commentaries");
-                divCommentaries.innerHTML = "";
-                var pTitle = document.createElement("p")
-                pTitle.classList.add("commentary_title");
-                pTitle.innerHTML = "Commentaires";
-                if (commentaries.length > 0) {
-                    divCommentaries.appendChild(pTitle);
+                function renderCommentaries(profile, commentaries, title) {
+                    var divCommentaries = document.getElementById("commentaries");
+                    divCommentaries.innerHTML = "";
+                    var pTitle = document.createElement("p")
+                    pTitle.classList.add("commentary_title");
+                    pTitle.innerHTML = "Commentaires";
+                    if (commentaries.length > 0) {
+                        divCommentaries.appendChild(pTitle);
+                    }
+                    var pInnerCommentary = document.createElement("div");
+                    pInnerCommentary.classList.add("inner_commentary");
+                    commentaries.forEach((commentary) => {
+                        var pDivCommentary = document.createElement("div");
+                        var pUser = document.createElement("a");
+                        pUser.classList.add("commentary_user");
+                        pUser.href = "profile.html?email=" + commentary.user_email;
+                        pUser.innerHTML = commentary.user_email;
+                        var pPublication = document.createElement("p");
+                        pPublication.classList.add("commentary_publication");
+                        pPublication.innerHTML = SDK.formatDateToHuman(commentary.publication);
+                        var pCommentary = document.createElement("p");
+                        pCommentary.classList.add("title_commentary");
+                        pCommentary.innerHTML = commentary.description;
+                        var pDelete = document.createElement("button");
+                        pDelete.classList.add("btn");
+                        pDelete.classList.add("btn-outline-danger");
+                        pDelete.setAttribute("style", "font-size:xx-small");
+                        pDelete.innerHTML = "Supprimer";
+                        pDelete.addEventListener('click', (e) => {
+                            SDK.deleteCommentary(commentary.id).then(() => {
+                                loadInformations(title);
+                            }).catch((e) => {
+                                alert(e);
+                            });
+                        });
+                        pDivCommentary.appendChild(pUser);
+                        pDivCommentary.appendChild(pPublication);
+                        pDivCommentary.appendChild(pCommentary);
+                        if (commentary.user_email === profile.email)
+                            pDivCommentary.appendChild(pDelete);
+                        pInnerCommentary.appendChild(pDivCommentary);
+                        pInnerCommentary.appendChild(document.createElement("br"));
+                    });
+                    divCommentaries.appendChild(pInnerCommentary);
                 }
-                var pInnerCommentary = document.createElement("div");
-                pInnerCommentary.classList.add("inner_commentary");
-                commentaries.forEach((commentary) => {
-                    var pDivCommentary = document.createElement("div");
-                    var pUser = document.createElement("a");
-                    pUser.classList.add("commentary_user");
-                    pUser.href = "profile.html?email=" + commentary.user_email;
-                    pUser.innerHTML = commentary.user_email;
+
+                function renderUser(user, title, playlist) {
+                    var divUser = document.getElementById("user_description")
+                    divUser.innerHTML = "";
+                    var pDivPicture = document.createElement("div");
+                    pDivPicture.classList.add("col-2");
+                    pDivPicture.setAttribute("style", "text-align:center");
+                    var pPicture = document.createElement("img");
+                    pPicture.classList.add("user_picture");
+                    pPicture.src = user.picture;
+                    pDivPicture.appendChild(pPicture);
+                    var pName = document.createElement("a");
+                    pName.classList.add("col-4");
+                    pName.classList.add("user_name");
+                    pName.href = "profile.html?email=" + user.email;
+                    pName.innerHTML = user.name;
+
+                    var pDivPublication = document.createElement("div");
+                    pDivPublication.classList.add("col-6");
+                    pDivPublication.classList.add("user_publication");
                     var pPublication = document.createElement("p");
-                    pPublication.classList.add("commentary_publication");
-                    pPublication.innerHTML = SDK.formatDateToHuman(commentary.publication);
-                    var pCommentary = document.createElement("p");
-                    pCommentary.classList.add("title_commentary");
-                    pCommentary.innerHTML = commentary.description;
-                    var pDelete = document.createElement("button");
-                    pDelete.classList.add("btn");
-                    pDelete.classList.add("btn-outline-danger");
-                    pDelete.setAttribute("style", "font-size:xx-small");
-                    pDelete.innerHTML = "Supprimer";
-                    pDelete.addEventListener('click', (e) => {
-                        SDK.deleteCommentary(commentary.id).then(() => {
-                            loadInformations(title);
-                        }).catch((e) => {
-                            alert(e);
-                        });
-                    });
-                    pDivCommentary.appendChild(pUser);
-                    pDivCommentary.appendChild(pPublication);
-                    pDivCommentary.appendChild(pCommentary);
-                    if (commentary.user_email === profile.email)
-                        pDivCommentary.appendChild(pDelete);
-                    pInnerCommentary.appendChild(pDivCommentary);
-                    pInnerCommentary.appendChild(document.createElement("br"));
-                });
-                divCommentaries.appendChild(pInnerCommentary);
-            }
+                    pPublication.classList.add("tight-text");
+                    pPublication.innerHTML = SDK.formatDateToHuman(title.publication);
+                    var pOnPlaylist = document.createElement("p");
+                    pOnPlaylist.classList.add("tight-text");
+                    pOnPlaylist.innerHTML = "dans"
+                    var pPlaylist = document.createElement("a");
+                    pPlaylist.classList.add("tight-text");
+                    pPlaylist.href = "playlist.html?id=" + title.playlist_id;
+                    pPlaylist.innerHTML = playlist.name;
 
-            function renderUser(user, title) {
-                var divUser = document.getElementById("user_description")
-                divUser.innerHTML = "";
-                var pPicture = document.createElement("img");
-                pPicture.classList.add("user_picture");
-                pPicture.src = user.picture;
-                var pName = document.createElement("a");
-                pName.classList.add("user_name");
-                pName.href = "profile.html?email=" + user.email;
-                pName.innerHTML = user.name;
-                var pPublication = document.createElement("p");
-                pPublication.classList.add("user_publication");
-                pPublication.innerHTML = SDK.formatDateToHuman(title.publication);
-                divUser.appendChild(pPicture);
-                divUser.appendChild(pName);
-                divUser.appendChild(pPublication);
-                divUser.appendChild(document.createElement("hr"));
-                document.getElementById("title_header").hidden = false;
-            }
+                    pDivPublication.appendChild(pPublication);
+                    pDivPublication.appendChild(pOnPlaylist);
+                    pDivPublication.appendChild(pPlaylist);
 
-            function loadInformations(title) {
-
-                SDK.getUser(title.user_email).then((user) => {
-                    renderUser(user, title);
-                }).catch((e) => {
-                    alert(e);
-                });
-                SDK.getUserProfile().then((profile) => {
-                    SDK.getPlaylist(title.playlist_id).then((playlist) => {
-                        if (profile.email == playlist.user_email || profile.email == title.user_email)
-                            document.getElementById("title_options").hidden = false;
-                    }).catch((e) => {
-                        alert(e);
-                    });
-                    SDK.getCommentariesByTitle(title.id).then((commentaries) => {
-                        renderCommentaries(profile, commentaries, title);
-                    }).catch((e) => {
-                        alert(e);
-                    })
-                }).catch((e) => {
-                    alert(e);
-                });
-            }
-
-            function renderTitle(title) {
-                var url = document.getElementById("url");
-                var name = document.getElementById("name");
-                name.innerHTML = title.name;
-                if (title.url.indexOf("youtube.com/embed/") !== -1) {
-                    var pFrame = document.createElement("iframe");
-                    pFrame.src = title.url;
-                    pFrame.allowfullscreen = "allowfullscreen";
-                    pFrame.frameBorder = 0;
-                    pFrame.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
-                } else {
-                    var pFrame = document.createElement("video");
-                    pFrame.controls = true;
-                    var pInnerFrame = document.createElement("source");
-                    pInnerFrame.src = title.url;
-                    pFrame.appendChild(pInnerFrame);
+                    divUser.appendChild(pDivPicture);
+                    divUser.appendChild(pName);
+                    divUser.appendChild(pDivPublication);
+                    document.getElementById("title_header").hidden = false;
                 }
-                pFrame.style = "height:66vh; width:100%;";
-                url.appendChild(pFrame);
-                document.getElementById("commentary_add").hidden = false;
-            }
 
-            function loadTitle(title_id) {
-                SDK.getTitle(title_id).then((title) => {
-                    renderTitle(title);
-                    loadInformations(title);
-                    document.getElementById("title_delete").addEventListener('click', (e) => {
-                        SDK.deleteTitle(title_id).then((e) => {
-                            window.open("playlist.html?id=" + title.playlist_id, "_self");
+                function loadInformations(title) {
+                    SDK.getUserProfile().then((profile) => {
+                        SDK.getPlaylist(title.playlist_id).then((playlist) => {
+                            if (profile.email == playlist.user_email || profile.email == title.user_email)
+                                document.getElementById("title_options").hidden = false;
+                            SDK.getUser(title.user_email).then((user) => {
+                                renderUser(user, title, playlist);
+                            }).catch((e) => {
+                                alert(e);
+                            });
                         }).catch((e) => {
                             alert(e);
                         });
-                    });
-                    document.getElementById("add").addEventListener('click', (e) => {
-                        var description = document.getElementById("description").value;
-                        SDK.addCommentary(description, title_id).then((commentary) => {
-                            loadInformations(title);
+                        SDK.getCommentariesByTitle(title.id).then((commentaries) => {
+                            renderCommentaries(profile, commentaries, title);
                         }).catch((e) => {
                             alert(e);
-                        });
+                        })
+                    }).catch((e) => {
+                        alert(e);
                     });
-                }).catch((e) => {
-                    alert(e);
-                });
+                }
 
-                document.getElementById("title_edit").addEventListener('click', (e) => {
-                    window.open("title_edit.html?id=" + title_id, "_self");
-                });
+                function renderTitle(title) {
+                    var url = document.getElementById("url");
+                    var name = document.getElementById("name");
+                    name.innerHTML = title.name;
+                    if (title.url.indexOf("youtube.com/embed/") !== -1) {
+                        var pFrame = document.createElement("iframe");
+                        pFrame.src = title.url;
+                        pFrame.allowfullscreen = "allowfullscreen";
+                        pFrame.frameBorder = 0;
+                        pFrame.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+                    } else {
+                        var pFrame = document.createElement("video");
+                        pFrame.controls = true;
+                        var pInnerFrame = document.createElement("source");
+                        pInnerFrame.src = title.url;
+                        pFrame.appendChild(pInnerFrame);
+                    }
+                    pFrame.style = "height:66vh; width:100%;";
+                    url.appendChild(pFrame);
+                    document.getElementById("commentary_add").hidden = false;
+                }
+
+                function loadTitle(title_id) {
+                    SDK.getTitle(title_id).then((title) => {
+                        renderTitle(title);
+                        loadInformations(title);
+                        document.getElementById("title_delete").addEventListener('click', (e) => {
+                            SDK.deleteTitle(title_id).then((e) => {
+                                window.open("playlist.html?id=" + title.playlist_id, "_self");
+                            }).catch((e) => {
+                                alert(e);
+                            });
+                        });
+                        document.getElementById("add").addEventListener('click', (e) => {
+                            var description = document.getElementById("description").value;
+                            SDK.addCommentary(description, title_id).then((commentary) => {
+                                loadInformations(title);
+                            }).catch((e) => {
+                                alert(e);
+                            });
+                        });
+                    }).catch((e) => {
+                        alert(e);
+                    });
+
+                    document.getElementById("title_edit").addEventListener('click', (e) => {
+                        window.open("title_edit.html?id=" + title_id, "_self");
+                    });
 
 
-            }
+                }
+            });
         });
     </script>
 </body>

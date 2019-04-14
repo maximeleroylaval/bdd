@@ -28,166 +28,174 @@
         <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
         <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
         <script>
-            w3IncludeHTML();
-            System.import("js/sdk/sdk").then((m) => {
-                const SDK = m.SDK;
-                const params = SDK.getQueryParameters(window.location.href);
-                const playlist_id = params.id;
+            $(document).ready(() => {
+                w3IncludeHTML();
+                System.import("js/sdk/sdk").then((m) => {
+                    const SDK = m.SDK;
+                    const params = SDK.getQueryParameters(window.location.href);
+                    const playlist_id = params.id;
 
-                loadPlaylistHeader(playlist_id);
-                loadPlaylistTitles(playlist_id);
+                    loadPlaylistHeader(playlist_id);
+                    loadPlaylistTitles(playlist_id);
 
-                function loadPlaylistHeader(playlist_id) {
-                    SDK.getPlaylist(playlist_id).then((playlist) => {
+                    function loadPlaylistHeader(playlist_id) {
+                        SDK.getPlaylist(playlist_id).then((playlist) => {
 
-                        var pFollow = document.createElement("button");
-                        pFollow.type = "button";
-                        pFollow.classList.add("btn");
-                        pFollow.classList.add("btn-info");
-                        pFollow.innerHTML = "Suivre la playlist";
-                        pFollow.hidden = true;
+                            var pFollow = document.createElement("button");
+                            pFollow.type = "button";
+                            pFollow.classList.add("btn");
+                            pFollow.classList.add("btn-info");
+                            pFollow.innerHTML = "Suivre la playlist";
+                            pFollow.hidden = true;
 
-
-                        SDK.isFavorite(playlist_id).then(() => {
-                            // fav
-                            pFollow.removeAttribute("class");
-                            pFollow.setAttribute("class", "btn btn-outline-danger");
-                            pFollow.innerText = 'Ne plus suivre';
-
-                        }).catch(() => {
-                            // not fav
-                            pFollow.removeAttribute("class");
-                            pFollow.setAttribute("class", "btn btn-outline-primary");
-                            pFollow.innerText = 'Suivre';
-
-                        });
-
-                        pFollow.addEventListener('click', (e) => {
                             SDK.isFavorite(playlist_id).then(() => {
-                                // delete fav
-                                SDK.deleteFavorite(playlist_id).catch(err => alert(err)).then(() => {
-                                    pFollow.removeAttribute("class");
-                                    pFollow.setAttribute("class", "btn btn-outline-primary");
-                                    pFollow.innerText = 'Suivre';
-                            });
+                                // fav
+                                pFollow.removeAttribute("class");
+                                pFollow.setAttribute("class", "btn btn-outline-danger");
+                                pFollow.innerText = 'Ne plus suivre';
                             }).catch(() => {
-                                // add fav
-                                SDK.addFavorite(playlist_id).catch(err => alert(err)).then(() => {
-                                    pFollow.removeAttribute("class");
-                                    pFollow.setAttribute("class", "btn btn-outline-danger");
-                                    pFollow.innerText = 'Ne plus suivre';
+                                // not fav
+                                pFollow.removeAttribute("class");
+                                pFollow.setAttribute("class", "btn btn-outline-primary");
+                                pFollow.innerText = 'Suivre';
+
+                            });
+
+                            pFollow.addEventListener('click', (e) => {
+                                SDK.isFavorite(playlist_id).then(() => {
+                                    // delete fav
+                                    SDK.deleteFavorite(playlist_id).catch(err => alert(err)).then(() => {
+                                        pFollow.removeAttribute("class");
+                                        pFollow.setAttribute("class", "btn btn-outline-primary");
+                                        pFollow.innerText = 'Suivre';
+                                    });
+                                }).catch(() => {
+                                    // add fav
+                                    SDK.addFavorite(playlist_id).catch(err => alert(err)).then(() => {
+                                        pFollow.removeAttribute("class");
+                                        pFollow.setAttribute("class", "btn btn-outline-danger");
+                                        pFollow.innerText = 'Ne plus suivre';
+                                    });
                                 });
                             });
-                        });
-                        var divPlaylistHeader = document.getElementById("playlist_header");
-                        var pPicture = document.createElement("img");
-                        pPicture.classList.add("col-3");
-                        pPicture.setAttribute("style", "padding:2vh;");
-                        pPicture.src = playlist.picture;
-                        var pName = document.createElement("h4");
-                        pName.classList.add("col-2");
-                        pName.setAttribute("style", "text-align:center;");
-                        pName.innerHTML = playlist.name;
-                        var pDescription = document.createElement("div");
-                        pDescription.classList.add("col-7");
-                        var pInnerDescription = document.createElement("p");
-                        pInnerDescription.innerHTML = playlist.description;
-                        pDescription.appendChild(pInnerDescription);
-                        var pDivOptions = document.createElement("div");
-                        pDivOptions.hidden = true;
-                        pDivOptions.classList.add("col-12");
-                        pDivOptions.setAttribute("style", "display: flex; justify-content: space-between;margin-bottom:2vh;")
+                            var divPlaylistHeader = document.getElementById("playlist_header");
+                            var pPicture = document.createElement("img");
+                            pPicture.classList.add("col-3");
+                            pPicture.setAttribute("style", "padding:2vh;");
+                            pPicture.src = playlist.picture;
+                            var pDivName = document.createElement("div");
+                            pDivName.classList.add("col-2");
+                            pDivName.setAttribute("style", "text-align:center;");
+                            var pName = document.createElement("h4");
+                            pName.innerHTML = playlist.name;
+                            var pBy = document.createElement("hr");
+                            var pUser = document.createElement("a");
+                            pUser.href = "profile.html?email=" + playlist.user_email;
+                            pUser.innerHTML = playlist.user_email;
+                            pDivName.appendChild(pName);
+                            pDivName.appendChild(pBy);
+                            pDivName.appendChild(pUser);
+                            var pDescription = document.createElement("div");
+                            pDescription.classList.add("col-7");
+                            var pInnerDescription = document.createElement("p");
+                            pInnerDescription.innerHTML = playlist.description;
+                            pDescription.appendChild(pInnerDescription);
+                            var pDivOptions = document.createElement("div");
+                            pDivOptions.hidden = true;
+                            pDivOptions.classList.add("col-12");
+                            pDivOptions.setAttribute("style", "display: flex; justify-content: space-between;margin-bottom:2vh;")
 
-                        var pAddTitle = document.createElement("button");
-                        pAddTitle.classList.add("btn");
-                        pAddTitle.classList.add("btn-outline-primary");
-                        pAddTitle.addEventListener('click', (e) => {
-                            window.open("title_add.html?playlist_id=" + playlist_id, "_self");
-                        });
-                        pAddTitle.innerHTML = "Ajouter un titre";
-                        var pEditPlaylist = document.createElement("button");
-                        pEditPlaylist.classList.add("btn");
-                        pEditPlaylist.classList.add("btn-warning");
-                        pEditPlaylist.addEventListener('click', (e) => {
-                            window.open("playlist_edit.html?id=" + playlist_id, "_self");
-                        });
-                        pEditPlaylist.innerHTML = "Editer la playlist";
-                        var pDeletePlaylist = document.createElement("button");
-                        pDeletePlaylist.classList.add("btn");
-                        pDeletePlaylist.classList.add("btn-danger");
-                        pDeletePlaylist.addEventListener('click', (e) => {
-                            SDK.deletePlaylist(playlist_id).then(() => {
-                                window.open("index.html", "_self");
-                            }).catch((e) => {
-                                alert(e);
+                            var pAddTitle = document.createElement("button");
+                            pAddTitle.classList.add("btn");
+                            pAddTitle.classList.add("btn-outline-primary");
+                            pAddTitle.addEventListener('click', (e) => {
+                                window.open("title_add.html?playlist_id=" + playlist_id, "_self");
                             });
-                        });
-                        pDeletePlaylist.innerHTML = "Supprimer la playlist";
-                        SDK.getUserProfile().then((user) => {
-                            if (user.email === playlist.user_email)
-                            {
-                                pFollow.hidden = true;
-                                pEditPlaylist.hidden = false;
-                                pDeletePlaylist.hidden = false;
-                            } else {
-                                pFollow.hidden = false;
-                                pEditPlaylist.hidden = true;
-                                pDeletePlaylist.hidden = true;
-                            }
-                            pDivOptions.hidden = false;
-                        });
-                        pDivOptions.appendChild(pFollow);
-                        pDivOptions.appendChild(pAddTitle);
-                        pDivOptions.appendChild(pEditPlaylist);
-                        pDivOptions.appendChild(pDeletePlaylist);
-
-                        divPlaylistHeader.appendChild(pPicture);
-                        divPlaylistHeader.appendChild(pName);
-                        divPlaylistHeader.appendChild(pDescription);
-                        divPlaylistHeader.appendChild(pDivOptions);
-                    }).catch((e) => {
-                        alert(e);
-                    });
-                }
-
-                function loadPlaylistTitles(playlist_id) {
-                    SDK.getTitlesByPlaylist(playlist_id).then((titles) => {
-                        var divTitles = document.getElementById("titles");
-                        divTitles.innerHTML = "";
-                        var divName = document.createElement("h4");
-                        divName.innerHTML = "Titres";
-                        divName.style = "margin-bottom:30px";
-                        divTitles.appendChild(divName);
-                        titles.forEach(title => {
-                            var pTitle = document.createElement('div');
-                            var pTitleButton = document.createElement('button');
-                            pTitleButton.type = "button";
-                            pTitleButton.classList.add("btn");
-                            pTitleButton.classList.add("btn-light");
-                            pTitleButton.classList.add("btn-block");
-                            pTitleButton.classList.add("playlist");
-                            pTitleButton.innerHTML = title.name;
-                            pTitleButton.addEventListener('click', (e) => {
-                                window.open("title.html?id=" + title.id, "_self");
+                            pAddTitle.innerHTML = "Ajouter un titre";
+                            var pEditPlaylist = document.createElement("button");
+                            pEditPlaylist.classList.add("btn");
+                            pEditPlaylist.classList.add("btn-warning");
+                            pEditPlaylist.addEventListener('click', (e) => {
+                                window.open("playlist_edit.html?id=" + playlist_id, "_self");
                             });
-                            pTitle.appendChild(pTitleButton);
-                            divTitles.appendChild(pTitle);
-                        });
-                    }).catch((e) => {
-                        alert(e);
-                    });
-                }
+                            pEditPlaylist.innerHTML = "Editer la playlist";
+                            var pDeletePlaylist = document.createElement("button");
+                            pDeletePlaylist.classList.add("btn");
+                            pDeletePlaylist.classList.add("btn-danger");
+                            pDeletePlaylist.addEventListener('click', (e) => {
+                                SDK.deletePlaylist(playlist_id).then(() => {
+                                    window.open("index.html", "_self");
+                                }).catch((e) => {
+                                    alert(e);
+                                });
+                            });
+                            pDeletePlaylist.innerHTML = "Supprimer la playlist";
+                            SDK.getUserProfile().then((user) => {
+                                if (user.email === playlist.user_email)
+                                {
+                                    pFollow.hidden = true;
+                                    pEditPlaylist.hidden = false;
+                                    pDeletePlaylist.hidden = false;
+                                } else {
+                                    pFollow.hidden = false;
+                                    pEditPlaylist.hidden = true;
+                                    pDeletePlaylist.hidden = true;
+                                }
+                                pDivOptions.hidden = false;
+                            });
+                            pDivOptions.appendChild(pFollow);
+                            pDivOptions.appendChild(pAddTitle);
+                            pDivOptions.appendChild(pEditPlaylist);
+                            pDivOptions.appendChild(pDeletePlaylist);
 
-                document.getElementById("add").addEventListener('click', (e) => {
-                    var name = document.getElementById("name").value;
-                    var publication = new Date().toISOString().split('T')[0];
-                    var url = document.getElementById("url").value;
-                    SDK.addTitle(name, publication, url, playlist_id).then((title) => {
-                        loadPlaylistTitles(playlist_id);
-                    }).catch((e) => {
-                        alert(e);
+                            divPlaylistHeader.appendChild(pPicture);
+                            divPlaylistHeader.appendChild(pDivName);
+                            divPlaylistHeader.appendChild(pDescription);
+                            divPlaylistHeader.appendChild(pDivOptions);
+                        }).catch((e) => {
+                            alert(e);
+                        });
+                    }
+
+                    function loadPlaylistTitles(playlist_id) {
+                        SDK.getTitlesByPlaylist(playlist_id).then((titles) => {
+                            var divTitles = document.getElementById("titles");
+                            divTitles.innerHTML = "";
+                            var divName = document.createElement("h4");
+                            divName.innerHTML = "Titres";
+                            divName.style = "margin-bottom:30px";
+                            divTitles.appendChild(divName);
+                            titles.forEach(title => {
+                                var pTitle = document.createElement('div');
+                                var pTitleButton = document.createElement('button');
+                                pTitleButton.type = "button";
+                                pTitleButton.classList.add("btn");
+                                pTitleButton.classList.add("btn-light");
+                                pTitleButton.classList.add("btn-block");
+                                pTitleButton.classList.add("playlist");
+                                pTitleButton.innerHTML = title.name;
+                                pTitleButton.addEventListener('click', (e) => {
+                                    window.open("title.html?id=" + title.id, "_self");
+                                });
+                                pTitle.appendChild(pTitleButton);
+                                divTitles.appendChild(pTitle);
+                            });
+                        }).catch((e) => {
+                            alert(e);
+                        });
+                    }
+
+                    document.getElementById("add").addEventListener('click', (e) => {
+                        var name = document.getElementById("name").value;
+                        var publication = new Date().toISOString().split('T')[0];
+                        var url = document.getElementById("url").value;
+                        SDK.addTitle(name, publication, url, playlist_id).then((title) => {
+                            loadPlaylistTitles(playlist_id);
+                        }).catch((e) => {
+                            alert(e);
+                        });
+                        e.preventDefault();
                     });
-                    e.preventDefault();
                 });
             });
         </script>

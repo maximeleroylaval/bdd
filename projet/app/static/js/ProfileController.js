@@ -157,7 +157,6 @@ export class ProfileController {
                         follow.removeAttribute("class");
                         follow.setAttribute("class", "btn btn-outline-danger");
                         follow.innerText = 'Se désabonner';
-
                     }).catch(() => {
                         // not friend
                         follow.removeAttribute("class");

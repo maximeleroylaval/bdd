@@ -53,21 +53,23 @@
     <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
     <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
     <script>
-        w3IncludeHTML();
-        System.import("js/sdk/sdk").then((m) => {
-            const SDK = m.SDK;
-            const params = SDK.getQueryParameters(window.location.href);
-            const playlist_id = params.playlist_id;
+        $(document).ready(() => {
+            w3IncludeHTML();
+            System.import("js/sdk/sdk").then((m) => {
+                const SDK = m.SDK;
+                const params = SDK.getQueryParameters(window.location.href);
+                const playlist_id = params.playlist_id;
 
-            document.getElementById("add").addEventListener('click', (e) => {
-                var name = document.getElementById("name").value;
-                var url = document.getElementById("url").value;
-                SDK.addTitle(name, url, playlist_id).then((title) => {
-                    window.open("playlist.html?id=" + playlist_id, "_self");
-                }).catch((e) => {
-                    alert(e);
+                document.getElementById("add").addEventListener('click', (e) => {
+                    var name = document.getElementById("name").value;
+                    var url = document.getElementById("url").value;
+                    SDK.addTitle(name, url, playlist_id).then((title) => {
+                        window.open("playlist.html?id=" + playlist_id, "_self");
+                    }).catch((e) => {
+                        alert(e);
+                    });
+                    e.preventDefault();
                 });
-                e.preventDefault();
             });
         });
     </script>

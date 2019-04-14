@@ -54,27 +54,29 @@
         <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
 
         <script>
-            $('#birthdate').datepicker({
-                uiLibrary: 'bootstrap4',
-                format: 'yyyy/mm/dd'
-            });
-            $('#gender_name').dropdown({
-                width: "100%"
-            });
-            System.import("js/sdk/sdk").then((m) => {
-                SDK = m.SDK;
-                document.getElementById("register_submit").addEventListener('click', (e) => {
-                    var email = document.getElementById("email").value;
-                    var password = document.getElementById("password").value;
-                    var name = document.getElementById("name").value;
-                    var birthdate = document.getElementById("birthdate").value;
-                    var gender_name = document.getElementById("gender_name").value;
-                    m.SDK.register(email, password, name, birthdate, gender_name).then(() => {
-                        window.open("login.html", "_self");
-                    }).catch((e) => {
-                        alert(e)
+            $(document).ready(() => {
+                $('#birthdate').datepicker({
+                    uiLibrary: 'bootstrap4',
+                    format: 'yyyy/mm/dd'
+                });
+                $('#gender_name').dropdown({
+                    width: "100%"
+                });
+                System.import("js/sdk/sdk").then((m) => {
+                    SDK = m.SDK;
+                    document.getElementById("register_submit").addEventListener('click', (e) => {
+                        var email = document.getElementById("email").value;
+                        var password = document.getElementById("password").value;
+                        var name = document.getElementById("name").value;
+                        var birthdate = document.getElementById("birthdate").value;
+                        var gender_name = document.getElementById("gender_name").value;
+                        m.SDK.register(email, password, name, birthdate, gender_name).then(() => {
+                            window.open("login.html", "_self");
+                        }).catch((e) => {
+                            alert(e)
+                        });
+                        e.preventDefault();
                     });
-                    e.preventDefault();
                 });
             });
         </script>
