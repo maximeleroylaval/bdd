@@ -4,3 +4,4 @@ pymysql
 cryptography
 Flask-HTTPAuth
 flask-cors
+flask-bcrypt

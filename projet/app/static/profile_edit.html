@@ -198,8 +198,10 @@
                         if (password.value !== "") {
                             if (password.value === password_conf.value) {
                                 profile.password = password.value;
-                                SDK.editUser(profile).catch(err => alert(err)).then(() => {
+                                SDK.editUser(profile).then(() => {
                                     window.open("profile.html", "_self");
+                                }).catch(err => {
+                                    alert(err);
                                 });
                             }
                             else {
@@ -207,13 +209,14 @@
                                 document.getElementById("password_missmatch").hidden = false;
                             }
                         } else {
-                            SDK.editUser(profile).catch(err => alert(err)).then(() => {
+                            SDK.editUser(profile).then(() => {
                                 window.open("profile.html", "_self");
-                            })
+                            }).catch(err => {
+                                alert(err);
+                            });
                         }
                     }
-                })
-
+                });
             }).catch((e) => {
                 alert(e);
             });

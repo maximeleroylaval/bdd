@@ -66,11 +66,6 @@
 
             loadTitle(title_id);
 
-            function convertToYoutube(url) {
-                url = url.replace("youtu.be/", "youtube.com/embed/")
-                return url.replace("watch?v=", "embed/");
-            }
-
             function renderCommentaries(profile, commentaries, title) {
                 var divCommentaries = document.getElementById("commentaries");
                 divCommentaries.innerHTML = "";
@@ -165,9 +160,9 @@
                 var url = document.getElementById("url");
                 var name = document.getElementById("name");
                 name.innerHTML = title.name;
-                if (convertToYoutube(title.url).indexOf("youtube.com/embed/") !== -1) {
+                if (title.url.indexOf("youtube.com/embed/") !== -1) {
                     var pFrame = document.createElement("iframe");
-                    pFrame.src = convertToYoutube(title.url);
+                    pFrame.src = title.url;
                     pFrame.allowfullscreen = "allowfullscreen";
                     pFrame.frameBorder = 0;
                     pFrame.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";

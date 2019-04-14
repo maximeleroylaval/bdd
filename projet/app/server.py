@@ -7,12 +7,14 @@ from flask import Flask, request, Response, g, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPTokenAuth
 from flask_cors import CORS
+from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError, InternalError
 from pymysql.err import MySQLError
 
 # Create the application instance
 app = Flask(__name__)
 CORS(app)
+bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@localhost/soundhub'
 pymysql.install_as_MySQLdb()
@@ -296,14 +298,18 @@ def loginUser():
     if (JSONRequest.checkFields(content, ['email', 'password']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
-        user = db.session.query(User).filter_by(email=content['email'], password=content['password']).first()
+        user = db.session.query(User).filter_by(email=content['email']).first()
         if (user is None):
+            return JSONRequest.sendError("Email and password combinaison does not match", 403)
+        if (bcrypt.check_password_hash(user.password, content['password']) == False):
             return JSONRequest.sendError("Email and password combinaison does not match", 403)
         token = Token(uuid.uuid4().__str__(), user.email)
         db.session.add(token)
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError, ValueError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled error", 500)
 
     db.session.refresh(token)
     return JSONRequest.sendAnswer(token.serialize, 200)
@@ -316,13 +322,16 @@ def addUser():
     try:
         if ('picture' not in content):
             content['picture'] = ""
-        user = User(content['email'], content['name'], content['password'], content['birthdate'], content['picture'], content['gender_name'])
+        password = bcrypt.generate_password_hash(content['password'], 10)
+        user = User(content['email'], content['name'], password, content['birthdate'], content['picture'], content['gender_name'])
         db.session.add(user)
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         if (JSONRequest.getErrorCode(error.args[0]) == 1062):
             return JSONRequest.sendError("Duplicate keys for " + content['email'], 409)
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     db.session.refresh(user)
     return JSONRequest.sendAnswer(user.serialize, 200)
@@ -353,21 +362,23 @@ def getUserProfile():
 @auth.login_required
 def updateUserProfile():
     content = JSONRequest.getJSON(request)
-    if (JSONRequest.checkFields(content, ['name', 'birthdate', 'gender_name']) == False):
+    if (JSONRequest.checkFields(content, ['name', 'birthdate', 'picture', 'gender_name']) == False):
         return JSONRequest.sendError(JSONRequest.getJSONError(), 403)
     try:
         user = db.session.query(User).filter_by(email=g.user_email).first()
         if (user is None):
             return JSONRequest.sendError("User with email " + g.user_email + " does not exist", 404)
-        user.name = content['name']
         if ('password' in content):
-            user.password = content['password']
+            user.password = bcrypt.generate_password_hash(content['password'], 10)
+        user.name = content['name']
         user.birthdate = content['birthdate']
-        user.gender_name = content['gender_name']
         user.picture = content["picture"]
+        user.gender_name = content['gender_name']
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -383,8 +394,10 @@ def deleteUser(email):
             return JSONRequest.sendError("User with email " + email + " does not exist", 404)
         db.session.delete(user)
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -410,23 +423,21 @@ def getFriends(email):
 @auth.login_required
 def isFriend():
     f_email = request.args.get('email')
-    friend = db.session.query(FollowedUser).filter_by(user_email=g.user_email, follow_email = f_email).first()
     try:
+        friend = db.session.query(FollowedUser).filter_by(user_email=g.user_email, follow_email = f_email).first()
         return JSONRequest.sendAnswer(Serializer.serialize(friend), 200)
     except:
-        return JSONRequest.sendError(error.args[0], 404)
+        return JSONRequest.sendError("Unhandled exception", 500)
 
 @app.route('/isFavorite', methods = ['GET'])
 @auth.login_required
 def isFavorite():
     p_id = request.args.get('id')
-    fav = db.session.query(FollowedPlaylist).filter_by(user_email=g.user_email, playlist_id= p_id).first()
     try:
+        fav = db.session.query(FollowedPlaylist).filter_by(user_email=g.user_email, playlist_id= p_id).first()
         return JSONRequest.sendAnswer(Serializer.serialize(fav), 200)
     except:
-        return JSONRequest.sendError(error.args[0], 404)
-
-
+        return JSONRequest.sendError("Unhandled exception", 500)
 
 @app.route('/gender', methods = ['GET'])
 @auth.login_required
@@ -464,8 +475,10 @@ def updatePlaylist(id):
         playlist.description = content['description']
         playlist.picture = content['picture']
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -480,8 +493,10 @@ def deletePlaylist(id):
             return JSONRequest.sendError("You are not authorized to delete other user playlists", 403)
         db.session.delete(playlist)
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -499,6 +514,8 @@ def addPlaylist():
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     db.session.refresh(playlist)
     return JSONRequest.sendAnswer(playlist.serialize, 200)
@@ -524,6 +541,8 @@ def addTitle(id):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     db.session.refresh(title)
     return JSONRequest.sendAnswer(title.serialize, 200)
@@ -557,8 +576,10 @@ def updateTitle(id):
         title.name = content['name']
         title.url = content['url']
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -576,8 +597,10 @@ def deleteTitle(id):
             return JSONRequest.sendError("You are not authorized to delete other user titles", 403)
         db.session.delete(title)
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -599,6 +622,8 @@ def addCommentary(id):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     db.session.refresh(commentary)
     return JSONRequest.sendAnswer(commentary.serialize, 200)
@@ -614,8 +639,10 @@ def deleteCommentary(id):
             return JSONRequest.sendError("You are not authorized to delete other user commentaries", 403)
         db.session.delete(commentary)
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -631,6 +658,8 @@ def addFriend():
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     db.session.refresh(follow)
     return JSONRequest.sendAnswer(follow.serialize, 200)
@@ -647,6 +676,8 @@ def addFavorite():
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     db.session.refresh(follow)
     return JSONRequest.sendAnswer(follow.serialize, 200)
@@ -660,8 +691,10 @@ def deleteFriend(f_email):
             return JSONRequest.sendError("User is not friend with " + f_email, 404)
         db.session.delete(friend)
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -674,11 +707,12 @@ def deleteFavorite(f_id):
             return JSONRequest.sendError("User has no followed playlist with id " + f_id, 404)
         db.session.delete(fav)
         db.session.commit()
-    except IntegrityError as error:
+    except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
+    except:
+        return JSONRequest.sendError("Unhandled exception", 500)
 
     return JSONRequest.sendEmptyAnswer(200)
-
 
 # Main entry to run the server
 if __name__ == '__main__':
