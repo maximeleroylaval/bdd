@@ -29,35 +29,37 @@
         <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
         <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
         <script>
-            w3IncludeHTML();
+            $(document).ready(() => {
+                w3IncludeHTML();
 
-            System.import("js/sdk/sdk").then((m) => {
-                SDK = m.SDK;
+                System.import("js/sdk/sdk").then((m) => {
+                    SDK = m.SDK;
 
-                loadPlaylists();
+                    loadPlaylists();
 
-                function loadPlaylists() {
-                    System.import("js/ProfileController").then((m) => {
-                        SDK.getPlaylists().then((playlists) => {
-                            playlists.forEach(playlist => {
-                                m.ProfileController.playlistGenerator(playlist);
+                    function loadPlaylists() {
+                        System.import("js/ProfileController").then((m) => {
+                            SDK.getPlaylists().then((playlists) => {
+                                playlists.forEach(playlist => {
+                                    m.ProfileController.playlistGenerator(playlist);
+                                });
+                            }).catch((e) => {
+                                alert(e);
                             });
+                        });
+                    }
+
+                    document.getElementById("add").addEventListener('click', (e) => {
+                        var name = document.getElementById("name").value;
+                        var description = document.getElementById("description").value;
+                        var picture = document.getElementById("picture").value;
+                        SDK.addPlaylist(name, description, picture).then((playlists) => {
+                            loadPlaylists();
                         }).catch((e) => {
                             alert(e);
                         });
+                        e.preventDefault();
                     });
-                }
-
-                document.getElementById("add").addEventListener('click', (e) => {
-                    var name = document.getElementById("name").value;
-                    var description = document.getElementById("description").value;
-                    var picture = document.getElementById("picture").value;
-                    SDK.addPlaylist(name, description, picture).then((playlists) => {
-                        loadPlaylists();
-                    }).catch((e) => {
-                        alert(e);
-                    });
-                    e.preventDefault();
                 });
             });
         </script>

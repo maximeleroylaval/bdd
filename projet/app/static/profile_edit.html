@@ -128,97 +128,99 @@
     <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
 
     <script>
-        w3IncludeHTML();
+        $(document).ready(() => {
+            w3IncludeHTML();
 
-        $('#birthdate').datepicker({
-            uiLibrary: 'bootstrap4',
-            format: 'yyyy/mm/dd'
-        });
-
-        var gender_dropdown = $('#gender_name').dropdown({
-            width: "100%"
-        });
-
-        System.import("js/sdk/sdk").then((m) => {
-            SDK = m.SDK;
-
-            document.getElementById("previsu").addEventListener('click', () => {
-                if (document.getElementById("picture").value !== null &&
-                    document.getElementById("picture").value !== "" &&
-                    document.getElementById("picture").value !== undefined) {
-                    document.getElementById("spinner_playlist").hidden = false;
-                    document.getElementById("img-preview-container").hidden = true;
-                    document.getElementById("imgPreview").src = document.getElementById("picture").value;
-                    document.getElementById("spinner_playlist").hidden = true;
-                    document.getElementById("img-preview-container").hidden = false;
-                    document.getElementById("picture").className = "form-control";
-                } else {
-                    document.getElementById("picture").className += " is-invalid";
-                }
+            $('#birthdate').datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy/mm/dd'
             });
 
-            SDK.getUserProfile().then((profile) => {
-                let name = document.getElementById("name");
-                let picture = document.getElementById("picture");
-                let birthdate = document.getElementById("birthdate");
-                let password = document.getElementById("new_password");
-                let password_conf = document.getElementById("new_password_confirmation");
-                const gender_name = document.getElementById("gender_name");
+            var gender_dropdown = $('#gender_name').dropdown({
+                width: "100%"
+            });
 
-                name.value = profile.name;
-                picture.value = profile.picture;
-                birthdate.value = profile.birthdate;
-                gender_dropdown.value(profile.gender_name);
+            System.import("js/sdk/sdk").then((m) => {
+                SDK = m.SDK;
 
-                document.getElementById("add").addEventListener('click', () => {
-                    if (name.value === "" || picture.value === "" || birthdate.value === "") {
-                        if (name.value === "") {
-                            name.removeAttribute("class");
-                            name.setAttribute("class", "form-control is-invalid")
-                        }
-
-                        if (picture.value === "") {
-                            picture.removeAttribute("class");
-                            picture.setAttribute("class", "form-control is-invalid")
-                        }
-
-                        if (birthdate.value === "") {
-                            birthdate.removeAttribute("class");
-                            birthdate.setAttribute("class", "form-control is-invalid")
-                        }
-
-                        document.getElementById("error").hidden = false;
-                        document.getElementById("error-mess").hidden = false;
-
+                document.getElementById("previsu").addEventListener('click', () => {
+                    if (document.getElementById("picture").value !== null &&
+                        document.getElementById("picture").value !== "" &&
+                        document.getElementById("picture").value !== undefined) {
+                        document.getElementById("spinner_playlist").hidden = false;
+                        document.getElementById("img-preview-container").hidden = true;
+                        document.getElementById("imgPreview").src = document.getElementById("picture").value;
+                        document.getElementById("spinner_playlist").hidden = true;
+                        document.getElementById("img-preview-container").hidden = false;
+                        document.getElementById("picture").className = "form-control";
                     } else {
-                        profile.name = name.value;
-                        profile.picture = picture.value;
-                        profile.birthdate = birthdate.value;
-                        profile.gender_name = gender_name.value;
-                        if (password.value !== "") {
-                            if (password.value === password_conf.value) {
-                                profile.password = password.value;
+                        document.getElementById("picture").className += " is-invalid";
+                    }
+                });
+
+                SDK.getUserProfile().then((profile) => {
+                    let name = document.getElementById("name");
+                    let picture = document.getElementById("picture");
+                    let birthdate = document.getElementById("birthdate");
+                    let password = document.getElementById("new_password");
+                    let password_conf = document.getElementById("new_password_confirmation");
+                    const gender_name = document.getElementById("gender_name");
+
+                    name.value = profile.name;
+                    picture.value = profile.picture;
+                    birthdate.value = profile.birthdate;
+                    gender_dropdown.value(profile.gender_name);
+
+                    document.getElementById("add").addEventListener('click', () => {
+                        if (name.value === "" || picture.value === "" || birthdate.value === "") {
+                            if (name.value === "") {
+                                name.removeAttribute("class");
+                                name.setAttribute("class", "form-control is-invalid")
+                            }
+
+                            if (picture.value === "") {
+                                picture.removeAttribute("class");
+                                picture.setAttribute("class", "form-control is-invalid")
+                            }
+
+                            if (birthdate.value === "") {
+                                birthdate.removeAttribute("class");
+                                birthdate.setAttribute("class", "form-control is-invalid")
+                            }
+
+                            document.getElementById("error").hidden = false;
+                            document.getElementById("error-mess").hidden = false;
+
+                        } else {
+                            profile.name = name.value;
+                            profile.picture = picture.value;
+                            profile.birthdate = birthdate.value;
+                            profile.gender_name = gender_name.value;
+                            if (password.value !== "") {
+                                if (password.value === password_conf.value) {
+                                    profile.password = password.value;
+                                    SDK.editUser(profile).then(() => {
+                                        window.open("profile.html", "_self");
+                                    }).catch(err => {
+                                        alert(err);
+                                    });
+                                }
+                                else {
+                                    document.getElementById("error").hidden = false;
+                                    document.getElementById("password_missmatch").hidden = false;
+                                }
+                            } else {
                                 SDK.editUser(profile).then(() => {
                                     window.open("profile.html", "_self");
                                 }).catch(err => {
                                     alert(err);
                                 });
                             }
-                            else {
-                                document.getElementById("error").hidden = false;
-                                document.getElementById("password_missmatch").hidden = false;
-                            }
-                        } else {
-                            SDK.editUser(profile).then(() => {
-                                window.open("profile.html", "_self");
-                            }).catch(err => {
-                                alert(err);
-                            });
                         }
-                    }
+                    });
+                }).catch((e) => {
+                    alert(e);
                 });
-            }).catch((e) => {
-                alert(e);
             });
         });
     </script>

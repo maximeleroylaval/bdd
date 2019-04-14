@@ -66,45 +66,47 @@
     <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
     <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
     <script>
-        w3IncludeHTML();
-        System.import("js/sdk/sdk").then((m) => {
-            const SDK = m.SDK;
-            const params = SDK.getQueryParameters(window.location.href);
-            const playlist_id = params.id;
+        $(document).ready(() => {
+            w3IncludeHTML();
+            System.import("js/sdk/sdk").then((m) => {
+                const SDK = m.SDK;
+                const params = SDK.getQueryParameters(window.location.href);
+                const playlist_id = params.id;
 
-            SDK.getPlaylist(playlist_id).then((playlist) => {
-                var pName = document.getElementById("name");
-                pName.value = playlist.name;
-                var pDescription = document.getElementById("description");
-                pDescription.value = playlist.description;
-                var pPicture = document.getElementById("picture");
-                pPicture.value = playlist.picture;
-                document.getElementById("add").addEventListener('click', (e) => {
-                    var name = pName.value;
-                    var description = pDescription.value;
-                    var url = pPicture.value;
-                    SDK.editPlaylist(name, description, url, playlist_id).then((title) => {
-                        window.open("playlist.html?id=" + playlist_id, "_self");
-                    }).catch((e) => {
-                        alert(e);
+                SDK.getPlaylist(playlist_id).then((playlist) => {
+                    var pName = document.getElementById("name");
+                    pName.value = playlist.name;
+                    var pDescription = document.getElementById("description");
+                    pDescription.value = playlist.description;
+                    var pPicture = document.getElementById("picture");
+                    pPicture.value = playlist.picture;
+                    document.getElementById("add").addEventListener('click', (e) => {
+                        var name = pName.value;
+                        var description = pDescription.value;
+                        var url = pPicture.value;
+                        SDK.editPlaylist(name, description, url, playlist_id).then((title) => {
+                            window.open("playlist.html?id=" + playlist_id, "_self");
+                        }).catch((e) => {
+                            alert(e);
+                        });
+                        e.preventDefault();
                     });
-                    e.preventDefault();
+                }).catch((e) => {
+                    alert(e);
                 });
-            }).catch((e) => {
-                alert(e);
-            });
 
-            document.getElementById("preview").addEventListener('click', () => {
-                if ( document.getElementById("picture").value !== null &&
-                    document.getElementById("picture").value !== "" &&
-                    document.getElementById("picture").value !== undefined) {
-                    document.getElementById("img-preview-container").hidden = true;
-                    document.getElementById("imgPreview").src = document.getElementById("picture").value;
-                    document.getElementById("img-preview-container").hidden = false;
-                    document.getElementById("picture").className = "form-control";
-                } else {
-                    document.getElementById("picture").className += " is-invalid";
-                }
+                document.getElementById("preview").addEventListener('click', () => {
+                    if ( document.getElementById("picture").value !== null &&
+                        document.getElementById("picture").value !== "" &&
+                        document.getElementById("picture").value !== undefined) {
+                        document.getElementById("img-preview-container").hidden = true;
+                        document.getElementById("imgPreview").src = document.getElementById("picture").value;
+                        document.getElementById("img-preview-container").hidden = false;
+                        document.getElementById("picture").className = "form-control";
+                    } else {
+                        document.getElementById("picture").className += " is-invalid";
+                    }
+                });
             });
         });
     </script>

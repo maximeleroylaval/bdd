@@ -20,10 +20,12 @@
         <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
         <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
         <script>
-            System.import("js/sdk/sdk").then((m) => {
-                setTimeout(() => {
-                    m.SDK.disconnect();
-                }, 500);
+            $(document).ready(() => {
+                System.import("js/sdk/sdk").then((m) => {
+                    setTimeout(() => {
+                        m.SDK.disconnect();
+                    }, 500);
+                });
             });
         </script>
     </body>

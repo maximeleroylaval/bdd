@@ -34,17 +34,19 @@
         <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
         <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
         <script>
-            System.import("js/sdk/sdk").then((m) => {
-                SDK = m.SDK;
-                document.getElementById("login_submit").addEventListener('click', (e) => {
-                    var email = document.getElementById("email").value;
-                    var password = document.getElementById("password").value;
-                    SDK.login(email, password).then(() => {
-                        window.open("index.html", "_self")
-                    }).catch((e) => {
-                        alert(e);
+            $(document).ready(() => {
+                System.import("js/sdk/sdk").then((m) => {
+                    SDK = m.SDK;
+                    document.getElementById("login_submit").addEventListener('click', (e) => {
+                        var email = document.getElementById("email").value;
+                        var password = document.getElementById("password").value;
+                        SDK.login(email, password).then(() => {
+                            window.open("index.html", "_self")
+                        }).catch((e) => {
+                            alert(e);
+                        });
+                        e.preventDefault();
                     });
-                    e.preventDefault();
                 });
             });
         </script>

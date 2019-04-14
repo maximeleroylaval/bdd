@@ -419,23 +419,25 @@ def getFriends(email):
     friends = db.session.query(FollowedUser).filter_by(user_email=email).all()
     return JSONRequest.sendAnswer(Serializer.serialize_list(friends), 200)
 
-@app.route('/isFriend', methods = ['GET'])
+@app.route('/friends/<email>', methods = ['GET'])
 @auth.login_required
-def isFriend():
-    f_email = request.args.get('email')
+def isFriend(email):
     try:
-        friend = db.session.query(FollowedUser).filter_by(user_email=g.user_email, follow_email = f_email).first()
-        return JSONRequest.sendAnswer(Serializer.serialize(friend), 200)
+        friend = db.session.query(FollowedUser).filter_by(user_email=g.user_email, follow_email=email).first()
+        if (friend is None):
+            return JSONRequest.sendError("Friend not found", 404)
+        return JSONRequest.sendAnswer(friend.serialize, 200)
     except:
         return JSONRequest.sendError("Unhandled exception", 500)
 
-@app.route('/isFavorite', methods = ['GET'])
+@app.route('/favorite/<id>', methods = ['GET'])
 @auth.login_required
-def isFavorite():
-    p_id = request.args.get('id')
+def isFavorite(id):
     try:
-        fav = db.session.query(FollowedPlaylist).filter_by(user_email=g.user_email, playlist_id= p_id).first()
-        return JSONRequest.sendAnswer(Serializer.serialize(fav), 200)
+        fav = db.session.query(FollowedPlaylist).filter_by(user_email=g.user_email, playlist_id=id).first()
+        if (fav is None):
+            return JSONRequest.sendError("Favorite not found", 404)
+        return JSONRequest.sendAnswer(fav.serialize, 200)
     except:
         return JSONRequest.sendError("Unhandled exception", 500)
 

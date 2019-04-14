@@ -410,17 +410,6 @@ export class SDK {
         });
     }
 
-    static isFriend(follow_email) {
-        return Request.Get('isFriend?email=' + follow_email).catch(err => {
-            throw err;
-        }).then(response => {
-            if (response.message !== '') {
-                throw response.message;
-            }
-            return response.data;
-        });
-    }
-
     static getFriends(user_email) {
         return Request.Get('user/' + user_email + '/friends').catch(err => {
             throw err;
@@ -433,6 +422,17 @@ export class SDK {
                 friend_ids.push(friend_id);
             });
             return friend_ids;
+        });
+    }
+
+    static isFriend(follow_email) {
+        return Request.Get('friends/' + follow_email).catch(err => {
+            throw err;
+        }).then(response => {
+            if (response.message !== '') {
+                throw response.message;
+            }
+            return response.data;
         });
     }
 
@@ -459,7 +459,7 @@ export class SDK {
     }
 
     static isFavorite(playlist_id) {
-        return Request.Get('isFavorite?id=' + playlist_id).catch(err => {
+        return Request.Get('favorite/' + playlist_id).catch(err => {
             throw err;
         }).then(response => {
             if (response.message !== '') {

@@ -60,22 +60,17 @@ body {
 }
 
 .user_picture {
-    display: inline;
-    width: 48px;
-    border-radius: 60px;
+    border-radius: 10vh;
+    height: 8vh;
 }
 
 .user_name {
-    display: inline;
     font-size: medium;
-    margin-left: 10px;
 }
 
 .user_publication {
-    display: inline;
-    float:right;
-    margin-top:10px;
-    font-size:small
+    font-size:small;
+    text-align: end;
 }
 
 .commentary_title {
@@ -133,4 +128,8 @@ body {
     width: 20%;
     margin-top: 40px;
     margin-left: 30px;
+}
+
+.tight-text {
+    margin: 0;
 }

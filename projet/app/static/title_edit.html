@@ -53,29 +53,31 @@
     <script src="http://yourjavascript.com/407637951/traceur.js" type="application/x-javascript"></script>
     <script src="http://yourjavascript.com/791814045/es6-module-loader.js" type="application/x-javascript"></script>
     <script>
-        w3IncludeHTML();
-        System.import("js/sdk/sdk").then((m) => {
-            const SDK = m.SDK;
-            const params = SDK.getQueryParameters(window.location.href);
-            const title_id = params.id;
+        $(document).ready(() => {
+            w3IncludeHTML();
+            System.import("js/sdk/sdk").then((m) => {
+                const SDK = m.SDK;
+                const params = SDK.getQueryParameters(window.location.href);
+                const title_id = params.id;
 
-            SDK.getTitle(title_id).then((title) => {
-                var pName = document.getElementById("name");
-                pName.value = title.name;
-                var pUrl = document.getElementById("url");
-                pUrl.value = title.url;
-                document.getElementById("add").addEventListener('click', (e) => {
-                    var name = pName.value;
-                    var url = pUrl.value;
-                    SDK.editTitle(name, url, title_id).then(() => {
-                        window.open("title.html?id=" + title_id, "_self");
-                    }).catch((e) => {
-                        alert(e);
+                SDK.getTitle(title_id).then((title) => {
+                    var pName = document.getElementById("name");
+                    pName.value = title.name;
+                    var pUrl = document.getElementById("url");
+                    pUrl.value = title.url;
+                    document.getElementById("add").addEventListener('click', (e) => {
+                        var name = pName.value;
+                        var url = pUrl.value;
+                        SDK.editTitle(name, url, title_id).then(() => {
+                            window.open("title.html?id=" + title_id, "_self");
+                        }).catch((e) => {
+                            alert(e);
+                        });
+                        e.preventDefault();
                     });
-                    e.preventDefault();
+                }).catch((e) => {
+                    alert(e);
                 });
-            }).catch((e) => {
-                alert(e);
             });
         });
     </script>
