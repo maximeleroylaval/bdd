@@ -7,13 +7,7 @@ Réalisation d'un projet "Soundcloud-like" dans le cadre du cours GLO-2005
 
 ### Installation
 
-#### Activer l'hyper-V sur Windows
-
-[Activer l'hyper-V](https://bit.ly/2kDg6Sw)
-
-#### Autres
-
-Aucune instructions supplémentaires
+[Activer l'hyper-V (Windows)](https://bit.ly/2kDg6Sw)
 
 ### Démarage
 
@@ -24,7 +18,7 @@ $ docker-compose up
 
 #### Accès au site (local)
 
-[localhost:80](localhost:80/static/index.htlm)
+[localhost:80/static/index.html](localhost:80/static/index.html)
 
 
 # Auteur
