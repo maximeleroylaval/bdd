@@ -9,13 +9,13 @@ Réalisation d'un projet "Soundcloud-like" dans le cadre du cours GLO-2005
 
 [Activez l'hyper-V (Windows)](https://bit.ly/2kDg6Sw)
 
-### Démarage
+### Démarrage
 
 Lancez docker et attendez bien qu'il se soit exécuté.
 Une fois que docker est prêt, ouvrez l'application PowerShell à la racine du dossier [projet](./projet)
 
 **Attention, si docker vous demande de partager l'accès à votre disque dur, acceptez la proposition**
-**Si vous vous retrouvez dans ce cas, assurez vous de posséder un accès à un compte administrateur avec un mot de passe d'enregistré en raison des [politiques de sécurité docker](https://github.com/docker/for-win/issues/616)** 
+**Si vous vous retrouvez dans ce cas, assurez-vous de posséder un accès à un compte administrateur avec un mot de passe d'enregistré en raison des [politiques de sécurité docker](https://github.com/docker/for-win/issues/616)** 
 
 ```bash
 docker-compose up
@@ -39,11 +39,11 @@ Dans un navigateur internet, entrez le lien suivant dans la barre d'URL:
 
 #### Compte utilisateur
 
-Si vous ne souhaitez pas créer un compte, connectez vous avec ces identifiants:
+Si vous ne souhaitez pas créer un compte, connectez-vous avec ces identifiants:
 * Email: rap@rap.com
 * Mot de passe: supermdp
 
-**Remarque: toutes les adresses email préenregistrées dans la base de donnée ont pour mot de passe: supermdp**
+**Remarque: toutes les adresses email préenregistrées dans la base de données ont pour mot de passe: supermdp**
 
 # Auteur
 
