@@ -17,7 +17,7 @@ Lancer docker, puis ouvrir l'application PowerShell à la racine du dossier [pro
 $ docker-compose up
 ```
 
-#### Accès au site (local)
+### Accès au site
 
 Dans un navigateur internet, entrer le lien suivant dans la barre d'URL:
 
