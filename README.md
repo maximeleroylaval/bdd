@@ -23,7 +23,7 @@ docker-compose up
 
 ### Accès au site
 
-Dans un navigateur internet, entrer le lien suivant dans la barre d'URL:
+Dans un navigateur internet, entrez le lien suivant dans la barre d'URL:
 
 [localhost](http://localhost)
 
