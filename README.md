@@ -20,7 +20,7 @@ $ docker-compose up
 
 Dans un navigateur internet, entrer le lien suivant dans la barre d'URL:
 
-[localhost](localhost)
+[localhost](http://localhost)
 
 # Auteur
 
