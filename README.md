@@ -11,15 +11,16 @@ Réalisation d'un projet "Soundcloud-like" dans le cadre du cours GLO-2005
 
 ### Démarage
 
+Lancer docker, puis, dans le dossier "projet", exécuter la commande suivante:
 ```bash
-# Dans le dossier "projet"
 $ docker-compose up
 ```
 
 #### Accès au site (local)
 
-[localhost:80/static/index.html](localhost:80/static/index.html)
+Dans un navigateur internet, entrer le lien suivant dans la barre d'URL:
 
+[localhost](localhost)
 
 # Auteur
 
