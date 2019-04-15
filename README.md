@@ -27,6 +27,14 @@ Dans un navigateur internet, entrez le lien suivant dans la barre d'URL:
 
 [localhost](http://localhost)
 
+#### Compte utilisateur
+
+Si vous ne souhaitez pas créer un compte, connectez vous avec ces identifiants:
+* Email: rap@rap.com
+* Mot de passe: supermdp
+
+**Remarque: toutes les adresses email préenregistrées dans la base de donnée ont pour mot de passe: supermdp**
+
 # Auteur
 
 * **[Maxime Leroy](https://github.com/maximeleroylaval)**
