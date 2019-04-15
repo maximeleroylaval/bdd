@@ -21,6 +21,16 @@ Une fois que docker est prêt, ouvrez l'application PowerShell à la racine du d
 docker-compose up
 ```
 
+Consultez votre terminal PowerShell et attendez d'obtenir le message suivant:
+```bash
+* Serving Flask app "server" (lazy loading)
+flask_container |  * Environment: production
+flask_container |    WARNING: Do not use the development server in a production environment.
+flask_container |    Use a production WSGI server instead.
+flask_container |  * Debug mode: off
+flask_container |  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+```
+
 ### Accès au site
 
 Dans un navigateur internet, entrez le lien suivant dans la barre d'URL:
