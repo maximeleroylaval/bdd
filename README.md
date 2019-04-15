@@ -11,7 +11,8 @@ Réalisation d'un projet "Soundcloud-like" dans le cadre du cours GLO-2005
 
 ### Démarage
 
-Lancer docker, puis, dans le dossier "projet", exécuter la commande suivante:
+Lancer docker, puis ouvrir l'application PowerShell à la racine du dossier [projet](./projet)
+
 ```bash
 $ docker-compose up
 ```
