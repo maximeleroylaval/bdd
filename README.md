@@ -14,7 +14,7 @@ Réalisation d'un projet "Soundcloud-like" dans le cadre du cours GLO-2005
 Lancer docker, puis ouvrir l'application PowerShell à la racine du dossier [projet](./projet)
 
 ```bash
-$ docker-compose up
+docker-compose up
 ```
 
 ### Accès au site
