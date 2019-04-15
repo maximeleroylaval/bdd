@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app)
 bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@localhost/soundhub'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://soundhub:soundhubpassword@db/soundhub'
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 auth = HTTPTokenAuth(scheme='Bearer')
