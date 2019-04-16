@@ -57,7 +57,9 @@
             $(document).ready(() => {
                 $('#birthdate').datepicker({
                     uiLibrary: 'bootstrap4',
-                    format: 'yyyy/mm/dd'
+                    format: 'yyyy/mm/dd',
+                    minDate: '1970/01/01',
+                    maxDate: new Date().getFullYear() + "/" + (parseInt(new Date().getMonth(), 10) + 1) + "/" + new Date().getDate(),
                 });
                 $('#gender_name').dropdown({
                     width: "100%"

@@ -330,7 +330,7 @@ def addUser():
         user = User(content['email'], content['name'], password, content['birthdate'], content['picture'], content['gender_name'])
         db.session.add(user)
         db.session.commit()
-    except (IntegrityError, InternalError) as error:
+    except (IntegrityError, InternalError, ValueError) as error:
         if (JSONRequest.getErrorCode(error.args[0]) == 1062):
             return JSONRequest.sendError("Duplicate keys for " + content['email'], 409)
         return JSONRequest.sendError(error.args[0], 500)
