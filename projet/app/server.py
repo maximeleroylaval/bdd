@@ -290,7 +290,11 @@ class FollowedUser(db.Model):
 # List of all routes
 @app.route('/')
 def home():
-    return "<script>location.href='static/index.html'</script>"
+    return "<script>window.open('/static/index.html', '_self');</script>"
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return "<script>window.open('/static/404.html', '_self');</script>"
 
 @app.route('/login', methods = ['POST'])
 def loginUser():
