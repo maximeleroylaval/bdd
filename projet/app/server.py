@@ -312,8 +312,8 @@ def loginUser():
         db.session.commit()
     except (IntegrityError, InternalError, ValueError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled error", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     db.session.refresh(token)
     return JSONRequest.sendAnswer(token.serialize, 200)
@@ -334,8 +334,8 @@ def addUser():
         if (JSONRequest.getErrorCode(error.args[0]) == 1062):
             return JSONRequest.sendError("Duplicate keys for " + content['email'], 409)
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     db.session.refresh(user)
     return JSONRequest.sendAnswer(user.serialize, 200)
@@ -381,8 +381,8 @@ def updateUserProfile():
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -400,8 +400,8 @@ def deleteUser(email):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -431,8 +431,8 @@ def isFriend(email):
         if (friend is None):
             return JSONRequest.sendError("Friend not found", 404)
         return JSONRequest.sendAnswer(friend.serialize, 200)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
 @app.route('/favorite/<id>', methods = ['GET'])
 @auth.login_required
@@ -442,8 +442,8 @@ def isFavorite(id):
         if (fav is None):
             return JSONRequest.sendError("Favorite not found", 404)
         return JSONRequest.sendAnswer(fav.serialize, 200)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
 @app.route('/gender', methods = ['GET'])
 @auth.login_required
@@ -483,8 +483,8 @@ def updatePlaylist(id):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -501,8 +501,8 @@ def deletePlaylist(id):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -520,8 +520,8 @@ def addPlaylist():
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     db.session.refresh(playlist)
     return JSONRequest.sendAnswer(playlist.serialize, 200)
@@ -547,8 +547,8 @@ def addTitle(id):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     db.session.refresh(title)
     return JSONRequest.sendAnswer(title.serialize, 200)
@@ -584,8 +584,8 @@ def updateTitle(id):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -605,8 +605,8 @@ def deleteTitle(id):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -628,8 +628,8 @@ def addCommentary(id):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     db.session.refresh(commentary)
     return JSONRequest.sendAnswer(commentary.serialize, 200)
@@ -647,8 +647,8 @@ def deleteCommentary(id):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -664,8 +664,8 @@ def addFriend():
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     db.session.refresh(follow)
     return JSONRequest.sendAnswer(follow.serialize, 200)
@@ -682,8 +682,8 @@ def addFavorite():
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     db.session.refresh(follow)
     return JSONRequest.sendAnswer(follow.serialize, 200)
@@ -699,8 +699,8 @@ def deleteFriend(f_email):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
@@ -715,8 +715,8 @@ def deleteFavorite(f_id):
         db.session.commit()
     except (IntegrityError, InternalError) as error:
         return JSONRequest.sendError(error.args[0], 500)
-    except:
-        return JSONRequest.sendError("Unhandled exception", 500)
+    except Exception as error:
+        return JSONRequest.sendError(error.args[0], 500)
 
     return JSONRequest.sendEmptyAnswer(200)
 
